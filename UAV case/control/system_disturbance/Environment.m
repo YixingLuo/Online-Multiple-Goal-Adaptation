@@ -135,50 +135,73 @@ classdef Environment
         function env = map_initial3(env, rate_obj, rate_o)
             global configure    
             capacity = configure.grid_x * configure.grid_y * configure.grid_z;
-            num_o = floor(rate_o * rate_obj * capacity / (4/3*pi*configure.obstacle_radius.^3))
-            num_p = floor((1-rate_o) * rate_obj * capacity / (4/3*pi*configure.privacy_radius.^3))
+            num_o = floor(rate_o * rate_obj * capacity / (4/3*pi*configure.obstacle_radius.^3));
+            num_p = floor((1-rate_o) * rate_obj * capacity / (4/3*pi*configure.privacy_radius.^3));
             index_o = 0;
             for index_o = 1:1:num_o
-                [length_o, width_o] = size(env.obstacle_list);
-                flag_o = 0;
+                [length_o, width_o] = size(env.obstacle_list)
+                flag_o = -3;
                 current_idx = 0;
-                while flag_o <= 0
-                    temp_x = unifrnd(0+configure.obstacle_radius, configure.grid_x-1-configure.obstacle_radius);
-                    temp_y = unifrnd(0+configure.obstacle_radius, configure.grid_y-1-configure.obstacle_radius);
-                    temp_z = unifrnd(0+configure.obstacle_radius, configure.grid_z-1-configure.obstacle_radius);
+                while flag_o < 0
+                    flag_o = -3;
+                    temp_x = unifrnd(0+configure.obstacle_radius, configure.grid_x-configure.obstacle_radius);
+                    temp_y = unifrnd(0+configure.obstacle_radius, configure.grid_y-configure.obstacle_radius);
+                    temp_z = unifrnd(0+configure.obstacle_radius, configure.grid_z-configure.obstacle_radius);
                     current_point = [temp_x,temp_y,temp_z];
                     for oo = 1:length_o
                         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) < 2*configure.obstacle_radius
-                            flag_o = 0;
+                            flag_o = -2;
                             current_idx = oo;
                             break;
                         end
                     end
-                    if current_idx == 0
-                        env = env.add_obstacle(temp_x, temp_y, temp_z );
+                    if flag_o == -3
+                        env = env.add_obstacle(temp_x, temp_y, temp_z )
                         flag_o = 1;
                     end
                 end
             end
             for index_p = 1:1:num_p
+                index_p;
+                [length_o, width_o] = size(env.obstacle_list);
                 [length_p, width_p] = size(env.privacy_list);
-                flag_p = 0;
+                flag_p = -3;
                 current_idx = 0;
-                while flag_p <= 0
-                    temp_x = unifrnd(0+configure.privacy_radius, configure.grid_x-1-configure.privacy_radius);
-                    temp_y = unifrnd(0+configure.privacy_radius, configure.grid_y-1-configure.privacy_radius);
-                    temp_z = unifrnd(0+configure.privacy_radius, configure.grid_z-1-configure.privacy_radius);
+                iter_num = 0;
+                while flag_p < 0
+                    flag_p = -3;
+                    iter_num = iter_num + 1;
+                    temp_x = unifrnd(0+configure.privacy_radius, configure.grid_x-configure.privacy_radius);
+                    temp_y = unifrnd(0+configure.privacy_radius, configure.grid_y-configure.privacy_radius);
+                    temp_z = unifrnd(0+configure.privacy_radius, configure.grid_z-configure.privacy_radius);
                     current_point = [temp_x,temp_y,temp_z];
-                    for pp = 1:length_p
-                        if sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2) < 2*configure.privacy_radius
-                            flag_p = 0;
-                            current_idx = pp;
-                            break;
+                    for pp = 1:1:length_p + length_o
+                        pp;
+                        if pp <= length_p
+                            if sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2) < 2*configure.privacy_radius
+%                                 sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2);
+%                                 fprintf("initial")
+%                                 env.privacy_list(pp,:),current_point, pp,index_p
+                                flag_p = -2;
+                                current_idx = pp;
+                                break;
+                            end
+                        else
+                            if sqrt((env.obstacle_list(pp-length_p, 1)-current_point(1)).^2+(env.obstacle_list(pp-length_p, 2)-current_point(2)).^2+(env.obstacle_list(pp-length_p, 3)-current_point(3)).^2) < configure.obstacle_radius + configure.privacy_radius
+                                flag_p = -1;
+                                current_idx = pp;
+                                break;
+                            end
                         end
                     end
-                    if current_idx == 0
+%                     fprintf("now:")
+%                     env.privacy_list(pp,:),current_point, pp,index_p, flag_p
+                    if flag_p == -3
                         env = env.add_privacy(temp_x, temp_y, temp_z );
+%                         env.privacy_list(index_p,1),env.privacy_list(index_p,2);
                         flag_p = 1;
+%                         env.privacy_list
+                        break
                     end
                 end
             end

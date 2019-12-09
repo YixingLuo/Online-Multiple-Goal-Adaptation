@@ -22,7 +22,7 @@ for i = 1: initial_N
      p_y(i+1) = x(i+(initial_N + 1))*tau + p_y(i);
      p_z(i+1) = x(i+2*(initial_N + 1))*tau + p_z(i);
      c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
-     c = [c, p_x(i+1)-(configure.grid_x-1), p_y(i+1)-(configure.grid_y-1), p_z(i+1)-(configure.grid_z-1)];
+     c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
 % ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9
