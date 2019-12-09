@@ -8,6 +8,10 @@ r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
 % r_o = configure.obstacle_radius + configure.radius;
 % r_p = configure.privacy_radius + configure.radius;
 
+% r_o = configure.obstacle_radius;
+% r_p = configure.privacy_radius;
+
+
 length_o = 0;
 width_o = 0;
 length_p = 0;
@@ -35,23 +39,23 @@ for i = 1: length_p
     hold on
 end
 
-% a=0;
-% b=0;
-% [a, b] = size(trajectory1);
-% xx=[];
-% yy=[];
-% zz=[];
-% dis = [];
-% for i =1:a
-%     xx = [xx, trajectory1(i,1)];
-%     yy = [yy, trajectory1(i,2)];
-%     zz = [zz, trajectory1(i,3)];             
-% end
-% 
-% scatter3(xx,yy,zz,'k.')
-% hold on
-% plot3(xx,yy,zz,'r')
-% axis([0, configure.end_point(1), 0, configure.end_point(2), 0, configure.end_point(3)])
+a=0;
+b=0;
+[a, b] = size(trajectory1);
+xx=[];
+yy=[];
+zz=[];
+dis = [];
+for i =1:a
+    xx = [xx, trajectory1(i,1)];
+    yy = [yy, trajectory1(i,2)];
+    zz = [zz, trajectory1(i,3)];             
+end
+
+scatter3(xx,yy,zz,'k.')
+hold on
+plot3(xx,yy,zz,'r')
+axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 
 % a=0;
 % b=0;
@@ -69,7 +73,7 @@ end
 % scatter3(xx,yy,zz,'k.')
 % hold on
 % plot3(xx,yy,zz,'r')
-% axis([0, configure.end_point(1), 0, configure.end_point(2), 0, configure.end_point(3)])
+% axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 
 % a=0;
 % b=0;
@@ -87,23 +91,23 @@ end
 % scatter3(xx,yy,zz,'k.')
 % hold on
 % plot3(xx,yy,zz,'r')
-% axis([0, configure.end_point(1), 0, configure.end_point(2), 0, configure.end_point(3)])
+% axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 
-a=0;
-b=0;
-[a, b] = size(trajectory);
-xx=[];
-yy=[];
-zz=[];
-dis = [];
-for i =1:a
-    xx = [xx, trajectory(i,1)];
-    yy = [yy, trajectory(i,2)];
-    zz = [zz, trajectory(i,3)];           
-end
-
-scatter3(xx,yy,zz,'k.')
-hold on
-plot3(xx,yy,zz,'r')
-axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
+% a=0;
+% b=0;
+% [a, b] = size(trajectory);
+% xx=[];
+% yy=[];
+% zz=[];
+% dis = [];
+% for i =1:a
+%     xx = [xx, trajectory(i,1)];
+%     yy = [yy, trajectory(i,2)];
+%     zz = [zz, trajectory(i,3)];           
+% end
+% 
+% scatter3(xx,yy,zz,'k.')
+% hold on
+% plot3(xx,yy,zz,'r')
+% axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 

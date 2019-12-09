@@ -126,7 +126,7 @@ while (1)
 %     else
 %         needplan = 0;
 %     end
-    needplan = 0;
+    needplan = 1;
     
 %     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
 %         needplan = 1;
@@ -199,8 +199,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -242,9 +242,9 @@ while (1)
 %             nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.end_point(2));
 %             nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.end_point(3));
             %% 1113
-            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
             nowp_x(i+1) = max(nowp_x(i+1), 0);
             nowp_y(i+1) = max(nowp_y(i+1), 0);
             nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -320,6 +320,7 @@ while (1)
                 ub(i) = configure.velocity_max;
 %                 x0(i) = ub(i) - iternum * 2/30;
                 x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = ub(i);
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -331,16 +332,23 @@ while (1)
             for i = 1: 3 %% velocity constraint for the last point
                 index = (initial_N+1) * i;
                 lb(index) = configure.velocity_min;
+                ub(index) = configure.velocity_max;
+                if (following_point(end,i)-following_point(end-1,i)) > 0
+                    ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                else
+                    lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                end
+%                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
 %                 ub(index) = configure.velocity_max;
-                ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-                ub(index) = max(lb(index),ub(index));
+%                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                ub(index) = max(lb(index),ub(index)); 
 %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
-                x0(index) = max(lb(index),ub(index));
-%                if current_point(i)> configure.end_point(i)
-%                     x0(index) = unifrnd(lb(index),0);
-%                else                   
-%                     x0(index) = unifrnd(0,ub(index));
-%                end
+%                 x0(index) = max(lb(index),ub(index));
+               if current_point(i)> configure.end_point(i)
+                    x0(index) = unifrnd(lb(index),0);
+               else                   
+                    x0(index) = unifrnd(0,ub(index));
+               end
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
@@ -416,7 +424,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=20
+       while exitflag_relax <= 0 && iternum_relax<=10
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -437,19 +445,25 @@ while (1)
 %                    end
                end        
                for i = 1: 3 %% velocity constraint for the last point                
-                   index = (initial_N+1) * i;
-                   lb_relax(index) = configure.velocity_min;
-%                    ub_relax(index) = configure.velocity_max;
-                   ub_relax(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-                   ub_relax(index) = max(lb_relax(index),ub_relax(index));  
-                   x0_relax(index) = max(lb_relax(index),ub_relax(index));
-%                    x0_relax(index) = ub_relax(index) - iternum_relax * (ub_relax(index)-lb_relax(index))/30;
-%                    if current_point(i)> configure.end_point(i)
-%                         x0_relax(index) = unifrnd(lb_relax(index),0);
-%                    else                   
-%                         x0_relax(index) = unifrnd(0,ub_relax(index));
-%                    end
-%                     x0_relax(index) = unifrnd(lb_relax(index),ub_relax(index));
+                    index = (initial_N+1) * i;
+                    lb_relax(index) = configure.velocity_min;
+                    ub_relax(index) = configure.velocity_max;
+                    if (following_point(end,i)-following_point(end-1,i)) > 0
+                        ub_relax(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    else
+                        lb_relax(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    end
+    %                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+    %                 ub(index) = configure.velocity_max;
+    %                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    ub_relax(index) = max(lb_relax(index),ub_relax(index)); 
+    %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
+%                     x0_relax(index) = max(lb_relax(index),ub_relax(index));
+                   if current_point(i)> configure.end_point(i)
+                        x0_relax(index) =  unifrnd(lb_relax(index),0);
+                   else                   
+                        x0_relax(index) = unifrnd(0,ub_relax(index));
+                   end
                 end        
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                     lb_relax(i) = 0;
@@ -470,7 +484,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 20 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 10 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0
@@ -496,9 +510,9 @@ while (1)
                 ws(1) = current_point(4);
                 for i = 1: size(following_plan,1) - 1
                     %% 1113
-                    nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-                    nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-                    nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+                    nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+                    nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+                    nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
                     nowp_x(i+1) = max(nowp_x(i+1), 0);
                     nowp_y(i+1) = max(nowp_y(i+1), 0);
                     nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -580,9 +594,9 @@ while (1)
             ws(1) = current_point(4);
             for i = 1: size(following_plan,1) - 1
                 %% 1113
-                nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-                nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-                nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+                nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+                nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+                nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
                 nowp_x(i+1) = max(nowp_x(i+1), 0);
                 nowp_y(i+1) = max(nowp_y(i+1), 0);
                 nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -650,9 +664,9 @@ while (1)
         nowp_z(1) = current_point(3);
         ws(1) = current_point(4);
         for i = 1: size(following_plan,1) - 1
-            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
             nowp_x(i+1) = max(nowp_x(i+1), 0);
             nowp_y(i+1) = max(nowp_y(i+1), 0);
             nowp_z(i+1) = max(nowp_z(i+1), 0);

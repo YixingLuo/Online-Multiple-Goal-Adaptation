@@ -27,13 +27,13 @@ index = [];
 % tag_list3_2 = zeros(100,50);
 global eplison
 eplison_list = [1e-6];
-iternum = 30;
+iternum = 50;
 % obs_prob = [0.7,0.5,0.3];
 % for prob = 0:0.1:1
     prob = 0.5;
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [10];
+        num_obs = [0.005,0.008,0.01];
         for nobs = 1:length(num_obs)
             for i = 1:3*iternum
                 k = ceil(i/iternum);

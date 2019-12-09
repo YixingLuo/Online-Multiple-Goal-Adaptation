@@ -25,11 +25,11 @@ rate_list3_1 = zeros(100,100);
 tag_list3_1 = zeros(100,100);
 % tag_list3_2 = zeros(100,50);
 global eplison
-iternum = 50;
+iternum = 1;
 eplison_list = [1e-6];
 % obs_prob = [0.7,0.5,0.3];
-for prob = 0.1:0.2:0.9
-%     prob = obs_prob(rt);
+% for prob = 0.1:0.2:0.9
+    prob = 0.7;
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
         num_obs = [15];
@@ -174,6 +174,6 @@ for prob = 0.1:0.2:0.9
             end
         end
     end
-end
+% end
 
 

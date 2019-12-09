@@ -25,7 +25,7 @@ for i = 1: initial_N
      p_y(i+1) = x(i+(initial_N + 1))*tau + p_y(i);
      p_z(i+1) = x(i+2*(initial_N + 1))*tau + p_z(i);
      c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
-     c = [c, p_x(i+1)-(configure.grid_x-1), p_y(i+1)-(configure.grid_y-1), p_z(i+1)-(configure.grid_z-1)];
+     c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
 p_x = [p_x, configure.end_point(1)];
@@ -115,7 +115,10 @@ bound_o = length_o * (initial_N+1);
 bound_p = length_p * (initial_N+1);
 dis_o = zeros(initial_N+1,length_o);
 dis_p = zeros(initial_N+1,length_p);
-
+% bound_o = length_o * (initial_N);
+% bound_p = length_p * (initial_N);
+% dis_o = zeros(initial_N,length_o);
+% dis_p = zeros(initial_N,length_p);
 
 
 if length_o> 0
