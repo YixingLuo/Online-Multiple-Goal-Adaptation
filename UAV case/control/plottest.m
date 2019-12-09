@@ -1,0 +1,52 @@
+function plotbox
+figure,
+boxsurface([0,0,0],[1 1 1])
+hold on
+boxsurface([1 0, 0],[1 1 1])
+hold off
+xlim=get(gca,'xlim');
+lx=xlim(2)-xlim(1);
+xlim(1)=xlim(1)-lx*0.2;
+xlim(2)=xlim(2)+lx*0.2;
+set(gca,'xlim',xlim);
+ylim=get(gca,'ylim');
+ly=ylim(2)-ylim(1);
+ylim(1)=ylim(1)-ly*0.2;
+ylim(2)=ylim(2)+ly*0.2;
+set(gca,'ylim',ylim);
+zlim=get(gca,'zlim');
+lz=zlim(2)-zlim(1);
+zlim(1)=zlim(1)-lz*0.2;
+zlim(2)=zlim(2)+lz*0.2;
+set(gca,'zlim',zlim);occ_grid-50
+view(3)
+
+
+function boxsurface(p0,l)
+[x,y,z]=planarsurface(p0,p0+[0 0 l(3)],p0+[0 l(2) 0]);
+surf(x,y,z)
+hold on
+[x,y,z]=planarsurface(p0+[l(1) 0 0],p0+[l(1) 0 l(3)],p0+[l(1) l(2) 0]);
+surf(x,y,z)
+[x,y,z]=planarsurface(p0,p0+[0 0 l(3)],p0+[l(1) 0 0]);
+surf(x,y,z)
+[x,y,z]=planarsurface(p0+[0 l(2) 0],p0+[0 l(2) l(3)],p0+[l(1) l(2) 0]);
+surf(x,y,z)
+[x,y,z]=planarsurface(p0,p0+[l(1) 0 0],p0+[0 l(2) 0]);
+surf(x,y,z)
+[x,y,z]=planarsurface(p0+[0 0 l(3)],p0+[l(1) 0 l(3)],p0+[0 l(2) l(3)]);
+surf(x,y,z)
+colormap([1 0 0;1 0 0])
+% axis equal
+% axis off
+
+
+function [xx,yy,zz,l]=planarsurface(p0,p1,p2)
+v=p1-p0;
+w=p2-p0;
+s=0:1:1;
+l=length(s);
+[s,t]=meshgrid(s,s);
+xx=p0(1)+s*v(1)+t*w(1);
+yy=p0(2)+s*v(2)+t*w(2);
+zz=p0(3)+s*v(3)+t*w(3);
