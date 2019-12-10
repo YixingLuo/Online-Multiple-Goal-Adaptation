@@ -139,7 +139,7 @@ classdef Environment
             num_p = floor((1-rate_o) * rate_obj * capacity / (4/3*pi*configure.privacy_radius.^3));
             index_o = 0;
             for index_o = 1:1:num_o
-                [length_o, width_o] = size(env.obstacle_list)
+                [length_o, width_o] = size(env.obstacle_list);
                 flag_o = -3;
                 current_idx = 0;
                 while flag_o < 0
@@ -156,7 +156,7 @@ classdef Environment
                         end
                     end
                     if flag_o == -3
-                        env = env.add_obstacle(temp_x, temp_y, temp_z )
+                        env = env.add_obstacle(temp_x, temp_y, temp_z );
                         flag_o = 1;
                     end
                 end
