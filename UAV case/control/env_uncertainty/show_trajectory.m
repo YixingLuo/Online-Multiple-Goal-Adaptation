@@ -2,14 +2,14 @@ global env
 global configure
 % figure('visible','off')
 figure,
-r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
-r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
+% r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
+% r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
 
 % r_o = configure.obstacle_radius + configure.radius;
 % r_p = configure.privacy_radius + configure.radius;
 
-% r_o = configure.obstacle_radius;
-% r_p = configure.privacy_radius;
+r_o = configure.obstacle_radius;
+r_p = configure.privacy_radius;
 
 
 length_o = 0;
