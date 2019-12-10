@@ -172,15 +172,27 @@ if ratio(2)> eplison
 end
 if ratio(3)> eplison
 %     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
-    f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
+    if configure.forensic_target - configure.forensic_budget > 0
+        f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+    else
+        f = f + (configure.forensic_target-info_now);
+    end
 end
 if ratio(4)> eplison
 %     f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
-    f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
+    if configure.Time_budget - configure.Time_target > 0
+        f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+    else
+        f = f + (time_now -  configure.Time_target);
+    end
 end
 if ratio(5)> eplison
 %     f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
-    f = f + (energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target);
+    if configure.battery_budget - configure.battery_target > 0
+        f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
+    else
+        f = f + (energy_now-configure.battery_target);
+    end
 end
 
 

@@ -34,7 +34,7 @@ condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
         rate = unifrnd (0,1);
-        energy = 15 + unidrnd(10); 
+        energy = 16 + unidrnd(8); 
         condition(i,:) = [1,energy];
     elseif disturb(i) == 2
         rate = unifrnd (0,1);
@@ -42,16 +42,16 @@ for i = 1: length(disturb)
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
         rate = unifrnd (0,1);
-        accuracy = (85 + unidrnd(10))/100;
+        accuracy = (81 + unidrnd(18))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
-        viewradius = (15 + unidrnd(10))/10;
+        viewradius = (16 + unidrnd(8))/10;
         condition(i,:) = [4,viewradius];
     elseif disturb(i) == 5
-        speed = (5 + unidrnd(5))/10;
+        speed = (80 + unidrnd(20))/100;
         condition(i,:) = [5,speed];
     elseif disturb(i) == 6
-        acc = (50 + unidrnd(50))/100;
+        acc = (80 + unidrnd(20))/100;
         condition(i,:) = [6,acc];
     end    
 end

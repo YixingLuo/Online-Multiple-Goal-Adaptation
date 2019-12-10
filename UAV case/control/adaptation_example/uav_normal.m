@@ -49,9 +49,9 @@ env = gridmap.map;
 env_known = Environment();
 data = zeros(1,11);
 
-% name_con = 'condition' + string(num) + '.mat';
-% cond = load(name_con);
-% index_cond = 1;
+name_con = 'condition' + string(num) + '.mat';
+cond = load(name_con);
+index_cond = 1;
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -79,23 +79,23 @@ while (1)
 %     end
     needplan = 1;
     
-%     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-%         needplan = 1;
-%         if cond.condition(index_cond,1) == 1
-%             configure = EnergyTarget(configure, cond.condition(index_cond,2));
-%             elseif cond.condition(index_cond,1) == 2
-%                 configure = TimeTarget(configure, cond.condition(index_cond,2));
-%             elseif cond.condition(index_cond,1) == 3
-%                 configure = AccuracyTarget(configure, cond.condition(index_cond,2));
-%             elseif cond.condition(index_cond,1) == 4
-%                 configure = ViewDisturbance(configure, cond.condition(index_cond,2));
-%             elseif cond.condition(index_cond,1) == 5
-%                 configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
-%             elseif cond.condition(index_cond,1) == 6
-%                 configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
-%         end
-%         index_cond = index_cond+1;
-%     end
+    if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+        needplan = 1;
+        if cond.condition(index_cond,1) == 1
+            configure = EnergyTarget(configure, cond.condition(index_cond,2));
+            elseif cond.condition(index_cond,1) == 2
+                configure = TimeTarget(configure, cond.condition(index_cond,2));
+            elseif cond.condition(index_cond,1) == 3
+                configure = AccuracyTarget(configure, cond.condition(index_cond,2));
+            elseif cond.condition(index_cond,1) == 4
+                configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+            elseif cond.condition(index_cond,1) == 5
+                configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
+            elseif cond.condition(index_cond,1) == 6
+                configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
+        end
+        index_cond = index_cond+1;
+    end
 
     fprintf(2,'uav_normal: current step %d\n', current_step);
     

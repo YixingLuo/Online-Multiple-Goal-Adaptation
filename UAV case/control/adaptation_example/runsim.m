@@ -76,7 +76,7 @@ set(gcf,'Renderer','OpenGL')
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-2.mat');
+gridmap = load('gridmap-101.mat');
 env = gridmap.map;
 r_o = configure.obstacle_radius + configure.radius;
 r_p = configure.privacy_radius + configure.radius;

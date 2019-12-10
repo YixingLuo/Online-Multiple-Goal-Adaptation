@@ -155,13 +155,13 @@ end
 
 if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end

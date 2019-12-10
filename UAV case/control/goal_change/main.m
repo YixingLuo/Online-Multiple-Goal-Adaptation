@@ -26,14 +26,14 @@ tag_list3_1 = zeros(100,100);
 index = [];
 % tag_list3_2 = zeros(100,50);
 global eplison
-eplison_list = [1e-7];
-iternum = 30;
+eplison_list = [1e-6];
+iternum = 50;
 % obs_prob = [0.7,0.5,0.3];
 % for prob = 0:0.1:1
     prob = 0.5;
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [0.008];
+        num_obs = [0.005,0.008,0.01];
         for nobs = 1:length(num_obs)
             for i = 1:3*iternum
                 k = ceil(i/iternum);
@@ -54,7 +54,7 @@ iternum = 30;
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
 %                     planningtime1(:,i) = planning_time;
                     if data_1(1)> 0
-%                         data1 = [data1 ; data];
+                        data1 = [data1 ; data_1];
                         trajectory1 = [trajectory1; trajectory];
                         velocity_history1 = [velocity_history1; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
@@ -78,7 +78,7 @@ iternum = 30;
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
 %                     planningtime2_1(:,i) = planning_time;
                     if data_2(1)> 0
-%                         data2_1 = [data2_1; data]; 
+                        data2_1 = [data2_1; data_2]; 
                         trajectory2_1 = [trajectory2_1; trajectory];
                         velocity_history2_1 = [velocity_history2_1; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
@@ -110,7 +110,7 @@ iternum = 30;
 %                     rate_list3_1((iter-1)*5+1:iter*5,:) = rate_list_;
 %                     tag_list3_1((iter-1)*5+1:iter*5,:) = tag_list_;
                     if data_3(1)> 0
-%                         data3_1 = [data3_1; data];
+                        data3_1 = [data3_1; data_3];
                         trajectory3_1 = [trajectory3_1; trajectory];
                         velocity_history3_1 = [velocity_history3_1; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];               
@@ -123,11 +123,11 @@ iternum = 30;
                     end
 %                 end
                 
-                if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
-                    data1 = [data1; data_1];
-                    data2_1 = [data2_1; data_2];
-                    data3_1 = [data3_1; data_3];
-                end
+%                 if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
+%                     data1 = [data1; data_1];
+%                     data2_1 = [data2_1; data_2];
+%                     data3_1 = [data3_1; data_3];
+%                 end
         
                 if mod(num,iternum)==0
                     data1(iternum + 1,:) = mean(data1,1);
