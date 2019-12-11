@@ -50,9 +50,9 @@ env = gridmap.map;
 env_known = Environment();
 env_view = Environment();
 
-name_con = 'condition' + string(num) + '.mat';
-cond = load(name_con);
-index_cond = 1;
+% name_con = 'condition' + string(num) + '.mat';
+% cond = load(name_con);
+% index_cond = 1;
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -80,23 +80,23 @@ while (1)
 %     end
     needplan = 1;
     
-    if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-        needplan = 1;
-        if cond.condition(index_cond,1) == 1
-            configure = EnergyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 2
-                configure = TimeTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 3
-                configure = AccuracyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 4
-                configure = ViewDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 5
-                configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 6
-                configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
-        end
-        index_cond = index_cond+1;
-    end
+%     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+%         needplan = 1;
+%         if cond.condition(index_cond,1) == 1
+%             configure = EnergyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 2
+%                 configure = TimeTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 3
+%                 configure = AccuracyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 4
+%                 configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 5
+%                 configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 6
+%                 configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
+%         end
+%         index_cond = index_cond+1;
+%     end
     
     fprintf(2,'uav_relax: current step %d\n', current_step);
 %     following_point, following_plan
@@ -117,10 +117,10 @@ while (1)
 %         save(name3, 'velocity_history');
         break
     end
-    if current_step > configure.Time_budget/configure.Time_step
-        fprintf(2,'no solution \n');
-        break
-    end
+%     if current_step > configure.Time_budget/configure.Time_step
+%         fprintf(2,'no solution \n');
+%         break
+%     end
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
 %     if current_point(1) > end_point(1) && current_point(2) > end_point(2) && current_point(3) > end_point(3)
 %         break
@@ -228,10 +228,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-        %         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0
@@ -428,10 +430,12 @@ while (1)
                 distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %                 info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                 info = info + trajectory(i+1,4)*configure.Time_step;
-                engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
             end
-%             energy = configure.battery_per * distance;
-            energy = configure.battery_per * engy ;
+            for i = 1: size(velocity_history,1)-1
+                 engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+            end 
+            energy = engy ;
             time = configure.Time_step * (a-1);
             if time == 0
                 information = 0;
@@ -509,10 +513,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-        %         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0

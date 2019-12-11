@@ -1,9 +1,4 @@
-% 1: uuv = EnergyBudget(uuv, 5 * 1e6);
-% 2: uuv = DistanceBudget(uuv, 105*1000);
-% 3: uuv = AccuracyBudget(uuv, 0.85);
-% 4: uuv = SensorError(uuv, 3, 0.43);
-% 5: uuv = SensorFailure(uuv, 4);
-% 6: uuv = EnergyDisturbance(uuv, 1, 190);
+
 function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global configure
@@ -40,16 +35,13 @@ condition = [];
 
 for i = 1: length(disturb)
     if disturb(i) == 1
-        rate = unifrnd (0,1);
-        energy = 16 + unidrnd(8); 
+        energy = 25 + unidrnd(4); 
         condition(i,:) = [1,energy];
     elseif disturb(i) == 2
-        rate = unifrnd (0,1);
-        time = 12 + unidrnd(6);
+        time = 15 + unidrnd(4);
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
-        rate = unifrnd (0,1);
-        accuracy = (81 + unidrnd(18))/100;
+        accuracy = (90 + unidrnd(5))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
         viewradius = (16 + unidrnd(8))/10;

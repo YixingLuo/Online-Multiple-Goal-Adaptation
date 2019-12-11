@@ -12,15 +12,15 @@ eplison_list = [1e-6];
 iternum = 50;
 % obs_prob = [0.7,0.5,0.3];
 % for prob = 0:0.1:1
-    prob = 0.5;
+    rate_p = 0.01;
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [0.008];
-        for nobs = 1:length(num_obs)
+        rate_o = [0.005];
+        for o = 1:length(rate_o)
             for i = 1:iternum
                 k = ceil(i/iternum);
-                num = (nobs-1)*iternum + i;
-                map_initialize(num, num_obs(nobs),prob);   
+                num = (o-1)*iternum + i;
+                map_initialize(num, 0.004,0.008);   
                 [condition, indextemp] = randomsituation(num,k);
                 index(num,:) =  indextemp;
                 iter = mod(num,iternum);
@@ -47,7 +47,7 @@ iternum = 50;
                 if mod(num,iternum)==0
                     data3_1(iternum + 1,:) = mean(data3_1,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_obs(nobs)) + string(eplison) + '_'+ string(prob) + '.mat';
+                    name = 'data' + string(time) + '_' + string(rate_p(o)) + string(eplison) + '_'+ string(rate_p) + '.mat';
                     save(name);
                     data3_1 = [];
                     trajectory3_1 = [];

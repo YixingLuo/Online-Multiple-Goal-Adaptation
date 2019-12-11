@@ -25,15 +25,15 @@ rate_list3_1 = zeros(100,100);
 tag_list3_1 = zeros(100,100);
 % tag_list3_2 = zeros(100,50);
 global eplison
-iternum = 50;
+iternum = 20;
 eplison_list = [1e-6];
 % obs_prob = [0.7,0.5,0.3];
-for prob = 0.1:0.2:0.9
+for rate_p = 0.006:0.002:0.012
 %     prob = obs_prob(rt);
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [0.01];
-        for nobs = 1:length(num_obs)
+        rate_o = [0.003,0.004,0.005,0.006,0.007,0.008];
+        for nobs = 1:length(rate_o)
             for i = 1:iternum
             flag = 0; %% have no solution at initial point
 %             while flag == 0
@@ -44,7 +44,7 @@ for prob = 0.1:0.2:0.9
 %             end  
     
                 num = (nobs-1)*iternum + i;
-                map_initialize(num, num_obs(nobs),prob);   
+                map_initialize(num, rate_o(nobs),rate_p);   
                 iter = mod(num,iternum);
                 if iter == 0
                     iter = iternum;
@@ -144,7 +144,7 @@ for prob = 0.1:0.2:0.9
                     data2_1(iternum + 1,:) = mean(data2_1,1);
                     data3_1(iternum + 1,:) = mean(data3_1,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_obs(nobs)) + string(eplison) + '_'+ string(prob) + '.mat';
+                    name = 'data' + string(time) + '_' + string(rate_o(nobs)) + string(eplison) + '_'+ string(rate_p) + '.mat';
                     save(name);
                     data1 = [];
                     data2_1 = [];
