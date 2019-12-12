@@ -117,10 +117,10 @@ while (1)
         break
     end
     
-%     if current_step > configure.Time_budget/configure.Time_step
-%         fprintf(2,'no solution \n');
-%         break
-%     end
+    if current_step > configure.Time_budget/configure.Time_step
+        fprintf(2,'no solution \n');
+        break
+    end
     
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
     if size(following_plan, 1) == 1
@@ -320,9 +320,9 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
-        options.tolx = 1e-10;
-        options.tolfun = 1e-10;
-        options.TolCon = 1e-10;
+%         options.tolx = 1e-10;
+%         options.tolfun = 1e-10;
+%         options.TolCon = 1e-10;
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );

@@ -73,16 +73,17 @@ for j = 1: length_p
     end
 end
 
-% if bound_o>0
-%     SR = SR/bound_o;
-% end
-% if bound_p>0
-%     PR = PR/bound_p;
-% end
+if bound_o>0
+    SR = SR;
+end
+if bound_p>0
+    PR = PR;
+end
 
-if num_o > 0
-    SR = SR/num_o;
-end
-if num_p > 0
-    PR = PR/num_p;
-end
+% if num_o > 0
+%     SR = SR/num_o
+% end
+% if num_p > 0
+%     PR = PR/num_p
+% end
+% dis_p, dis_o, num_p

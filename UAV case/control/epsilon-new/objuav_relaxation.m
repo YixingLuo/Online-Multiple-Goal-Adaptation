@@ -72,9 +72,13 @@ info_now = 0;
 for i = 1:initial_N + 1
     temp_dis = sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
     distance = distance + temp_dis;
-    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
+    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i) * tau + sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);    
 %     info_now = info_now + x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     time_now = time_now + temp_dis/sqrt(x(i).^2+x((initial_N + 1) + i).^2+x(2*(initial_N + 1) + i).^2);
+end
+
+for i = 1:initial_N
+    energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
 end
 
 for i = 1:initial_N 
@@ -161,24 +165,26 @@ if ratio(1)> eplison
     if num_o > 0
         f = f + SR/num_o;
     end
+%     f = f + SR;
 end
 if ratio(2)> eplison
 %     f = f + PR/bound_p;
     if num_p > 0
         f = f + PR/num_p;
     end
+%     f = f + PR;
 end
 if ratio(3)> eplison
-%     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
-    f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
+    f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+%     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
 end
 if ratio(4)> eplison
-%     f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
-    f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
+    f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+%     f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
 end
 if ratio(5)> eplison
-%     f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
-    f = f + (energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target);
+    f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
+%     f = f + (energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target);
 end
 
 

@@ -1,11 +1,11 @@
-%% [13,16,47]
+%% [5,0.950000000000000;1,29;3,0.940000000000000]
 %% [20,23,33]
 % clc
 % clear
-indextemp = [18,24,33];
-num = 12;
-uav_relaxation2(num, indextemp)
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation2(num, indextemp)
+indextemp = [8,21,25]
+num = 14;
+% uav_relaxation2(num, indextemp)
+function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
 global env
 global env_known
 global configure
@@ -62,7 +62,7 @@ cond = load(name_con);
 cond = cond.condition;
 index_cond = 1;
 
-% cond = [5,0.87000000000000;3,0.920000000000000;1,29];
+cond = [5,0.95;1,28;3,0.92];
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -156,7 +156,7 @@ while (1)
         planning_time = [planning_time; etime(t2,t1)];
         continue
     end
-           
+    t1=clock;       
     length_o = 0;
     width_o = 0;
     length_p = 0;
@@ -194,6 +194,8 @@ while (1)
 %     end
 %     if length(env_known.obstacle_list) == 0 && length(env_known.privacy_list) == 0
     if needplan == 0
+        t2=clock;
+        planning_time = [planning_time; etime(t2,t1)];
         nowp_x = [];
         nowp_y = [];
         nowp_z = [];
@@ -620,6 +622,8 @@ while (1)
     end
 
        if exitflag <= 0 && exitflag_relax <=0
+           t2=clock;
+            planning_time = [planning_time; etime(t2,t1)];
            fprintf(2,'no solution for relax \n');
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];

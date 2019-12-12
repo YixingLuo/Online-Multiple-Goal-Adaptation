@@ -4,9 +4,9 @@ clear
 data3_1 = [];
 trajectory3_1 = [];
 velocity_history3_1 = [];
-planningtime3_1 = zeros(100,50);
-rate_list3_1 = zeros(100,50);
-tag_list3_1 = zeros(100,50);
+planningtime3_1 = zeros(100,100);
+rate_list3_1 = zeros(100,100);
+tag_list3_1 = zeros(100,100);
 global eplison
 eplison_list = [0,1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1,1];
 % obs_prob = [0.7,0.5,0.3];
@@ -16,16 +16,16 @@ eplison_list = [0,1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,
         eplison = eplison_list(ep);
         num_obs = [10];
         for nobs = 1:length(num_obs)
-            for i = 1:50
+            for i = 1:iternum
 
-                num = (nobs-1)*50 + i;
+                num = (nobs-1)*iternum + i;
 %                 map_initialize(num, num_obs(nobs),prob);   
 %                 [condition, indextemp] = randomsituation(num,1);
 %                 index(num,:) =  indextemp;
                 indextemp = [0,0,0];
-                iter = mod(num,50);
+                iter = mod(num,iternum);
                 if iter == 0
-                    iter = 50;
+                    iter = iternum;
                 end
 
 

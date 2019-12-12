@@ -9,18 +9,18 @@ tag_list3_1 = zeros(100,100);
 index = [];
 global eplison
 eplison_list = [1e-6];
-iternum = 50;
+iternum = 30;
 % obs_prob = [0.7,0.5,0.3];
 % for prob = 0:0.1:1
-    rate_p = 0.01;
+    rate_p = 4;
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        rate_o = [0.005];
+        rate_o = 8;
         for o = 1:length(rate_o)
             for i = 1:iternum
                 k = ceil(i/iternum);
                 num = (o-1)*iternum + i;
-                map_initialize(num, 0.004,0.008);   
+                map_initialize(num, rate_o,rate_p);   
                 [condition, indextemp] = randomsituation(num,k);
                 index(num,:) =  indextemp;
                 iter = mod(num,iternum);

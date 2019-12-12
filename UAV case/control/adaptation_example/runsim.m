@@ -68,7 +68,7 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-12.mat');
+gridmap = load('gridmap-29.mat');
 env = gridmap.map;
 r_o = configure.obstacle_radius;
 r_p = configure.privacy_radius;
@@ -295,17 +295,17 @@ for qn = 1:nquad
     h_pos{qn} = figure('Name', ['Quad ' num2str(qn) ' : position']);
     positions = QP{qn}.state_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = ceil(i/size(velocity_history,1));
+        index = ceil(i/10);
         positions(4,i) = velocity_history(index,4)*100;
     end
-    positions(4,end) = positions(4,end-1);
+    positions(4,end) = positions(4,end-1)
     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = ceil(i/size(velocity_history,1));
+        index = ceil(i/10);
         des_positions(4,i) = velocity_history(index,4)*100;
     end
-    des_positions(4,end) = des_positions(4,end-1);
+    des_positions(4,end) = des_positions(4,end-1)
     plot_state(h_pos{qn},des_positions, QP{qn}.time_hist, 'pos', 'des');
     
     % Plot velocity for each quad

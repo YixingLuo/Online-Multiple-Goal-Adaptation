@@ -79,7 +79,7 @@ end
 if bound_p>0
     PR = PR;
 end
-
+% dis_o,dis_p
 % if num_o > 0
 %     SR = SR/num_o
 % end

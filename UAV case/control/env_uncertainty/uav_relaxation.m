@@ -120,10 +120,10 @@ while (1)
         break
     end
     
-%     if current_step > configure.Time_budget/configure.Time_step
-%         fprintf(2,'no solution \n');
-%         break
-%     end
+    if current_step > configure.Time_budget/configure.Time_step
+        fprintf(2,'no solution \n');
+        break
+    end
     
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
 %     if current_point(1) > end_point(1) && current_point(2) > end_point(2) && current_point(3) > end_point(3)

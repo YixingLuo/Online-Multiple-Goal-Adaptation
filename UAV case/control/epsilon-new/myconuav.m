@@ -22,7 +22,7 @@ for i = 1: initial_N
      p_y(i+1) = x(i+(initial_N + 1))*tau + p_y(i);
      p_z(i+1) = x(i+2*(initial_N + 1))*tau + p_z(i);
      c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
-     c = [c, p_x(i+1)-(configure.grid_x-1), p_y(i+1)-(configure.grid_y-1), p_z(i+1)-(configure.grid_z-1)];
+     c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
 % ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9
@@ -38,23 +38,22 @@ p_z = [p_z, configure.end_point(3)];
 %     c = [c, time + initial_N*tau + time_x - configure.Time_budget];
 %     c = [c, -time_x];
 % else
-%     ceq = [ceq , p_x(end)-p_x(end-1)];
+% %     ceq = [ceq , p_x(end)-p_x(end-1)];
 % end
 % if x(2*(initial_N + 1)) ~= 0
 %     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
 %     c = [c, time + initial_N*tau + time_y - configure.Time_budget];
 %     c = [c, -time_y];
 % else
-%     ceq = [ceq , p_y(end)-p_y(end-1)];
+% %     ceq = [ceq , p_y(end)-p_y(end-1)];
 % end
 % if x(3*(initial_N + 1)) ~= 0
 %     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
 %     c = [c, time + initial_N*tau + time_z - configure.Time_budget];
 %     c = [c, -time_z];
 % else
-%     ceq = [ceq , p_z(end)-p_z(end-1)];
+% %     ceq = [ceq , p_z(end)-p_z(end-1)];
 % end
-
 % time_list = [];
 % if x(initial_N + 1) ~= 0
 %     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
@@ -78,6 +77,7 @@ p_z = [p_z, configure.end_point(3)];
 % for i = 1:length(time_list)
 %     c = [c, - time_list(i)];
 % end
+
 % if length(time_list) == 2
 %     ceq = [ceq , time_list(1)-time_list(2)];
 %     elseif length(time_list) == 3
@@ -101,11 +101,13 @@ info_now = 0;
 for i = 1:initial_N + 1
     temp_dis = sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
     distance = distance + temp_dis;
-    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
+    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i) * tau + sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     info_now = info_now + x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     time_now = time_now + temp_dis/sqrt(x(i).^2+x((initial_N + 1) + i).^2+x(2*(initial_N + 1) + i).^2);
 end
-
+for i = 1:initial_N
+    energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
+end
 for i = 1:initial_N 
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end

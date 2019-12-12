@@ -5,7 +5,8 @@ global configure
 l = [3];
 flag = 0;
 while flag == 0
-  disturb = randi([1,6],1,l(k));  
+  disturb = randperm(6);
+  disturb = disturb(1:3);
   if disturb(1)~=4 && disturb(2)~=4 && disturb(3)~= 4
      flag = 1;
   end
@@ -43,9 +44,9 @@ for i = 1: length(disturb)
     elseif disturb(i) == 3
         accuracy = (90 + unidrnd(5))/100;
         condition(i,:) = [3,accuracy];
-    elseif disturb(i) == 4
-        viewradius = (16 + unidrnd(8))/10;
-        condition(i,:) = [4,viewradius];
+%     elseif disturb(i) == 4
+%         viewradius = (16 + unidrnd(8))/10;
+%         condition(i,:) = [4,viewradius];
     elseif disturb(i) == 5
         speed = (80 + unidrnd(20))/100;
         condition(i,:) = [5,speed];

@@ -2,8 +2,8 @@
 %% [20,23,33]
 % clc
 % clear
-% indextemp = [18,24,33];
-% num = 12;
+% indextemp = [23,29,35];
+% num = 9;
 % uav_relaxation2(num, indextemp)
 function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
 global env
@@ -62,7 +62,7 @@ cond = load(name_con);
 cond = cond.condition;
 index_cond = 1;
 
-cond = [5,0.95;1,28;3,0.92];
+% cond = [5,0.95;1,28;3,0.92];
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -124,14 +124,15 @@ while (1)
         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
         name3 = 'velocity_history.mat';
+%         velocity_history(end,:)=velocity_history(end-1,:);
         save(name3, 'velocity_history');
         break
     end
     
-%     if current_step > configure.Time_budget/configure.Time_step
-%         fprintf(2,'no solution \n');
-%         break
-%     end
+    if current_step > configure.Time_budget/configure.Time_step
+        fprintf(2,'no solution \n');
+        break
+    end
     
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
 %     if current_point(1) > end_point(1) && current_point(2) > end_point(2) && current_point(3) > end_point(3)
@@ -156,7 +157,7 @@ while (1)
         planning_time = [planning_time; etime(t2,t1)];
         continue
     end
-           
+    t1=clock;       
     length_o = 0;
     width_o = 0;
     length_p = 0;
@@ -194,6 +195,8 @@ while (1)
 %     end
 %     if length(env_known.obstacle_list) == 0 && length(env_known.privacy_list) == 0
     if needplan == 0
+        t2=clock;
+        planning_time = [planning_time; etime(t2,t1)];
         nowp_x = [];
         nowp_y = [];
         nowp_z = [];
@@ -320,8 +323,8 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
-%                 x0(i) = ub(i) - iternum * 1/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = configure.sensor_accuracy;
+%                 x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;
@@ -434,8 +437,8 @@ while (1)
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                     lb_relax(i) = 0;
                     ub_relax(i) = configure.sensor_accuracy;
-                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                     x0_relax(i) = ub_relax(i) - iternum_relax * 1/30;
+%                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                    x0_relax(i) = configure.sensor_accuracy;
 %                     x0_relax(i) = x(i);
                 end
 
@@ -620,6 +623,8 @@ while (1)
     end
 
        if exitflag <= 0 && exitflag_relax <=0
+           t2=clock;
+            planning_time = [planning_time; etime(t2,t1)];
            fprintf(2,'no solution for relax \n');
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
