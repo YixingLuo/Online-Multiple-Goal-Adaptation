@@ -104,7 +104,9 @@ for i = 1:initial_N + 1
 %     info_now = info_now + x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     time_now = time_now + temp_dis/sqrt(x(i).^2+x((initial_N + 1) + i).^2+x(2*(initial_N + 1) + i).^2);
 end
-
+for i = 1:initial_N
+    energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
+end
 for i = 1:initial_N 
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end

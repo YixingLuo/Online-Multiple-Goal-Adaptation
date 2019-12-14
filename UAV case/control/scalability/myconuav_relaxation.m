@@ -91,11 +91,13 @@ info_now = 0;
 for i = 1:initial_N + 1
     temp_dis = sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
     distance = distance + temp_dis;
-    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
+    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i) * tau + sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     info_now = info_now + x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     time_now = time_now + temp_dis/sqrt(x(i).^2+x((initial_N + 1) + i).^2+x(2*(initial_N + 1) + i).^2);
 end
-
+for i = 1:initial_N
+    energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
+end
 for i = 1:initial_N 
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end
@@ -141,13 +143,13 @@ end
 
 if ratio(1)> eplison
     for j = 1: length_o
-        for i = 1:initial_N + 1
-            c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
+        for i = 1:initial_N  + 1
+            c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius) + 0.5];
         end
     end
 else
     for j = 1: length_o
-        for i = 1:initial_N + 1
+        for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max)];
         end
     end
@@ -155,13 +157,13 @@ end
 
 if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N
-            c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
+        for i = 1:initial_N + 1
+            c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius) + 0.5];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end

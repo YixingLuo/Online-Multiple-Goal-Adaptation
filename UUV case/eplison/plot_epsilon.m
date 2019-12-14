@@ -24,7 +24,7 @@
 %         relax_for_3(i,j)=relax_sum((i-1)*3+j);
 %     end
 % end
-% relax_for_3 = mean(relax_for_3,1);
+% relax_for_3 = mean(relax_for_3,1)/9;
 % relax_for_3 = mean(data3,1);
 
 eplison_list = [1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1,1];
@@ -48,11 +48,11 @@ yy=interp1(k,relax_for_32(:,3),xx,'PCHIP');
 plot(xx,yy,'-.','linewidth',2,'Color',[0.4660 0.6740 0.1880])
 hold on
 
-axis([0, 7, 0, 10])
+axis([0, 7, 0, 1.1])
 hl = legend('Accuracy','Scanning Distance','Energy Consumption');
 set(hl,'box','off')
 h = xlabel({'-lg(\epsilon)'},'Fontname', 'Times New Roman');
-ylabel('Adaptation Times','Fontname', 'Times New Roman');
+ylabel('Goal Adaptation Rate','Fontname', 'Times New Roman');
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 ax = gca;

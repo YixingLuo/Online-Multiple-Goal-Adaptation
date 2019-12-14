@@ -1,9 +1,8 @@
-%% [5,0.950000000000000;1,29;3,0.940000000000000]
-%% [20,23,33]
+%% [3,0.950000000000000;6,0.880000000000000;5,0.930000000000000]
 % clc
 % clear
-% indextemp = [23,29,35];
-% num = 9;
+% indextemp = [15,18,29];
+% num = 29;
 % uav_relaxation2(num, indextemp)
 function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
 global env

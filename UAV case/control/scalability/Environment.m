@@ -132,11 +132,11 @@ classdef Environment
             end
         end
         
-        function env = map_initial3(env, rate_obj, rate_o)
+        function env = map_initial3(env, num_o, num_p)
             global configure    
             capacity = configure.grid_x * configure.grid_y * configure.grid_z;
-            num_o = floor(rate_o * rate_obj * capacity / (4/3*pi*configure.obstacle_radius.^3));
-            num_p = floor((1-rate_o) * rate_obj * capacity / (4/3*pi*configure.privacy_radius.^3));
+%             num_o = floor(rate_o * capacity / (4/3*pi*configure.obstacle_radius.^3));
+%             num_p = floor(rate_p * capacity / (4/3*pi*configure.privacy_radius.^3));
             index_o = 0;
             for index_o = 1:1:num_o
                 [length_o, width_o] = size(env.obstacle_list);

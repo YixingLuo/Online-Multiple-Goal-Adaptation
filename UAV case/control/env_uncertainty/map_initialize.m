@@ -1,15 +1,20 @@
 %%map initialize
-function [map] = map_initialize(num, rate_obj, rate_o)
+function [map] = map_initialize(num, num_o)
 global configure
 configure = Configure();
 map = Environment();
-% rand = unifrnd(0,1);
-% for i = 1:k %% k is the num of obstacles and privavy regions
-%     map = map_tools(map, configure.start_point(1), configure.start_point(2), configure.start_point(3));
-% end
-% map = map_initial(map, k);
-map = map_initial3(map, rate_obj, rate_o);
-% save('gridmap.mat','map');
+name = 'gridmap-0.mat';
+gridmap = load(name);
+gridmap = gridmap.map;
+privacy_list = gridmap.privacy_list;
+map = map_initial_with_privacy(map, num_o, privacy_list);
 name = 'gridmap-' + string(num) + '.mat';
 save(name, 'map');
 
+
+
+% map = Environment();
+% map = map_initial3(map, 0, 4);
+% name = 'gridmap-' + string(0) + '.mat';
+% save(name, 'map');
+% [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(0)

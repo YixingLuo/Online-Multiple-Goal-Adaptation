@@ -365,7 +365,7 @@ while (1)
     end
 
 
-    
+    exitflag_relax = 0;
     %% RELAXATION
     if find(ratio > eplison) 
        rate_list = [rate_list, ratio'];
@@ -609,7 +609,7 @@ while (1)
             end
     end
 
-       if exitflag <= 0 && exitflag_relax <=0
+       if exitflag <= 0 || (exitflag > 0 && exitflag_relax <=0)
            fprintf(2,'no solution for relax \n');
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
@@ -670,8 +670,11 @@ while (1)
         current_step = current_step + 1;
         following_plan([1],:)=[]; %%update the following plan
         following_point([1],:)=[];
-        
-        tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
+        if size(following_plan,1) > 0
+            tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
+        else
+            tt = 0;
+        end
         if tt > configure.Time_step           
             following_plan(end+1,:)=following_plan(end,:);
             following_point(end,:) = [min(following_point(end-1,1)+following_plan(end,1)*configure.Time_step, end_point(1)), min(following_point(end-1,2)+following_plan(end,2)*configure.Time_step, end_point(2)), min(following_point(end-1,3)+following_plan(end,3)*configure.Time_step,end_point(3)), following_point(end,4)];

@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_normal(num, indextemp)
+function [data, trajectory,velocity_history,planning_time] = uav_normal(num)
 global env
 global env_known
 global configure
@@ -320,9 +320,9 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
+        options.tolx = 1e-10;
+        options.tolfun = 1e-10;
+        options.TolCon = 1e-10;
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
@@ -330,6 +330,7 @@ while (1)
 %         x0
 %         ratio = [1,1,1,1,1];
         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
+%         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
        
         tau = configure.Time_step;
 

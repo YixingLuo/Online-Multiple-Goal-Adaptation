@@ -5,6 +5,7 @@ function [data, trajectory,velocity_history,planning_time] = uav_normal(num, ind
 global env
 global env_known
 global configure
+global ratio
 configure = Configure();
 
 current_step = 1;
@@ -116,10 +117,10 @@ while (1)
         break
     end
     
-    if current_step > configure.Time_budget/configure.Time_step
-        fprintf(2,'no solution \n');
-        break
-    end
+%     if current_step > configure.Time_budget/configure.Time_step
+%         fprintf(2,'no solution \n');
+%         break
+%     end
     
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
     if size(following_plan, 1) == 1
@@ -220,10 +221,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-%         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0
@@ -325,6 +328,7 @@ while (1)
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %         objuav_normal(x0),myconuav_normal(x0)
 %         x0
+%         ratio = [1,1,1,1,1];
         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
        
         tau = configure.Time_step;
@@ -383,10 +387,12 @@ while (1)
                 distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                 info = info + trajectory(i+1,4)*configure.Time_step;
-                engy = engy + exp(trajectory(i+1,4)-1)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
             end
-        %    energy = configure.battery_per * distance;
-            energy = configure.battery_per * engy;
+            for i = 1: size(velocity_history,1)-1
+                 engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+            end 
+            energy = engy;
             past_distance = distance;
             time = configure.Time_step * (a-1);
             if time == 0
@@ -464,10 +470,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-%         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0

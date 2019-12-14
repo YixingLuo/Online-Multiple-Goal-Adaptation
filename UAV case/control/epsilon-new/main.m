@@ -8,7 +8,7 @@ rate_list3_1 = zeros(100,100);
 tag_list3_1 = zeros(100,100);
 
 global eplison
-eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1,1];
+eplison_list = [1e-1,5e-1,1];
 % obs_prob = [0.7,0.5,0.3];
 % for prob = 0:0.1:1
 iternum = 20;   

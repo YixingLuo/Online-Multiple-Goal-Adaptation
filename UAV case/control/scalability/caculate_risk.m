@@ -1,4 +1,4 @@
-function [SR, PR, dis_o, dis_p] = caculate_risk(trajectory, env)
+function [SR, PR,dis_o,dis_p] = caculate_risk(trajectory, env)
 global configure
 length_o = 0;
 width_o = 0;
@@ -79,7 +79,9 @@ end
 if bound_p>0
     PR = PR;
 end
-
+% dis_o,dis_p
+% find(dis_o<0.7)
+% find(dis_p<0.7)
 % if num_o > 0
 %     SR = SR/num_o
 % end
