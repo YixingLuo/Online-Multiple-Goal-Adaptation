@@ -1,4 +1,4 @@
-%%map initialize
+%map initialize
 function [map] = map_initialize(num, num_o)
 global configure
 configure = Configure();
@@ -14,7 +14,9 @@ save(name, 'map');
 
 
 % map = Environment();
-% map = map_initial3(map, 0, 4);
+% map = map_initial3(map, 0, 3);
 % name = 'gridmap-' + string(0) + '.mat';
 % save(name, 'map');
-% [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(0)
+% [data3, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(0);
+% [data2, trajectory,velocity_history,planning_time] = uav_relax(0);
+% [data1, trajectory,velocity_history,planning_time] = uav_normal(0);
