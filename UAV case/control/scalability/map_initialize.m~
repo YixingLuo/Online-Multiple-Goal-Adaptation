@@ -8,7 +8,7 @@ map = Environment();
 %     map = map_tools(map, configure.start_point(1), configure.start_point(2), configure.start_point(3));
 % end
 % map = map_initial(map, k);
-map = map_initial3(map, num_o, num_p);
+map = map_initial3(map, num_o, rate_o);
 % save('gridmap.mat','map');
 name = 'gridmap-' + string(num) + '.mat';
 save(name, 'map');

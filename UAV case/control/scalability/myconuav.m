@@ -54,6 +54,7 @@ p_z = [p_z, configure.end_point(3)];
 % else
 % %     ceq = [ceq , p_z(end)-p_z(end-1)];
 % end
+
 % time_list = [];
 % if x(initial_N + 1) ~= 0
 %     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
@@ -175,11 +176,11 @@ for j = 1: length_p
 end
 for j = 1: length_o
     for i = 1:initial_N  + 1
-        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius) + 0.5];
+        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
     end
 end
-    for j = 1: length_p
-    for i = 1:initial_N 
-        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius) + 0.5];
+for j = 1: length_p
+    for i = 1:initial_N + 1
+        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
     end
 end

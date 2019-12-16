@@ -600,7 +600,7 @@ while (1)
            t2=clock;
             planning_time = [planning_time; etime(t2,t1)];
            fprintf(2,'no solution for relax \n');
-           break;
+%            break;
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
 %            tag_list = [0;0;0;0;0];

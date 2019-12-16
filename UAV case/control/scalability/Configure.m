@@ -2,7 +2,7 @@ classdef Configure
     properties 
 grid_x = 50
 grid_y = 50
-grid_z = 10
+grid_z = 50
 obstacle_likelihood = 0.7
 privacy_likelihood = 0.3
 map_likehood = 1
@@ -18,7 +18,7 @@ forensic_target = 0.9
 forensic_budget = 0.8
 Time_target = 180
 Time_budget = 240
-viewradius = 3
+viewradius = 2
 velocity_max = 1
 velocity_min = -1
 sensor_accuracy = 1
