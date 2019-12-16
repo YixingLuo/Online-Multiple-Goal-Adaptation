@@ -68,52 +68,52 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-% gridmap = load('gridmap-50.mat');
-% env = gridmap.map;
-% r_o = configure.obstacle_radius;
-% r_p = configure.privacy_radius;
-% % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
-% % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
-% length_o = 0;
-% width_o = 0;
-% length_p = 0;
-% width_p = 0;
-% [length_o, width_o] = size(env.obstacle_list);
-% [length_p, width_p] = size(env.privacy_list);
-% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-% ax1 = axes;
-% for i = 1: length_o
-%     r=r_o;
-%     ox0=env.obstacle_list(i,1);
-%     oy0=env.obstacle_list(i,2);
-%     oz0=env.obstacle_list(i,3);
-%     [ox,oy,oz]=sphere;
-%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-%     shading flat
-%     hold on
-% end
-% box on
-% % axis off
-% hidden off
-% axis(axis_pos);
-% colormap(ax1,winter);
-% 
-% ax2 = axes;
-% for i = 1: length_p
-%     r=r_p;
-%     px0=env.privacy_list(i,1);
-%     py0=env.privacy_list(i,2);
-%     pz0=env.privacy_list(i,3);
-%     [px,py,pz]=sphere;
-%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
-%     hold on
-% end
-% % box off
+gridmap = load('gridmap-50.mat');
+env = gridmap.map;
+r_o = configure.obstacle_radius;
+r_p = configure.privacy_radius;
+% r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
+% r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
+length_o = 0;
+width_o = 0;
+length_p = 0;
+width_p = 0;
+[length_o, width_o] = size(env.obstacle_list);
+[length_p, width_p] = size(env.privacy_list);
+axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+ax1 = axes;
+for i = 1: length_o
+    r=r_o;
+    ox0=env.obstacle_list(i,1);
+    oy0=env.obstacle_list(i,2);
+    oz0=env.obstacle_list(i,3);
+    [ox,oy,oz]=sphere;
+    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+    shading flat
+    hold on
+end
+box on
 % axis off
-% hidden off
-% axis(axis_pos );
-% colormap(ax2,autumn);
-% set(gca,'fontname','Times');
+hidden off
+axis(axis_pos);
+colormap(ax1,winter);
+
+ax2 = axes;
+for i = 1: length_p
+    r=r_p;
+    px0=env.privacy_list(i,1);
+    py0=env.privacy_list(i,2);
+    pz0=env.privacy_list(i,3);
+    [px,py,pz]=sphere;
+    mesh(px0+r*px,py0+r*py,pz0+r*pz)
+    hold on
+end
+% box off
+axis off
+hidden off
+axis(axis_pos );
+colormap(ax2,autumn);
+set(gca,'fontname','Times');
 
 h_3d = gca;
 % axis equal

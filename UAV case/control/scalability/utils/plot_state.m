@@ -18,9 +18,9 @@ end
 
 switch name
     case 'pos'
-        labels = {'x [m]', 'y [m]', 'z [m]', '\omega [%]'};
+        labels = {'x [10m]', 'y [10m]', 'z [10m]', '\omega [%]'};
     case 'vel'
-        labels = {'v_x [m/s]', 'v_y [m/s]', 'v_z [m/s]'};
+        labels = {'v_x [10m/s]', 'v_y [10m/s]', 'v_z [10m/s]'};
     case 'euler'
         labels = {'roll [rad]', 'pitch [rad]', 'yaw [rad]'};
 end
@@ -63,6 +63,14 @@ end
 elseif strcmp(view, '3d')
     % Plot 3d
     hold on
+    switch type
+        case 'vic'
+            line_color = 'g';
+        case 'des'
+            line_color = 'k';
+        case 'est'
+            line_color = 'r';
+    end
     plot3(state(1,:), state(2,:), state(3,:), line_color, 'LineWidth', line_width)
     hold off
     grid on

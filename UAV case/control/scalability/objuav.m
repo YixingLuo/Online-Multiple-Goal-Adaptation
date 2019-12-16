@@ -3,8 +3,8 @@ global configure
 global initial_N
 global env_known
 
-temp_f = x(end)/(configure.battery_budget) + x(end-1)/(configure.Time_budget) + x(end-2);
-% temp_f = x(end) + x(end-1) + x(end-2);
+% temp_f = x(end)/(configure.battery_budget) + x(end-1)/(configure.Time_budget) + x(end-2);
+temp_f = x(end) + x(end-1) + x(end-2);
 length_o = 0;
 width_o = 0;
 length_p = 0;

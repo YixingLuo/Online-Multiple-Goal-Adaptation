@@ -4,7 +4,7 @@
 % indextemp = [15,18,29];
 % num = 29;
 % uav_relaxation2(num, indextemp)
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num)
+function [data, trajectory,velocity_history,planning_time, rate_list, tag_list, constraints] = uav_relaxation(num)
 global env
 global env_known
 global configure
@@ -55,6 +55,7 @@ gridmap = load(name);
 % gridmap = load('gridmap.mat');
 env = gridmap.map;
 env_known = Environment();
+constraints = [];
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -92,12 +93,12 @@ while (1)
         [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
-        name1 = 'planningtime.mat';
+        name1 = 'planningtime_100.mat';
         save(name1, 'planning_time');
-        name2 = 'trajectory.mat';
+        name2 = 'trajectory_100.mat';
         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
-        name3 = 'velocity_history.mat';
+        name3 = 'velocity_history_100.mat';
 %         velocity_history(end,:)=velocity_history(end-1,:);
         save(name3, 'velocity_history');
         break
@@ -144,18 +145,20 @@ while (1)
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
-            if isempty(env_known.obstacle_list) || isempty(find(env_known.obstacle_list==env.obstacle_list(oo,:)))               
-                env_known = add_obstacle(env_known, env.obstacle_list(oo, 1), env.obstacle_list(oo, 2), env.obstacle_list(oo, 3));
-            end
+%             if isempty(env_known.obstacle_list) || isempty(find(env_known.obstacle_list==env.obstacle_list(oo,:)))               
+%                 env_known = add_obstacle(env_known, env.obstacle_list(oo, 1), env.obstacle_list(oo, 2), env.obstacle_list(oo, 3));
+%             end
+            env_known = add_obstacle(env_known, env.obstacle_list(oo, 1), env.obstacle_list(oo, 2), env.obstacle_list(oo, 3));
         end
     end
     
     for pp = 1:length_p
         if sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
-            if isempty(env_known.privacy_list) || isempty(find(env_known.privacy_list==env.privacy_list(pp,:)))               
-                env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
-            end
+%             if isempty(env_known.privacy_list) || isempty(find(env_known.privacy_list==env.privacy_list(pp,:)))               
+%                 env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
+%             end
+            env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
         end
     end
 %     %% 1122
@@ -262,8 +265,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = ub(i) - iternum * 2/30;
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -345,7 +348,10 @@ while (1)
         iternum = iternum + 1;
         [safety_variance, safety_ratio, privacy_variance, privacy_ratio, info_variance, info_ratio, time_variance, time_ratio, energy_variance, energy_ratio] = goal_selection(x);
         ratio = [safety_ratio, privacy_ratio, info_ratio, time_ratio, energy_ratio];
-        
+        cons = myconuav(x);
+        if find(cons > 0)
+            continue;
+        end
         if exitflag > 0 
             break
         end
@@ -378,8 +384,8 @@ while (1)
                for i = 1 : (initial_N+1) * 3
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
-                   x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                    x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -427,18 +433,32 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
+            cons = myconuav_relaxation(x_relax);
+            if find(cons > 0)
+                continue;
+            end
             if exitflag_relax > 0 || (iternum_relax == 10 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0
                     x = x_relax;
+                    fprintf(2,"there is a solution for relax!!%d, %d\n",exitflag_relax,current_step)
+                    cons = myconuav_relaxation(x_relax);
+                    cons = [cons,zeros(1,100-size(cons,2))];
+                    constraints = [constraints, cons'];
+
+                else
+                    cons = myconuav(x);
+                    cons = [cons,zeros(1,100-size(cons,2))];
+                    constraints = [constraints, cons'];
+                    fprintf(2,"there is no solution for relax!!, use previous results %d, %d\n",exitflag,current_step)
                 end
+                
                 flag_relax = [flag_relax, exitflag_relax];
                 plan_x (current_step,1) = length(x);
                 for k = 1:length(x)
                     plan_x (current_step,k+1) = x(k);
                 end
-                fprintf(2,"there is a solution for relax!!%d, %d\n",exitflag_relax,current_step)
 
                 for k = 1: (initial_N+1) 
                     following_plan (k,:) = [x(k), x(k + initial_N + 1), x(k + 2 *(initial_N + 1)), x(k + 3 *(initial_N + 1))];
@@ -518,6 +538,9 @@ while (1)
             fprintf('no need replanning')
             t2=clock;
             planning_time = [planning_time; etime(t2,t1)];
+            cons = myconuav(x);
+            cons = [cons,zeros(1,100-size(cons,2))];
+            constraints = [constraints, cons'];
             plan_num = plan_num + 1;
             flag = [flag, exitflag];
             plan_x (current_step,1) = length(x);

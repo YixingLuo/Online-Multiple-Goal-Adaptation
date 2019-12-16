@@ -58,7 +58,7 @@ colormap(ax1,winter);
 xlabel('X')
 ylabel('Y')
 zlabel('Z')
-
+set(gca,'fontname','Times');
 ax2 = axes;
 % set(ax2,'position',fig_pos);
 for i = 1: length_p
@@ -157,8 +157,11 @@ for i =1:a
     zz = [zz, trajectory(i,3)];           
 end
 
-scatter3(xx,yy,zz,'k.')
+% scatter3(xx,yy,zz,'k.')
 hold on
-plot3(xx,yy,zz,'r')
+plot3(xx,yy,zz,'k','linewidth',2)
 axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
-
+xlabel('X');
+ylabel('Y');
+zlabel('Z');
+set(gca,'fontname','Times');

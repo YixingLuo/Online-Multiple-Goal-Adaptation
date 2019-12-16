@@ -1,7 +1,7 @@
 classdef Configure
     properties 
-grid_x = 50
-grid_y = 50
+grid_x = 100
+grid_y = 100
 grid_z = 10
 obstacle_likelihood = 0.7
 privacy_likelihood = 0.3
@@ -10,25 +10,25 @@ obstacle_radius = 0.5
 privacy_radius = 0.5
 obstacle_max = 0.5  %R_max
 privacy_max = 1 % R_high
-battery_budget = 300
-battery_target = 200
+battery_budget = 600
+battery_target = 500
 battery_per = 0.5
 battery_per2 = 0.2
 forensic_target = 0.9
-forensic_budget = 0.5
-Time_target = 180
-Time_budget = 240
+forensic_budget = 0.8
+Time_target = 360
+Time_budget = 420
 viewradius = 2
-velocity_max = 0.5
-velocity_min = -0.5
+velocity_max = 1
+velocity_min = -1
 sensor_accuracy = 1
-radius = 0.2
+radius = 0.2/10
 Time_step = 0.5
 battery_initial = 0
 delay = 0
 N;
 start_point = [0,0,0,0]
-end_point = [49,49,1,1]
+end_point = [49,49,0,1]
     end
  methods
         function config = Configure(config)
