@@ -37,27 +37,27 @@ p_z = [p_z, configure.end_point(3)];
 % time_to_destination2 = min((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
 % time_to_destination2 = min(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
 
-% if x(initial_N + 1) ~= 0
-%     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
-%     c = [c, time + initial_N*tau + time_x - configure.Time_budget];
-%     c = [c, -time_x];
-% else
-% %     ceq = [ceq , p_x(end)-p_x(end-1)];
-% end
-% if x(2*(initial_N + 1)) ~= 0
-%     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
-%     c = [c, time + initial_N*tau + time_y - configure.Time_budget];
-%     c = [c, -time_y];
-% else
-% %     ceq = [ceq , p_y(end)-p_y(end-1)];
-% end
-% if x(3*(initial_N + 1)) ~= 0
-%     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
-%     c = [c, time + initial_N*tau + time_z - configure.Time_budget];
-%     c = [c, -time_z];
-% else
-% %     ceq = [ceq , p_z(end)-p_z(end-1)];
-% end
+if x(initial_N + 1) ~= 0
+    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+    c = [c, time + initial_N*tau + time_x - configure.Time_budget];
+    c = [c, -time_x];
+else
+%     ceq = [ceq , p_x(end)-p_x(end-1)];
+end
+if x(2*(initial_N + 1)) ~= 0
+    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+    c = [c, time + initial_N*tau + time_y - configure.Time_budget];
+    c = [c, -time_y];
+else
+%     ceq = [ceq , p_y(end)-p_y(end-1)];
+end
+if x(3*(initial_N + 1)) ~= 0
+    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+    c = [c, time + initial_N*tau + time_z - configure.Time_budget];
+    c = [c, -time_z];
+else
+%     ceq = [ceq , p_z(end)-p_z(end-1)];
+end
 
 % time_list = [];
 % if x(initial_N + 1) ~= 0

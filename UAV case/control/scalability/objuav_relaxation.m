@@ -163,14 +163,14 @@ f = 0;
 if ratio(1)> eplison
 %     f = f + SR/bound_o;
     if num_o > 0
-        f = f + SR;
+        f = f + SR/num_o;
     end
 %     f = f + SR;
 end
 if ratio(2)> eplison
 %     f = f + PR/bound_p;
     if num_p > 0
-        f = f + PR;
+        f = f + PR/num_p;
     end
 %     f = f + PR;
 end
@@ -179,8 +179,8 @@ if ratio(3)> eplison
 %     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
 end
 if ratio(4)> eplison
-    f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
-%     f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
+%     f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+    f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
 end
 if ratio(5)> eplison
     f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));

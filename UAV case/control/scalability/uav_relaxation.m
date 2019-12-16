@@ -139,8 +139,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -262,8 +262,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = ub(i) - iternum * 2/30;
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -378,8 +378,8 @@ while (1)
                for i = 1 : (initial_N+1) * 3
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
-                   x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                    x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -600,7 +600,7 @@ while (1)
            t2=clock;
             planning_time = [planning_time; etime(t2,t1)];
            fprintf(2,'no solution for relax \n');
-%            break;
+           break;
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
 %            tag_list = [0;0;0;0;0];
