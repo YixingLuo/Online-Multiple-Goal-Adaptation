@@ -163,11 +163,11 @@ end
 % f = f + ((energy_now - configure.battery_target)/configure.battery_budget).^2;
 % 
 % if num_o > 0
-%     f = f + (SR/bound_o).^2;
+%     f = f + (SR/num_o).^2;
 % end
 % 
 % if num_p > 0
-%     f = f + (PR/bound_p).^2;
+%     f = f + (PR/num_p).^2;
 % end
 
 f = 0;
@@ -178,12 +178,12 @@ end
 if num_p > 0
     f = f + PR/num_p;
 end
-if bound_o > 0
-    f = f + SR / bound_o;
-end
-if bound_p > 0
-    f = f + PR / bound_p;
-end
+% if bound_o > 0
+%     f = f + SR / bound_o;
+% end
+% if bound_p > 0
+%     f = f + PR / bound_p;
+% end
 f = f + (1-info_now); 
 f = f + ((time_now )/ (configure.Time_budget));
 f = f + ((energy_now)/ (configure.battery_budget));
