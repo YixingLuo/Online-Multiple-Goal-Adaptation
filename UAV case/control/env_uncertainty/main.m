@@ -25,14 +25,15 @@ rate_list3_1 = zeros(100,100);
 tag_list3_1 = zeros(100,100);
 % tag_list3_2 = zeros(100,50);
 global eplison
-iternum = 30;
+iternum = 10;
 eplison_list = [1e-6];
 % obs_prob = [0.7,0.5,0.3];
-for num_p = 4
+% for iteration_num = 2:8
 %     prob = obs_prob(rt);
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_o = [3,6,9,12,15,18];
+        num_o = [10,12,14,16];
+        num_p = [5,6,7,8];
 %         rate_p = [2,4,6,8,10];
         for nobs = 1:length(num_o)
             for i = 1:iternum
@@ -45,7 +46,7 @@ for num_p = 4
 %             end  
     
                 num = (nobs-1)*iternum + i;
-                map_initialize(num, num_o(nobs));
+                map_initialize(num, num_o(nobs),num_p(nobs));
                 iter = mod(num,iternum);
                 if iter == 0
                     iter = iternum;
@@ -145,11 +146,11 @@ for num_p = 4
                     data2_1(iternum + 1,:) = mean(data2_1,1);
                     data3_1(iternum + 1,:) = mean(data3_1,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(nobs))  + '_' + string(eplison) + '_'+ string(num_p) + '.mat';
+                    name = 'data' + string(time) + '_' + string(num_o(nobs))  + '_' + string(eplison) + '_'+ string(num_p(nobs)) + '.mat';
                     save(name);
                     data1 = [];
                     data2_1 = [];
-%                     data2_4 = [];
+%                     data2_4 = []
                     data3_1 = [];
 %                     data3_2 = [];
                     trajectory1 = [];
@@ -175,6 +176,6 @@ for num_p = 4
             end
         end
     end
-end
+% end
 
 

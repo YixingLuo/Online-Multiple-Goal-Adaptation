@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_normal(num, indextemp)
+function [data, trajectory,velocity_history,planning_time] = uav_normal(num)
 global env
 global env_known
 global configure

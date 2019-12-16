@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_relax(num)
+function [data, trajectory,velocity_history,planning_time] = uav_relax(num, indextemp)
 global env
 global env_known
 global configure
@@ -78,7 +78,7 @@ while (1)
 %     else
 %         needplan = 0;
 %     end
-    needplan = 1;
+    needplan = 0;
     
 %     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
 %         needplan = 1;
