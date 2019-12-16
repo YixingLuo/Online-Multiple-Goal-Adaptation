@@ -120,7 +120,6 @@ h_3d = gca;
 grid on
 view(3);
 xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
-% axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 quadcolors = lines(nquad);
 set(gca,'fontname','Times');
 set(gcf,'Renderer','OpenGL')
@@ -189,7 +188,8 @@ vel_tol   = 1e-3;
 %% ************************* RUN SIMULATION *************************
 OUTPUT_TO_VIDEO = 1;
 if OUTPUT_TO_VIDEO == 1
-    v = VideoWriter('navigation.avi');
+    v = VideoWriter('navigation','MPEG-4');
+%     v.FrameRate = 30;
     open(v)
 end
 
@@ -237,7 +237,9 @@ for iter = 1:max_iter
         axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z]);
         
         if OUTPUT_TO_VIDEO == 1
-            im = frame2im(getframe(gcf));
+            frame = getframe(gcf);
+%             frame.cdata = imresize(frame.cdata, [1080 1920]); %// 设置视频宽高：H为行数(高)，W为列数(宽)
+            im = frame2im(frame);
             writeVideo(v,im);
         end
     end
@@ -298,14 +300,14 @@ for qn = 1:nquad
         index = ceil(i/10);
         positions(4,i) = velocity_history(index,4)*100;
     end
-    positions(4,end) = positions(4,end-1)
+    positions(4,end) = positions(4,end-1);
     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
         index = ceil(i/10);
         des_positions(4,i) = velocity_history(index,4)*100;
     end
-    des_positions(4,end) = des_positions(4,end-1)
+    des_positions(4,end) = des_positions(4,end-1);
     plot_state(h_pos{qn},des_positions, QP{qn}.time_hist, 'pos', 'des');
     
     % Plot velocity for each quad

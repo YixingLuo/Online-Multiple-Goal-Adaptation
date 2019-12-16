@@ -1,4 +1,4 @@
-function [SR, PR] = caculate_risk(trajectory, env)
+function [SR, PR,dis_o,dis_p] = caculate_risk(trajectory, env)
 global configure
 length_o = 0;
 width_o = 0;
