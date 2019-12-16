@@ -25,7 +25,7 @@ rate_list3_1 = zeros(100,100);
 tag_list3_1 = zeros(100,100);
 % tag_list3_2 = zeros(100,50);
 global eplison
-iternum = 10;
+iternum = 20;
 eplison_list = [1e-6];
 % obs_prob = [0.7,0.5,0.3];
 % for iteration_num = 2:6

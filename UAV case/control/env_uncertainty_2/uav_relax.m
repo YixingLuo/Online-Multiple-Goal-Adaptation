@@ -78,7 +78,7 @@ while (1)
 %     else
 %         needplan = 0;
 %     end
-    needplan = 0;
+    needplan = 1;
     
 %     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
 %         needplan = 1;
