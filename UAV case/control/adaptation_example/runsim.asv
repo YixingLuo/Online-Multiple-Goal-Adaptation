@@ -93,14 +93,10 @@ for i = 1: length_o
     hold on
 end
 box on
-axis on
-% hidden off
+% axis off
+hidden off
 axis(axis_pos);
 colormap(ax1,winter);
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-set(gca,'fontname','Times')
 
 ax2 = axes;
 for i = 1: length_p
