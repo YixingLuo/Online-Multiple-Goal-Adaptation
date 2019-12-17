@@ -30,7 +30,7 @@ global velocity_history
 global trajectory
 a = load('planningtime_100.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_100.mat');
+a = load ('velocity_history_100-2.mat');
 velocity_history = a.velocity_history;
 a = load('trajectory_100.mat');
 trajectory = a.trajectory;
