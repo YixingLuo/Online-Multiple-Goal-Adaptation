@@ -31,8 +31,8 @@ if bound_o > 0
         end
     end
 %     sum_x = sum_x/(bound_o * configure.obstacle_max);
-    if num_x > 0
-        sum_x = sum_x/num_x;
+    if length_o > 0
+        sum_x = sum_x/length_o;
     end
 %     sum_x = sum_x/bound_o;
 end
@@ -48,8 +48,8 @@ if bound_p > 0
         end
     end
 %     sum_y = sum_y/(bound_p * configure.privacy_max);
-    if num_y > 0
-        sum_y = sum_y/num_y;
+    if length_p > 0
+        sum_y = sum_y/length_p;
     end
 %     sum_y = sum_y/bound_p;
 end

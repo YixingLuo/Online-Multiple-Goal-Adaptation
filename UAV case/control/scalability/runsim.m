@@ -2,7 +2,7 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('planningtime.mat');
+a = load('planningtime_50.mat');
 planning_time = a.planning_time;
 end_time = (length(planning_time))*tau;
 runsimulation(tau,start_time,end_time);
@@ -28,11 +28,11 @@ global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime.mat');
+a = load('planningtime_50.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history.mat');
+a = load ('velocity_history_50.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory.mat');
+a = load('trajectory_50.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -188,7 +188,7 @@ vel_tol   = 1e-3;
 %% ************************* RUN SIMULATION *************************
 OUTPUT_TO_VIDEO = 1;
 if OUTPUT_TO_VIDEO == 1
-    v = VideoWriter('navigation','MPEG-4');
+    v = VideoWriter('navigation_50','MPEG-4');
 %     v.FrameRate = 30;
     open(v)
 end
@@ -238,7 +238,7 @@ for iter = 1:max_iter
         
         if OUTPUT_TO_VIDEO == 1
             frame = getframe(gcf);
-            frame.cdata = imresize(frame.cdata, [1080 1920]); %// 设置视频宽高：H为行数(高)，W为列数(宽)
+%             frame.cdata = imresize(frame.cdata, [1080 1920]); 
             im = frame2im(frame);
             writeVideo(v,im);
         end

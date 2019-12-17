@@ -172,11 +172,11 @@ end
 
 f = 0;
 if num_o > 0
-    f = f + SR/num_o;
+    f = f + SR/length_o;
 end
 
 if num_p > 0
-    f = f + PR/num_p;
+    f = f + PR/length_p;
 end
 % if bound_o > 0
 %     f = f + SR / bound_o;

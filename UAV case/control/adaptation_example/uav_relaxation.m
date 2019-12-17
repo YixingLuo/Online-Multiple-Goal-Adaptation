@@ -1,17 +1,17 @@
 %% [3,0.950000000000000;6,0.880000000000000;5,0.930000000000000]
-% clc
-% clear
-% indextemp = [15,18,29];
-% num = 29;
+clc
+clear
+indextemp = [15,18,29];
+num = 29;
 % uav_relaxation2(num, indextemp)
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
+% function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
 global env
 global env_known
 global configure
 global eplison
 global ratio
 configure = Configure();
-% eplison = 0;
+eplison = 1e-6;
 current_step = 1;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),0];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),0];
@@ -117,13 +117,12 @@ while (1)
         [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
-        name1 = 'planningtime.mat';
+        name1 = 'planningtime_2.mat';
         save(name1, 'planning_time');
-        name2 = 'trajectory.mat';
+        name2 = 'trajectory_2.mat';
         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
-        name3 = 'velocity_history.mat';
-%         velocity_history(end,:)=velocity_history(end-1,:);
+        name3 = 'velocity_history_2.mat';
         save(name3, 'velocity_history');
         break
     end
@@ -152,6 +151,9 @@ while (1)
         traj = [trajectory; current_point];
         trajectory = traj;
         velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
+        velocity_history(end,1) = (trajectory(end,1)-trajectory(end-1,1))/last_t;
+        velocity_history(end,2) = (trajectory(end,2)-trajectory(end-1,2))/last_t;
+        velocity_history(end,3) = (trajectory(end,3)-trajectory(end-1,3))/last_t;
         t2=clock;
         planning_time = [planning_time; etime(t2,t1)];
         continue
@@ -169,6 +171,7 @@ while (1)
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
+            fprintf("find obstacle"),oo
             if isempty(env_known.obstacle_list) || isempty(find(env_known.obstacle_list==env.obstacle_list(oo,:)))               
                 env_known = add_obstacle(env_known, env.obstacle_list(oo, 1), env.obstacle_list(oo, 2), env.obstacle_list(oo, 3));
             end
@@ -178,11 +181,14 @@ while (1)
     for pp = 1:length_p
         if sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
+            fprintf("find privacy region"),pp
             if isempty(env_known.privacy_list) || isempty(find(env_known.privacy_list==env.privacy_list(pp,:)))               
                 env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
             end
         end
     end
+    name = 'env_known'+string(current_step)+'.mat';
+    save(name, 'env_known')
 %     %% 1122
 %     if needplan == 1
 %         plan_num = plan_num + 1;
@@ -372,6 +378,7 @@ while (1)
         ratio = [safety_ratio, privacy_ratio, info_ratio, time_ratio, energy_ratio];
         
         if exitflag > 0 
+            rate_list = [rate_list, ratio'];
             break
         end
     end
@@ -379,8 +386,7 @@ while (1)
 
     
     %% RELAXATION
-    if find(ratio > eplison) 
-       rate_list = [rate_list, ratio'];
+    if find(ratio > eplison)       
        tag = [0,0,0,0,0];
         for kk = 1:5
             if ratio(kk) > eplison
@@ -696,4 +702,4 @@ while (1)
        end
     
     end
-end
+% end

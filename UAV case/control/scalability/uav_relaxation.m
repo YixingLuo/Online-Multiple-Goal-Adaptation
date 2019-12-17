@@ -93,12 +93,12 @@ while (1)
         [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
-        name1 = 'planningtime_50.mat';
+        name1 = 'planningtime_100.mat';
         save(name1, 'planning_time');
-        name2 = 'trajectory_50.mat';
+        name2 = 'trajectory_100.mat';
         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
-        name3 = 'velocity_history_50.mat';
+        name3 = 'velocity_history_100.mat';
 %         velocity_history(end,:)=velocity_history(end-1,:);
         save(name3, 'velocity_history');
         break
@@ -128,6 +128,9 @@ while (1)
         traj = [trajectory; current_point];
         trajectory = traj;
         velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
+        velocity_history(end,1) = (trajectory(end,1)-trajectory(end-1,1))/last_t;
+        velocity_history(end,2) = (trajectory(end,2)-trajectory(end-1,2))/last_t;
+        velocity_history(end,3) = (trajectory(end,3)-trajectory(end-1,3))/last_t;
         t2=clock;
         planning_time = [planning_time; etime(t2,t1)];
         continue
@@ -253,7 +256,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 3
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -265,7 +268,7 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-                x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = ub(i) - iternum*2  /30;
 %                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
@@ -373,7 +376,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=3
+       while exitflag_relax <= 0 && iternum_relax < 5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -385,7 +388,7 @@ while (1)
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
 %                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+                   x0_relax(i) = ub_relax(i) - iternum_relax *2 /30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -437,7 +440,7 @@ while (1)
             if find(cons > 0)
                 continue;
             end
-            if exitflag_relax > 0 || (iternum_relax == 3 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0
@@ -452,6 +455,8 @@ while (1)
                     cons = [cons,zeros(1,100-size(cons,2))];
                     constraints = [constraints, cons'];
                     fprintf(2,"there is no solution for relax!!, use previous results %d, %d\n",exitflag,current_step)
+                    relax_num = relax_num - 1;
+                    plan_num = plan_num + 1;
                 end
                 
                 flag_relax = [flag_relax, exitflag_relax];
