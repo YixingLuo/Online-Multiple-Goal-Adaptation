@@ -162,14 +162,14 @@ end
 f = 0;
 if ratio(1)> eplison
 %     f = f + SR/bound_o;
-    if num_o > 0
+    if length_o > 0
         f = f + SR/length_o;
     end
 %     f = f + SR;
 end
 if ratio(2)> eplison
 %     f = f + PR/bound_p;
-    if num_p > 0
+    if length_p > 0
         f = f + PR/length_p;
     end
 %     f = f + PR;

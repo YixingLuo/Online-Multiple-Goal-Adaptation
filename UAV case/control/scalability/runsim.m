@@ -2,7 +2,7 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('planningtime_50.mat');
+a = load('planningtime_100.mat');
 planning_time = a.planning_time;
 end_time = (length(planning_time))*tau;
 runsimulation(tau,start_time,end_time);
@@ -28,11 +28,11 @@ global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_50.mat');
+a = load('planningtime_100.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_50.mat');
+a = load ('velocity_history_100.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_50.mat');
+a = load('trajectory_100.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -68,7 +68,7 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-50.mat');
+gridmap = load('gridmap-100.mat');
 env = gridmap.map;
 r_o = configure.obstacle_radius;
 r_p = configure.privacy_radius;
@@ -89,7 +89,6 @@ for i = 1: length_o
     oz0=env.obstacle_list(i,3);
     [ox,oy,oz]=sphere;
     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-    shading flat
     hold on
 end
 box on
@@ -97,6 +96,10 @@ box on
 hidden off
 axis(axis_pos);
 colormap(ax1,winter);
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
+set(gca,'fontname','Times')
 
 ax2 = axes;
 for i = 1: length_p
