@@ -18,8 +18,8 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison = 1e-6;
 iternum = 10;
-num_o = [3,6,9,12,15];
-num_p = [2,4,6,8,10];
+num_o = [5,10,15,20,25];
+num_p = [4];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum

@@ -160,7 +160,7 @@ set(gcf,'Renderer','OpenGL')
 % end
 %% *********************** INITIAL CONDITIONS ***********************
 fprintf('Setting initial conditions...\n')
-max_iter  = 5000;      % max iteration
+max_iter  = 50000;      % max iteration
 starttime = start_time;
 % starttime = 2;         % start of simulation in seconds
 tstep     = 0.01;      % this determines the time step at which the solution is given

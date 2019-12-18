@@ -74,10 +74,10 @@ for j = 1: length_p
 end
 
 if bound_o>0
-    SR = SR;
+    SR = SR/length_o;
 end
 if bound_p>0
-    PR = PR;
+    PR = PR/length_p;
 end
 
 % if num_o > 0

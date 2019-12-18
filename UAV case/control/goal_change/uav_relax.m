@@ -109,12 +109,6 @@ while (1)
         [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
         [SR_known, PR_known] = caculate_risk(trajectory, env_known);
         data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num];
-%         name1 = 'planningtime.mat';
-%         save(name1, 'planning_time');
-%         name2 = 'trajectory.mat';
-%         save(name2, 'trajectory');
-%         name3 = 'velocity_history.mat';
-%         save(name3, 'velocity_history');
         break
     end
     if current_step > configure.Time_budget/configure.Time_step
@@ -228,10 +222,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-        %         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0
@@ -265,7 +261,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -277,10 +273,10 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = ub(i) - iternum * 2/30;
 %                 x0(i) = unifrnd(lb(i),ub(i));
 %                 x0(i) = ub(i);
-                x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -428,10 +424,12 @@ while (1)
                 distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %                 info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                 info = info + trajectory(i+1,4)*configure.Time_step;
-                engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
             end
-%             energy = configure.battery_per * distance;
-            energy = configure.battery_per * engy ;
+            for i = 1: size(velocity_history,1)-1
+                 engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+            end 
+            energy = engy ;
             time = configure.Time_step * (a-1);
             if time == 0
                 information = 0;
@@ -462,7 +460,7 @@ while (1)
         end
     end
 
-    if iternum > 10 && exitflag<=0
+    if iternum > 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;
@@ -509,10 +507,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-        %         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end 
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0

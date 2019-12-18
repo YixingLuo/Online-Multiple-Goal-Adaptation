@@ -81,7 +81,7 @@ while (1)
 %     else
 %         needplan = 0;
 %     end
-    needplan = 1;
+    needplan = 0;
     
 %     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
 %         needplan = 1;
@@ -440,7 +440,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 10 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0

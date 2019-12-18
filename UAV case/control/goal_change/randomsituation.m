@@ -33,16 +33,14 @@ condition = [];
 
 for i = 1: length(disturb)
     if disturb(i) == 1
-        rate = unifrnd (0,1);
-        energy = 16 + unidrnd(8); 
+        energy = 15 + unidrnd(10); 
         condition(i,:) = [1,energy];
     elseif disturb(i) == 2
-        rate = unifrnd (0,1);
         time = 12 + unidrnd(6);
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
         rate = unifrnd (0,1);
-        accuracy = (81 + unidrnd(18))/100;
+        accuracy = (85 + unidrnd(10))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
         viewradius = (16 + unidrnd(8))/10;
