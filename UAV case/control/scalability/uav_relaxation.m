@@ -90,9 +90,9 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
-        [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
+        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+%         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
         name1 = 'planningtime_100.mat';
         save(name1, 'planning_time');
         name2 = 'trajectory_100.mat';
@@ -447,12 +447,12 @@ while (1)
                     fprintf(2,"there is a solution for relax!!%d, %d\n",exitflag_relax,current_step)
                     cons = myconuav_relaxation(x_relax);
                     cons = [cons,zeros(1,100-size(cons,2))];
-                    constraints = [constraints, cons'];
+%                     constraints = [constraints, cons'];
 
                 else
                     cons = myconuav(x);
                     cons = [cons,zeros(1,100-size(cons,2))];
-                    constraints = [constraints, cons'];
+%                     constraints = [constraints, cons'];
                     fprintf(2,"there is no solution for relax!!, use previous results %d, %d\n",exitflag,current_step)
                     relax_num = relax_num - 1;
                     plan_num = plan_num + 1;
@@ -627,7 +627,7 @@ while (1)
            t2=clock;
             planning_time = [planning_time; etime(t2,t1)];
            fprintf(2,'no solution for relax \n');
-           break;
+%            break;
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
 %            tag_list = [0;0;0;0;0];

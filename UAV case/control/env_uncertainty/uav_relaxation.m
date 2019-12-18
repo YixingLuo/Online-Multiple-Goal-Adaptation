@@ -275,8 +275,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-                x0(i) = ub(i) - iternum * 2/30;
-%                 x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -391,8 +391,8 @@ while (1)
                for i = 1 : (initial_N+1) * 3
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
-%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+                   x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+%                    x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);

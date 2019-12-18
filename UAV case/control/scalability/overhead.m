@@ -20,6 +20,11 @@
 
 
 %% plot with time
-k = 0.5:0.5:length(planning_time)/2;
+k = 0.5:0.5:length(velocity_history)/2;
 figure, 
-plot(k, planning_time, 'r-','linewidth',1.2,'Color',[0.8500 0.3250 0.0980])
+% plot(k, planning_time, 'r-','linewidth',1.2,'Color',[0.8500 0.3250 0.0980])
+plot(k, velocity_history(:,1), 'r-','linewidth',1.2,'Color',[0.8500 0.3250 0.0980])
+hold on
+plot(k, velocity_history(:,2), 'b--','linewidth',1.2,'Color',[0 0.4470 0.7410])
+hold on
+plot(k, velocity_history(:,3), 'g-.','linewidth',1.2,'Color',[0.4660 0.6740 0.1880])

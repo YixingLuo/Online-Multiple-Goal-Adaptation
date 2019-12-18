@@ -69,52 +69,52 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-% gridmap = load('gridmap-100.mat');
-% env = gridmap.map;
-% r_o = configure.obstacle_radius;
-% r_p = configure.privacy_radius;
-% length_o = 0;
-% width_o = 0;
-% length_p = 0;
-% width_p = 0;
-% [length_o, width_o] = size(env.obstacle_list);
-% [length_p, width_p] = size(env.privacy_list);
-% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-% ax1 = axes;
-% for i = 1: length_o
-%     r=r_o;
-%     ox0=env.obstacle_list(i,1);
-%     oy0=env.obstacle_list(i,2);
-%     oz0=env.obstacle_list(i,3);
-%     [ox,oy,oz]=sphere;
-%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-%     hold on
-% end
-% box on
-% hidden off
-% axis(axis_pos);
-% colormap(ax1,winter);
-% xlabel('X')
-% ylabel('Y')
-% zlabel('Z')
-% set(gca,'fontname','Times')
-% 
-% ax2 = axes;
-% for i = 1: length_p
-%     r=r_p;
-%     px0=env.privacy_list(i,1);
-%     py0=env.privacy_list(i,2);
-%     pz0=env.privacy_list(i,3);
-%     [px,py,pz]=sphere;
-%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
-%     hold on
-% end
-% axis off
-% hidden off
-% axis(axis_pos );
-% colormap(ax2,autumn);
-% set(gca,'fontname','Times');
-% 
+gridmap = load('gridmap-100.mat');
+env = gridmap.map;
+r_o = configure.obstacle_radius;
+r_p = configure.privacy_radius;
+length_o = 0;
+width_o = 0;
+length_p = 0;
+width_p = 0;
+[length_o, width_o] = size(env.obstacle_list);
+[length_p, width_p] = size(env.privacy_list);
+axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+ax1 = axes;
+for i = 1: length_o
+    r=r_o;
+    ox0=env.obstacle_list(i,1);
+    oy0=env.obstacle_list(i,2);
+    oz0=env.obstacle_list(i,3);
+    [ox,oy,oz]=sphere;
+    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+    hold on
+end
+box on
+hidden off
+axis(axis_pos);
+colormap(ax1,winter);
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
+set(gca,'fontname','Times')
+
+ax2 = axes;
+for i = 1: length_p
+    r=r_p;
+    px0=env.privacy_list(i,1);
+    py0=env.privacy_list(i,2);
+    pz0=env.privacy_list(i,3);
+    [px,py,pz]=sphere;
+    mesh(px0+r*px,py0+r*py,pz0+r*pz)
+    hold on
+end
+axis off
+hidden off
+axis(axis_pos );
+colormap(ax2,autumn);
+set(gca,'fontname','Times');
+
 h_3d = gca;
 grid on
 view(3);
@@ -298,7 +298,7 @@ for qn = 1:nquad
         positions(4,i) = velocity_history(index,4)*100;
     end
     positions(4,end) = positions(4,end-1);
-%     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
+    plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
         index = ceil(i/10);
@@ -309,7 +309,7 @@ for qn = 1:nquad
     
     % Plot velocity for each quad
     h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
-%     plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
+    plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
     plot_state(h_vel{qn}, QP{qn}.state_des_hist(4:6,:), QP{qn}.time_hist, 'vel', 'des');
 end
 if(~isempty(err))
