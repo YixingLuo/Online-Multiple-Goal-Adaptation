@@ -157,35 +157,18 @@ for j = 1: length_p
     end
 end
 
-% f = 0;
-% f = f + (configure.forensic_target-info_now).^2;
-% f = f + ((time_now -  configure.Time_target)/configure.Time_budget).^2;
-% f = f + ((energy_now - configure.battery_target)/configure.battery_budget).^2;
-% 
-% if num_o > 0
-%     f = f + (SR/num_o).^2;
-% end
-% 
-% if num_p > 0
-%     f = f + (PR/num_p).^2;
-% end
 
+%% 1118
 f = 0;
-% if num_o > 0
-%     f = f + SR/length_o;
-% end
-% 
-% if num_p > 0
-%     f = f + PR/length_p;
-% end
 if bound_o > 0
-    f = f + SR / bound_o;
+    f = f + SR/bound_o;
 end
 if bound_p > 0
-    f = f + PR / bound_p;
+    f = f + PR/bound_p;
 end
-f = f + (1-info_now); 
-f = f + ((time_now )/ (configure.Time_budget));
-f = f + ((energy_now)/ (configure.battery_budget));
+f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
 
+f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+
+f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
 

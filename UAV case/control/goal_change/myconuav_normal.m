@@ -143,20 +143,19 @@ end
 
 
 for j = 1: length_o
-    for i = 1:initial_N + 1
+    for i = 1:initial_N  + 1
         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
     end
 end
 
+
 for j = 1: length_p
-    for i = 1:initial_N + 1
+    for i = 1:initial_N + 1 
         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
     end
 end
 
 c = [c, - info_now + configure.forensic_budget];
-
 c = [c, time_now - configure.Time_budget];
-
 c = [c, energy_now - configure.battery_budget];
-  
+

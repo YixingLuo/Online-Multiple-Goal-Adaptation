@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_relax(num, indextemp)
+function [data, trajectory,velocity_history,planning_time] = uav_relax(num)
 global env
 global env_known
 global configure
@@ -50,9 +50,9 @@ env = gridmap.map;
 env_known = Environment();
 env_view = Environment();
 
-name_con = 'condition' + string(num) + '.mat';
-cond = load(name_con);
-index_cond = 1;
+% name_con = 'condition' + string(num) + '.mat';
+% cond = load(name_con);
+% index_cond = 1;
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -80,23 +80,23 @@ while (1)
 %     end
     needplan = 1;
     
-    if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-        needplan = 1;
-        if cond.condition(index_cond,1) == 1
-            configure = EnergyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 2
-                configure = TimeTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 3
-                configure = AccuracyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 4
-                configure = ViewDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 5
-                configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 6
-                configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
-        end
-        index_cond = index_cond+1;
-    end
+%     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+%         needplan = 1;
+%         if cond.condition(index_cond,1) == 1
+%             configure = EnergyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 2
+%                 configure = TimeTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 3
+%                 configure = AccuracyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 4
+%                 configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 5
+%                 configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 6
+%                 configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
+%         end
+%         index_cond = index_cond+1;
+%     end
     
     fprintf(2,'uav_relax: current step %d\n', current_step);
 %     following_point, following_plan
@@ -267,7 +267,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -280,7 +280,7 @@ while (1)
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
                 x0(i) = ub(i) - iternum * 2/30;
-%                 x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = 0;
 %                 x0(i) = ub(i);
 %                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
@@ -362,13 +362,14 @@ while (1)
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %         options.algorithm = 'sqp';
         options.algorithm = 'sqp';
-        options.tolx = 1e-10;
-        options.tolfun = 1e-10;
-        options.TolCon = 1e-10;
+%         options.tolx = 1e-10;
+%         options.tolfun = 1e-10;
+%         options.TolCon = 1e-10;
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options.StepTolerance = 1.0000e-10;
 %         objuav_relax(x0),myconuav_relax(x0)
+%         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
        
         tau = configure.Time_step;
@@ -466,7 +467,7 @@ while (1)
         end
     end
 
-    if iternum > 10 && exitflag<=0
+    if iternum > 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;
