@@ -105,9 +105,15 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
-        [SR_known, PR_known] = caculate_risk(trajectory, env_known);
-        data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num];
+        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+%         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num];
+%         name1 = 'planningtime.mat';
+%         save(name1, 'planning_time');
+%         name2 = 'trajectory.mat';
+%         save(name2, 'trajectory');
+%         name3 = 'velocity_history.mat';
+%         save(name3, 'velocity_history');
         break
     end
     
@@ -250,7 +256,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 5
+    while exitflag <=0 && iternum <= 10
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -418,7 +424,7 @@ while (1)
         end
     end
 
-    if iternum > 5 && exitflag<=0
+    if iternum > 10 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;
