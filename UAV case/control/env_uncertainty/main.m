@@ -18,8 +18,8 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison = 1e-6;
 iternum = 10;
-num_o = [5,10,15,20,25];
-num_p = [4];
+num_o = [10,20,30,40,50];
+num_p = [5,10,15,20,25];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum
@@ -33,25 +33,25 @@ for np = 1:length(num_p)
                                
                 
 
-%                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
-%                     if data_1(1)> 0
-%                         data1 = [data1 ; data_1];
-%                         trajectory1 = [trajectory1; trajectory];
-%                         velocity_history1 = [velocity_history1; velocity_history];
-%                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
-%                         planningtime1(:,i) = planning_time;                       
-%                     end
+                    [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
+                    if data_1(1)> 0
+                        data1 = [data1 ; data_1];
+                        trajectory1 = [trajectory1; trajectory];
+                        velocity_history1 = [velocity_history1; velocity_history];
+                        planning_time =[planning_time; zeros(100-length(planning_time),1)];
+                        planningtime1(:,i) = planning_time;                       
+                    end
 
 
 
-%                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
-%                     if data_2(1)> 0
-%                         data2 = [data2; data_2]; 
-%                         trajectory2 = [trajectory2; trajectory];
-%                         velocity_history2 = [velocity_history2; velocity_history];
-%                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
-%                         planningtime2(:,i) = planning_time;                      
-%                     end
+                    [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
+                    if data_2(1)> 0
+                        data2 = [data2; data_2]; 
+                        trajectory2 = [trajectory2; trajectory];
+                        velocity_history2 = [velocity_history2; velocity_history];
+                        planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
+                        planningtime2(:,i) = planning_time;                      
+                    end
 
 
 

@@ -310,8 +310,9 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
+                x0(i) = configure.sensor_accuracy;
 %                 x0(i) = ub(i) - iternum * 1/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;
@@ -363,7 +364,7 @@ while (1)
 %         options.MaxFunEvals = 100000;
 %         options.StepTolerance = 1.0000e-10;
 %         objuav_relax(x0),myconuav_relax(x0)
-        [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
+        [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
        
         tau = configure.Time_step;
 

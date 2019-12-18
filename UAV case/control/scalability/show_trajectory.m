@@ -1,6 +1,6 @@
 configure = Configure();
 gridmap = load('gridmap-100.mat');
-a = load('trajectory_100.mat');
+a = load('trajectory_100_2.mat');
 trajectory = a.trajectory;
 h=figure(1);
 env = gridmap.map;

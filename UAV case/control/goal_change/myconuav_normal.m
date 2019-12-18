@@ -37,38 +37,38 @@ p_z = [p_z, configure.end_point(3)];
 % time_to_destination2 = min((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
 % time_to_destination2 = min(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
 
-time_list = [];
-if x(initial_N + 1) ~= 0
-    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
-    time_list = [time_list, time_x];
-else
-    ceq = [ceq , p_x(end)-p_x(end-1)];
-    time_x = 0;
-end
-if x(2*(initial_N + 1)) ~= 0
-    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
-    time_list = [time_list, time_y];
-else
-    ceq = [ceq , p_y(end)-p_y(end-1)];
-    time_y = 0;
-end
-if x(3*(initial_N + 1)) ~= 0
-    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
-    time_list = [time_list, time_z];
-else
-    ceq = [ceq , p_z(end)-p_z(end-1)];
-    time_z = 0;
-end
-
-for i = 1:length(time_list)
-    c = [c, - time_list(i)];
-end
-
-if length(time_list) == 2
-    ceq = [ceq , time_list(1)-time_list(2)];
-    elseif length(time_list) == 3
-        ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
-end
+% time_list = [];
+% if x(initial_N + 1) ~= 0
+%     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+%     time_list = [time_list, time_x];
+% else
+%     ceq = [ceq , p_x(end)-p_x(end-1)];
+%     time_x = 0;
+% end
+% if x(2*(initial_N + 1)) ~= 0
+%     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+%     time_list = [time_list, time_y];
+% else
+%     ceq = [ceq , p_y(end)-p_y(end-1)];
+%     time_y = 0;
+% end
+% if x(3*(initial_N + 1)) ~= 0
+%     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+%     time_list = [time_list, time_z];
+% else
+%     ceq = [ceq , p_z(end)-p_z(end-1)];
+%     time_z = 0;
+% end
+% 
+% for i = 1:length(time_list)
+%     c = [c, - time_list(i)];
+% end
+% 
+% if length(time_list) == 2
+%     ceq = [ceq , time_list(1)-time_list(2)];
+%     elseif length(time_list) == 3
+%         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+% end
 
 % if length(time_list) > 0
 %     time_now = time + initial_N*tau + time_list(1);

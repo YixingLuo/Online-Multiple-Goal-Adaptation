@@ -34,7 +34,7 @@ if bound_o > 0
     if length_o > 0
         sum_x = sum_x/length_o;
     end
-%     sum_x = sum_x/bound_o;
+%     sum_x = sum_x/num_o;
 end
 
 sum_y = 0;

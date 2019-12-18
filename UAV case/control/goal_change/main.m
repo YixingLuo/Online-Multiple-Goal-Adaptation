@@ -18,9 +18,9 @@ index = [];
 
 global eplison
 eplison = 1e-6;
-iternum = 20;
-num_o = [10];
-num_p = [4];
+iternum = 10;
+num_o = [20];
+num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:3*iternum

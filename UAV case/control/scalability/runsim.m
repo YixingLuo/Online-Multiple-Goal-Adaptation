@@ -1,8 +1,10 @@
+clc
+clear
 global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('planningtime_100.mat');
+a = load('planningtime_100_2.mat');
 planning_time = a.planning_time;
 end_time = (length(planning_time))*tau;
 runsimulation(tau,start_time,end_time);
@@ -21,18 +23,17 @@ function [] = runsimulation(tau,start_time,end_time)
 
 addpath('utils')
 addpath('trajectories')
-addpath('50_50')
 global time_step 
 time_step = tau;
 global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_100.mat');
+a = load('planningtime_100_2.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_100-2.mat');
+a = load ('velocity_history_100_2.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_100.mat');
+a = load('trajectory_100_2.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -68,58 +69,53 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-100.mat');
-env = gridmap.map;
-r_o = configure.obstacle_radius;
-r_p = configure.privacy_radius;
-% r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
-% r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
-length_o = 0;
-width_o = 0;
-length_p = 0;
-width_p = 0;
-[length_o, width_o] = size(env.obstacle_list);
-[length_p, width_p] = size(env.privacy_list);
-axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-ax1 = axes;
-for i = 1: length_o
-    r=r_o;
-    ox0=env.obstacle_list(i,1);
-    oy0=env.obstacle_list(i,2);
-    oz0=env.obstacle_list(i,3);
-    [ox,oy,oz]=sphere;
-    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-    hold on
-end
-box on
+% gridmap = load('gridmap-100.mat');
+% env = gridmap.map;
+% r_o = configure.obstacle_radius;
+% r_p = configure.privacy_radius;
+% length_o = 0;
+% width_o = 0;
+% length_p = 0;
+% width_p = 0;
+% [length_o, width_o] = size(env.obstacle_list);
+% [length_p, width_p] = size(env.privacy_list);
+% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+% ax1 = axes;
+% for i = 1: length_o
+%     r=r_o;
+%     ox0=env.obstacle_list(i,1);
+%     oy0=env.obstacle_list(i,2);
+%     oz0=env.obstacle_list(i,3);
+%     [ox,oy,oz]=sphere;
+%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+%     hold on
+% end
+% box on
+% hidden off
+% axis(axis_pos);
+% colormap(ax1,winter);
+% xlabel('X')
+% ylabel('Y')
+% zlabel('Z')
+% set(gca,'fontname','Times')
+% 
+% ax2 = axes;
+% for i = 1: length_p
+%     r=r_p;
+%     px0=env.privacy_list(i,1);
+%     py0=env.privacy_list(i,2);
+%     pz0=env.privacy_list(i,3);
+%     [px,py,pz]=sphere;
+%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
+%     hold on
+% end
 % axis off
-hidden off
-axis(axis_pos);
-colormap(ax1,winter);
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-set(gca,'fontname','Times')
-
-ax2 = axes;
-for i = 1: length_p
-    r=r_p;
-    px0=env.privacy_list(i,1);
-    py0=env.privacy_list(i,2);
-    pz0=env.privacy_list(i,3);
-    [px,py,pz]=sphere;
-    mesh(px0+r*px,py0+r*py,pz0+r*pz)
-    hold on
-end
-% box off
-axis off
-hidden off
-axis(axis_pos );
-colormap(ax2,autumn);
-set(gca,'fontname','Times');
-
+% hidden off
+% axis(axis_pos );
+% colormap(ax2,autumn);
+% set(gca,'fontname','Times');
+% 
 h_3d = gca;
-% axis equal
 grid on
 view(3);
 xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
@@ -161,9 +157,9 @@ set(gcf,'Renderer','OpenGL')
 %% *********************** INITIAL CONDITIONS ***********************
 fprintf('Setting initial conditions...\n')
 max_iter  = 50000;      % max iteration
-starttime = start_time;
+starttime = 0;
 % starttime = 2;         % start of simulation in seconds
-tstep     = 0.01;      % this determines the time step at which the solution is given
+tstep     = 0.02;      % this determines the time step at which the solution is given
 cstep     = 0.05;      % image capture time interval
 nstep     = cstep/tstep;
 time      = starttime; % current time
@@ -191,7 +187,7 @@ vel_tol   = 1e-3;
 %% ************************* RUN SIMULATION *************************
 OUTPUT_TO_VIDEO = 1;
 if OUTPUT_TO_VIDEO == 1
-    v = VideoWriter('navigation_50','MPEG-4');
+    v = VideoWriter('navigation_100','MPEG-4');
 %     v.FrameRate = 30;
     open(v)
 end
@@ -210,7 +206,6 @@ for iter = 1:max_iter
             QP{qn} = QuadPlot(qn, x0{qn}, 0.1, 0.04, quadcolors(qn,:), max_iter, h_3d);
             desired_state = trajhandle(time, qn);
             QP{qn}.UpdateQuadPlot(x{qn}, [desired_state.pos; desired_state.vel], time);
-%             h_title = title(sprintf('iteration: %d, time: %4.2f s', iter, time));
             h_title = title(sprintf('Time: %4.2f s', time));
             xlabel('x');
             ylabel('y');
@@ -231,7 +226,6 @@ for iter = 1:max_iter
        
         desired_state = trajhandle(time + cstep, qn);
         QP{qn}.UpdateQuadPlot(x{qn}, [desired_state.pos; desired_state.vel], time + cstep);
-%         set(h_title, 'String', sprintf('iteration: %d, time: %4.2f s', iter, time + cstep));
         set(h_title, 'String',(sprintf('Time: %4.2f s', time + cstep)));
         xlabel('X');
         ylabel('Y');
@@ -256,7 +250,7 @@ for iter = 1:max_iter
     
     t = toc;
     % Check to make sure ode45 is not timing out
-    if(t> cstep*500)
+    if(t> cstep*500*2)
         err = 'Ode45 Unstable';
         break;
     end
@@ -272,7 +266,7 @@ for iter = 1:max_iter
         k = ceil(time/time_step);
         planning_time(k);
         pause_time = max(0,planning_time(k)-time_step);
-        pause(pause_time);
+%         pause(pause_time);
     end
     
     % Check termination criteria
@@ -304,7 +298,7 @@ for qn = 1:nquad
         positions(4,i) = velocity_history(index,4)*100;
     end
     positions(4,end) = positions(4,end-1);
-    plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
+%     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
         index = ceil(i/10);
@@ -315,7 +309,7 @@ for qn = 1:nquad
     
     % Plot velocity for each quad
     h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
-    plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
+%     plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
     plot_state(h_vel{qn}, QP{qn}.state_des_hist(4:6,:), QP{qn}.time_hist, 'vel', 'des');
 end
 if(~isempty(err))

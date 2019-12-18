@@ -279,8 +279,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = ub(i) - iternum * 2/30;
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 x0(i) = ub(i);
 %                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
