@@ -316,8 +316,8 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
-%                 x0(i) = ub(i) - iternum * 1/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = configure.sensor_accuracy;
+%                 x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;

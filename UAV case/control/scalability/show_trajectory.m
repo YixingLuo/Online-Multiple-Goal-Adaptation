@@ -17,7 +17,6 @@ width_p = 0;
 axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
 ax1 = axes;
 for i = 1: length_o
-    i
     r=r_o;
     ox0=env.obstacle_list(i,1);
     oy0=env.obstacle_list(i,2);
@@ -38,7 +37,6 @@ set(gca,'fontname','Times')
 
 ax2 = axes;
 for i = 1: length_p
-    i
     r=r_p;
     px0=env.privacy_list(i,1);
     py0=env.privacy_list(i,2);

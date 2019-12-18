@@ -18,7 +18,7 @@ index = [];
 
 global eplison
 eplison = 1e-6;
-iternum = 10;
+iternum = 30;
 num_o = [20];
 num_p = [5];
 for np = 1:length(num_p)
@@ -66,7 +66,7 @@ for np = 1:length(num_p)
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
 %                     planningtime2_1(:,i) = planning_time;
                     if data_2(1)> 0
-                        data2(i,;) = data_2; 
+                        data2(i,:) = data_2; 
                         trajectory2 = [trajectory2; trajectory];
                         velocity_history2 = [velocity_history2; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  

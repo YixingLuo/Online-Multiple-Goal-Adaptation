@@ -35,7 +35,7 @@ for np = 1:length(num_p)
 
                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
                     if data_1(1)> 0
-                        data1 = [data1 ; data_1];
+                        data1(i,:) =  data_1;
                         trajectory1 = [trajectory1; trajectory];
                         velocity_history1 = [velocity_history1; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
@@ -46,7 +46,7 @@ for np = 1:length(num_p)
 
                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
                     if data_2(1)> 0
-                        data2 = [data2; data_2]; 
+                        data2(i,:) =  data_2; 
                         trajectory2 = [trajectory2; trajectory];
                         velocity_history2 = [velocity_history2; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
@@ -58,7 +58,7 @@ for np = 1:length(num_p)
 
                     [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num);
                     if data_3(1)> 0
-                        data3 = [data3; data_3];
+                        data3(i,:) =  data_3;
                         trajectory3 = [trajectory3; trajectory];
                         velocity_history3 = [velocity_history3; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];               
