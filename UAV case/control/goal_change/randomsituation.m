@@ -7,7 +7,7 @@
 function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global configure
-l = [2,4,6];
+l = [6];
 disturb = randi([1,3],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);
@@ -43,13 +43,13 @@ for i = 1: length(disturb)
         accuracy = (85 + unidrnd(10))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
-        viewradius = (16 + unidrnd(8))/10;
+        viewradius = (2 + unidrnd(4))/2;
         condition(i,:) = [4,viewradius];
     elseif disturb(i) == 5
-        speed = (80 + unidrnd(20))/100;
+        speed = (70 + unidrnd(30))/100;
         condition(i,:) = [5,speed];
     elseif disturb(i) == 6
-        acc = (80 + unidrnd(20))/100;
+        acc = (70 + unidrnd(30))/100;
         condition(i,:) = [6,acc];
     end    
 end
