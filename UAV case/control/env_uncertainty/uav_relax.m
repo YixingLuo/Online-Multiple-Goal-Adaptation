@@ -369,8 +369,8 @@ while (1)
 %         options.MaxFunEvals = 100000;
 %         options.StepTolerance = 1.0000e-10;
 %         objuav_relax(x0),myconuav_relax(x0)
-        [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-%         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
+%         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
+        [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
        
         tau = configure.Time_step;
 

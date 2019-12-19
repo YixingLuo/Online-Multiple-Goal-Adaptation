@@ -14,89 +14,49 @@ planningtime2 = zeros(100,100);
 planningtime3 = zeros(100,100);
 rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
-index = [];
+% index = [];
 
 global eplison
 eplison = 1e-6;
 iternum = 10;
 num_o = [10];
-num_p = [10];
+num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:3*iternum
             k = ceil(i/iternum);
             num = i;
             map_initialize(num, num_o(no),num_p(np));
-            [condition, indextemp] = randomsituation(num,k);
+            [condition, indextemp] = randomsituation(num,k)
             index(num,:) =  indextemp;
+%             indextemp = index(num,:);
             iter = mod(num,iternum);
             if iter == 0
                 iter = iternum;
             end
 
-%                 for j = 1:3
+
                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num, indextemp);
-%                     data1 = [data1 ; data];
-%                     trajectory1 = [trajectory1; trajectory];
-%                     velocity_history1 = [velocity_history1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
-%                     planningtime1(:,i) = planning_time;
                     if data_1(1)> 0
                         data1(i,:) = data_1;
                         trajectory1 = [trajectory1; trajectory];
                         velocity_history1 = [velocity_history1; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
                         planningtime1(:,i) = planning_time;                       
-%                         break
                     end
-%                 end
 
-%                     [data, trajectory,velocity_history,planning_time] = uav_relax(num, indextemp);
-%                     data2_1 = [data2_1; data]; 
-%                     trajectory2_1 = [trajectory2_1; trajectory];
-%                     velocity_history2_1 = [velocity_history2_1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
-%                     planningtime2_1(:,i) = planning_time;
 
-%                 for j = 1:3
                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num, indextemp);
-%                     data2_1 = [data2_1; data]; 
-%                     trajectory2_1 = [trajectory2_1; trajectory];
-%                     velocity_history2_1 = [velocity_history2_1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
-%                     planningtime2_1(:,i) = planning_time;
                     if data_2(1)> 0
                         data2(i,:) = data_2; 
                         trajectory2 = [trajectory2; trajectory];
                         velocity_history2 = [velocity_history2; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
                         planningtime2(:,i) = planning_time;                      
-%                         break
                     end
-%                 end
 
-%                     [data, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num, indextemp);
-%                     data3_1 = [data3_1; data];
-%                     trajectory3_1 = [trajectory3_1; trajectory];
-%                     velocity_history3_1 = [velocity_history3_1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];               
-%                     planningtime3_1(:,i) = planning_time;
-%                     rate_list_ = [rate_list, zeros(5,50-size(rate_list,2))];
-%                     tag_list_ =  [tag_list, zeros(5,50-size(tag_list,2))];
-%                     rate_list3_1((iter-1)*5+1:iter*5,:) = rate_list_;
-%                     tag_list3_1((iter-1)*5+1:iter*5,:) = tag_list_;
 
-%                 for j = 1:3
                     [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num, indextemp);
-%                     data3_1 = [data3_1; data];
-%                     trajectory3_1 = [trajectory3_1; trajectory];
-%                     velocity_history3_1 = [velocity_history3_1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];               
-%                     planningtime3_1(:,i) = planning_time;
-%                     rate_list_ = [rate_list, zeros(5,50-size(rate_list,2))];
-%                     tag_list_ =  [tag_list, zeros(5,50-size(tag_list,2))];
-%                     rate_list3_1((iter-1)*5+1:iter*5,:) = rate_list_;
-%                     tag_list3_1((iter-1)*5+1:iter*5,:) = tag_list_;
                     if data_3(1)> 0
                         data3(i,:) = data_3;
                         trajectory3 = [trajectory3; trajectory];
@@ -107,9 +67,8 @@ for np = 1:length(num_p)
                         tag_list_ =  [tag_list, zeros(5,100-size(tag_list,2))];
                         rate_list3((iter-1)*5+1:iter*5,:) = rate_list_;
                         tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
-%                         break
                     end
-%                 end
+
                 
 %                 if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
 %                     data1 = [data1; data_1];
