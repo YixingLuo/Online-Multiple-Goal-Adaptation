@@ -18,20 +18,17 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison = 1e-6;
 iternum = 10;
-num_o = [10,20,30,40,50];
-num_p = [5,10,15,20,25];
+num_o = [10,15,20];
+num_p = [10];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i = 1:iternum
-            flag = 0; %% have no solution at initial point   
+        for i = 1:iternum 
             num = i;
             map_initialize(num, num_o(no),num_p(np));
             iter = mod(num,iternum);
             if iter == 0
                 iter = iternum;
-            end
-                               
-                
+            end               
 
                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
                     if data_1(1)> 0
@@ -76,9 +73,9 @@ for np = 1:length(num_p)
 %                 end
     
                 if mod(num,iternum)==0
-                    data1(iternum + 1,:) = mean(data1,1);
-                    data2(iternum + 1,:) = mean(data2,1);
-                    data3(iternum + 1,:) = mean(data3,1);
+                    data1(i + 1,:) = mean(data1,1);
+                    data2(i + 1,:) = mean(data2,1);
+                    data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
                     name = 'data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
