@@ -1,7 +1,7 @@
 global env
 global configure
 % figure('visible','off')
-% env = map;
+env = map;
 figure,
 % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
 % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;

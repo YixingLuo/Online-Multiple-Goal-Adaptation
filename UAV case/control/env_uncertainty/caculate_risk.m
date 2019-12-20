@@ -75,9 +75,13 @@ end
 
 if bound_o>0
     DS_SR = 1 - SR/bound_o;
+else
+    DS_SR = 1;
 end
 if bound_p>0
     DS_PR = 1 - PR/bound_p;
+else
+    DS_PR = 1;
 end
 
 % if num_o > 0

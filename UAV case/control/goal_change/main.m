@@ -23,11 +23,11 @@ num_o = [10];
 num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i = 1:3*iternum
+        for i = 1:5*iternum
             k = ceil(i/iternum);
             num = i;
-            map_initialize(num, num_o(no),num_p(np));
-            [condition, indextemp] = randomsituation(num,k)
+%             map_initialize(num, num_o(no),num_p(np));
+            [condition, indextemp] = randomsituation(num,k);
             index(num,:) =  indextemp;
 %             indextemp = index(num,:);
             iter = mod(num,iternum);
