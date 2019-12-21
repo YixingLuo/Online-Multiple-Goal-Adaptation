@@ -1,5 +1,5 @@
-%map initialize
-function [map] = map_initialize(num, num_o, num_p)
+% map initialize
+function [map] = map_initialize(num, num_o)
 global configure
 configure = Configure();
 map = Environment();
@@ -8,7 +8,7 @@ gridmap = load(name);
 gridmap = gridmap.map;
 privacy_list = gridmap.privacy_list;
 map = map_initial_with_privacy(map, num_o, privacy_list);
-map = map_initial3(map, num_o, num_p);
+% map = map_initial3(map, num_o, num_p);
 name = 'gridmap-' + string(num) + '.mat';
 save(name, 'map');
 

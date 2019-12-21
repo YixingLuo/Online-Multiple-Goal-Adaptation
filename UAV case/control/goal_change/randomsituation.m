@@ -7,7 +7,7 @@
 function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global configure
-l = [1,2,3,4,6];
+l = [2,3,4,6,9];
 disturb = randi([1,3],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);

@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_relax(num,indextemp)
+function [data, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp)
 global env
 global env_known
 global configure
@@ -43,15 +43,14 @@ plan_num = 0;
 data = zeros(1,11);
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(0) + '.mat';
+name = 'gridmap-' + string(num_map) + '.mat';
 gridmap = load(name);
-% gridmap = load('gridmap.mat');
 env = gridmap.map;
 env_known = Environment();
 env_view = Environment();
 
-if num > 0
-    name_con = 'condition' + string(num) + '.mat';
+if num_map > 0
+    name_con = 'condition' + string(num_condition) + '.mat';
     cond = load(name_con);
     index_cond = 1;
 end
@@ -74,15 +73,9 @@ following_point = [following_point; end_point];
 
 
 while (1)
-%     if no_solution_flag == 1
-%         needplan = 1;
-%         no_solution_flag = 0;
-%     else
-%         needplan = 0;
-%     end
     needplan = 1;
     
-    if num > 0 
+    if num_map > 0 
         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
             needplan = 1;
             if cond.condition(index_cond,1) == 1

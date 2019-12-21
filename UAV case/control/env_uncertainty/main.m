@@ -18,13 +18,13 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison = 1e-6;
 iternum = 10;
-num_o = [5,10,15,20,25,30,35,40];
+num_o = [5,15,25,35,45];
 num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum 
             num = i;
-            map_initialize(num, num_o(no),num_p(np));
+            map_initialize(num, num_o(no));
             iter = mod(num,iternum);
             if iter == 0
                 iter = iternum;

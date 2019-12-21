@@ -1,4 +1,4 @@
-k = 0.1:0.2:0.9;
+k = [0.2618,0.7854,1.3090,1.8326,2.3562];
 figure,
 subplot(2,2,1)
 % figure, 
@@ -25,42 +25,97 @@ yy=interp1(k,SR(:,3),xx,'PCHIP');
 % hold on
 plot(k,SR(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
-axis([0.1, 0.9, 0, 1])
-hlegend = legend('MOpt_{SR}','GRelax_{SR}','GAdapt_{SR}');
-h = xlabel({'\rho_o'},'Fontname', 'Times New Roman');
-ylabel('Safety Risk','Fontname', 'Times New Roman');
+axis([0, 2.5, 0, 10])
+hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
+h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
+ylabel('Safety Risk $\sum \mathcal{X}_{SR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
 set(hlegend,'box','off')
 grid on
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
-set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.05,ylim(1)])
-title('$(a) \quad N_o + N_c=10$','Interpreter', 'latex');
+set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.12,ylim(1)])
+title('$(a) \quad \rho_c = 1.07\%$','Interpreter', 'latex');
 
 subplot(2,2,2)
 % figure, 
-k2 = [0.9,0.7,0.5,0.3,0.1];
-plot(k2,PR(:,1),'-^','linewidth',1.2,'Color',[1,0.62745, 0.47843],'MarkerFaceColor',[1,0.62745, 0.47843],'MarkerEdgeColor',[1,0.62745, 0.47843])
+
+plot(k,PR(:,1),'-^','linewidth',1.2,'Color',[1,0.62745, 0.47843],'MarkerFaceColor',[1,0.62745, 0.47843],'MarkerEdgeColor',[1,0.62745, 0.47843])
 hold on
 
-
-plot(k2,PR(:,2),':s','linewidth',2,'Color',[1,0.64706, 0],'MarkerFaceColor',[1,0.64706, 0],'MarkerEdgeColor',[1,0.64706, 0])
+plot(k,PR(:,2),':s','linewidth',2,'Color',[1,0.64706, 0],'MarkerFaceColor',[1,0.64706, 0],'MarkerEdgeColor',[1,0.64706, 0])
 hold on
 
-plot(k2,PR(:,3),'--d','linewidth',1.2,'Color',[1, 0.49804, 0.31373],'MarkerFaceColor',[1, 0.49804, 0.31373],'MarkerEdgeColor',[1, 0.49804, 0.31373])
+plot(k,PR(:,3),'--d','linewidth',1.2,'Color',[1, 0.49804, 0.31373],'MarkerFaceColor',[1, 0.49804, 0.31373],'MarkerEdgeColor',[1, 0.49804, 0.31373])
 hold on
 
-% axis([0.1, 0.9, 0, 1])
-hlegend = legend('MOpt_{PR}','GRelax_{PR}','GAdapt_{PR}');
-h = xlabel({'\rho_p'},'Fontname', 'Times New Roman');
-ylabel('Privacy Risk','Fontname', 'Times New Roman');
+hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
+h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
+ylabel('Privacy Risk $\sum \mathcal{X}_{PR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
 set(hlegend,'box','off')
 grid on
-axis([0.1, 0.9, 0, 3])
+axis([0, 2.5, 0, 15])
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
-set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.05,ylim(1)])
-title('$(b) \quad N_o + N_c=10$','Interpreter', 'latex');
+set(h,'Position',[xlim(2)+(xlim(2)+xlim(1))*0.12,ylim(1)])
+title('$(b) \quad \rho_c = 1.07\%$','Interpreter', 'latex');
+
+%% WITH SET OBSTACLE
+k2 = [1.0723,2.1447,3.2170,4.2893,5.3617];
+subplot(2,2,3)
+
+xx=linspace(k2(end),k2(1));
+yy=interp1(k2,SR2(:,1),xx,'PCHIP');
+yi = smooth(SR2(:,1)) ;
+plot(k2,SR2(:,1),'-^','linewidth',1.2,'Color',[0.86667, 0.62745, 0.86667],'MarkerFaceColor',[0.86667, 0.62745, 0.86667],'MarkerEdgeColor',[0.86667, 0.62745, 0.86667])
+hold on
+
+xx=linspace(k2(end),k2(1));
+yy=interp1(k2,SR2(:,2),xx,'PCHIP');
+plot(k2,SR2(:,2),':s','linewidth',2,'Color',[0.8549,0.43922, 0.83922],'MarkerFaceColor',[0.8549,0.43922, 0.83922],'MarkerEdgeColor',[0.8549,0.43922, 0.83922])
+hold on
+
+xx=linspace(k2(end),k2(1));
+yy=interp1(k2,SR2(:,3),xx,'PCHIP');
+plot(k2,SR2(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
+hold on
+axis([0, 6, 0, 10])
+hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
+h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
+ylabel('Safety Risk $\sum \mathcal{X}_{SR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+set(hlegend,'box','off')
+grid on
+set(gca,'gridLineStyle', '-.');
+set(gca,'fontname','Times');
+xlim = get(gca,'XLim');
+ylim = get(gca,'YLim');
+set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.12,ylim(1)])
+title('$(c) \quad \rho_o = 0.52\%$','Interpreter', 'latex');
+
+subplot(2,2,4)
+
+plot(k2,PR2(:,1),'-^','linewidth',1.2,'Color',[1,0.62745, 0.47843],'MarkerFaceColor',[1,0.62745, 0.47843],'MarkerEdgeColor',[1,0.62745, 0.47843])
+hold on
+
+plot(k2,PR2(:,2),':s','linewidth',2,'Color',[1,0.64706, 0],'MarkerFaceColor',[1,0.64706, 0],'MarkerEdgeColor',[1,0.64706, 0])
+hold on
+
+plot(k2,PR2(:,3),'--d','linewidth',1.2,'Color',[1, 0.49804, 0.31373],'MarkerFaceColor',[1, 0.49804, 0.31373],'MarkerEdgeColor',[1, 0.49804, 0.31373])
+hold on
+
+hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
+
+h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
+ylabel('Privacy Risk $\sum \mathcal{X}_{PR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+set(hlegend,'box','off')
+grid on
+axis([0, 6, 0, 15])
+set(gca,'gridLineStyle', '-.');
+set(gca,'fontname','Times');
+xlim = get(gca,'XLim');
+ylim = get(gca,'YLim');
+set(h,'Position',[xlim(2)+(xlim(2)+xlim(1))*0.12,ylim(1)])
+title('$(d) \quad \rho_o = 0.52\%$','Interpreter', 'latex');
