@@ -6,8 +6,9 @@
 % 6: uuv = EnergyDisturbance(uuv, 1, 190);
 function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
-global configure
-l = [2,4,6];
+% global configure
+configure = Configure();
+l = [1,2,3];
 disturb = randi([4,6],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);
@@ -43,13 +44,13 @@ for i = 1: length(disturb)
         accuracy = (81 + unidrnd(18))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
-        viewradius = (2 + unidrnd(4))/2;
+        viewradius = (1 + unidrnd(5))/2;
         condition(i,:) = [4,viewradius];
     elseif disturb(i) == 5
-        speed = (70 + unidrnd(30))/100;
+        speed = (50 + unidrnd(50))/100;
         condition(i,:) = [5,speed];
     elseif disturb(i) == 6
-        acc = (70 + unidrnd(30))/100;
+        acc = (50 + unidrnd(50))/100;
         condition(i,:) = [6,acc];
     end    
 end
