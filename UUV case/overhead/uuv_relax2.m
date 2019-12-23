@@ -75,7 +75,7 @@ while(1)
     end
     
     if current_step == 1
-        need_replan = 0;
+        need_replan = 1;
         x_pre = x_initial;
     end
 
@@ -93,12 +93,14 @@ while(1)
 %                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
 %                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
 %                 x0(i) = unifrnd(0,1/uuv.N_s);
-                x0(i) = x_pre(i);
+%                 x0(i) = x_pre(i);
+                x0(i) = 0;
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = x_pre(i);
+%                 x0(i) = x_pre(i);
+                x0(i) = 0;
 %                 x0(i) = 1- unifrnd(0,0.2);
 %                 x0(i) = 1 - iternum * 1/50;
             end
