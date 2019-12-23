@@ -371,14 +371,13 @@ while (1)
 %         options.StepTolerance = 1.0000e-10;
 %         objuav_relax(x0),myconuav_relax(x0)
 %         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-        t1=clock;
+        t1 = clock;
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
-       
+        t2=clock;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
-        if exitflag > 0
-            t2=clock;
+        if exitflag > 0            
             planning_time = [planning_time; etime(t2,t1)];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);

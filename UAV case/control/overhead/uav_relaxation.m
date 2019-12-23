@@ -154,8 +154,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-    env_known = remove_obstacle(env_known);
-    env_known = remove_privacy(env_known);
+%     env_known = remove_obstacle(env_known);
+%     env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -351,9 +351,9 @@ while (1)
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-        t1=clock;
+        t1_1 = clock;
         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-       
+        t2_2 = clock;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
@@ -434,17 +434,20 @@ while (1)
 %             [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@obj_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@mycon_relax, options_relax);
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
-            options.tolx = 1e-10;
-            options.tolfun = 1e-10;
-            options.TolCon = 1e-10; 
+%             options.tolx = 1e-10;
+%             options.tolfun = 1e-10;
+%             options.TolCon = 1e-10; 
             options.Display = 'off';
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
+            t1_1 = clock;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
+            t2_2 = clock;
             if exitflag_relax > 0 || (iternum_relax == 1 && exitflag > 0 )
-                t2=clock;
-                planning_time = [planning_time; etime(t2,t1)];
+                TIME1 = etime(t2_1,t1_1);
+                TIME2 = etime(t2_2,t1_2);
+                planning_time = [planning_time; TIME1 + TIME2];
                 if exitflag_relax > 0
                     x = x_relax;
                 else
@@ -532,10 +535,10 @@ while (1)
             
             end
        end
-    elseif exitflag > 0
+    elseif exitflag > 0           
+            TIME1 = etime(t2_1,t1_1);
+            planning_time = [planning_time; TIME1];
             fprintf('no need replanning')
-            t2=clock;
-            planning_time = [planning_time; etime(t2,t1)];
             plan_num = plan_num + 1;
             flag = [flag, exitflag];
             plan_x (current_step,1) = length(x);

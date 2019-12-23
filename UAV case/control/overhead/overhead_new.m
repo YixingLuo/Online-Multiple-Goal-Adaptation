@@ -72,7 +72,9 @@ for i = 1:length(time3)
 end
 a3 = mean(now_time3);
 c3 = std(now_time3);
+% [counts,centers] = hist(now_time3,5);
 % figure,
-% hist(time)
+% bar(centers, counts / sum(counts),'FaceColor',[0 .5 .5],'LineWidth',1)
+% axis([0, 2, 0, 1])
 
-statistic_time_data = [a1,c1;a2,c2;a3,c3];
+statistic_time_data = [a1,c1;a2,c2;a3,c3]
