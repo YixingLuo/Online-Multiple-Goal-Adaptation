@@ -39,7 +39,7 @@ need_replan = 0;
 plan_num = length(indextemp);
 index_cond = 1;
 while(1)
-    need_replan = 0;
+    need_replan = 1;
     fprintf('uuv_relaxation: current step %d\n', current_step);
    
 %     current_step

@@ -353,7 +353,7 @@ while (1)
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
         t1_1 = clock;
         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-        t2_2 = clock;
+        t2_1 = clock;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
@@ -441,9 +441,9 @@ while (1)
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
-            t1_1 = clock;
+            t1_2 = clock;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            t2_1 = clock;
+            t2_2 = clock;
             if exitflag_relax > 0 || (iternum_relax == 1 && exitflag > 0 )
                 TIME1 = etime(t2_1,t1_1);
                 TIME2 = etime(t2_2,t1_2);

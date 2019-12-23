@@ -37,7 +37,7 @@ plan_num = length(indextemp);
 index_cond = 1;
 x_plan = [];
 while(1)
-    need_replan = 0;
+    need_replan = 1;
     fprintf('uuv_relax: current step %d\n', current_step);
     
     if current_step > 360 
@@ -108,7 +108,7 @@ while(1)
             %%slash variable
             lb = [lb, 0, 0, 0];
             ub = [ub,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
-            x0 = [x0, 0, 0, 0];
+            x0 = [x0,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
 %             %% 1125
 %             lb = [lb, 0, 0, 0];
 %             ub = [ub,1, 1, 1];

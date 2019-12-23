@@ -37,7 +37,7 @@ plan_num = length(indextemp);
 index_cond = 1;
 
 while(1)
-    need_replan = 0;
+    need_replan = 1;
     fprintf('uuv_normal: current step %d\n', current_step);
     
     if current_step > 360

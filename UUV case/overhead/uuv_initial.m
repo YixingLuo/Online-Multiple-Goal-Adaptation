@@ -39,7 +39,7 @@ while exitflag <= 0
     optimset('Algorithm','sqp');  
     [x,fval,exitflag]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv);
     
-    if exitflag > 0 || iternum > 10
+    if exitflag > 0 
         fprintf(2,'uuv_initial: have solution at current step: %d \n',exitflag);
         flag = [flag,exitflag];
         f_value = [f_value, fval];
