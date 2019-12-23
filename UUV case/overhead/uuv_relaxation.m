@@ -1,4 +1,4 @@
-function [data,usage_plan,planning_time,rate_list,tag_list] = uuv_relaxation(nnum, indextemp)
+function [data,usage_plan,planning_time,rate_list,tag_list] = uuv_relaxation(nnum, indextemp, x_initial)
 % clc
 % clear
 global eplison
@@ -39,7 +39,7 @@ need_replan = 0;
 plan_num = length(indextemp);
 index_cond = 1;
 while(1)
-    need_replan = 1;
+    need_replan = 0;
     fprintf('uuv_relaxation: current step %d\n', current_step);
    
 %     current_step
@@ -74,8 +74,8 @@ while(1)
     end
     
     if current_step == 1
-        need_replan = 1;
-%         x_pre = x_initial;
+        need_replan = 0;
+        x_pre = x_initial;
     end
 
     if need_replan == 1 
@@ -91,13 +91,15 @@ while(1)
             for i = 1 : uuv.N_s % portion of time
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = unifrnd(0,1/uuv.N_s);
+                x0(i) = x_pre(i);
+%                 x0(i) = unifrnd(0,1/uuv.N_s);
 %                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = 1- unifrnd(0,0.2);
+                x0(i) = x_pre(i);
+%                 x0(i) = 1- unifrnd(0,0.2);
 %                 x0(i) = 1 - iternum * 1/50;
             end
 %             x0 = x_pre(1:15);
@@ -158,13 +160,15 @@ while(1)
                 for i = 1 : uuv.N_s % portion of time
                     lb_relax(i) = 0;
                     ub_relax(i) = 1;
-                    x0_relax(i) = unifrnd(0,1/uuv.N_s);
+                    x0_relax(i) = x(i);
+%                     x0_relax(i) = unifrnd(0,1/uuv.N_s);
 %                     x0_relax(i) = 1/uuv.N_s-0.2/50*iternum_relax;
                 end
                 for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                     lb_relax(i) = 0;
                     ub_relax(i) = 1;
-                    x0_relax(i) = 1- unifrnd(0,0.2);
+                    x0_relax(i) = x(i);
+%                     x0_relax(i) = 1- unifrnd(0,0.2);
 %                     x0_relax(i) = 1 - iternum_relax * 1/50;
                 end 
 %                 x0_relax = x_pre(1:15);

@@ -1,4 +1,4 @@
-function [data,usage_plan,planning_time] = uuv_normal(nnum, indextemp)
+function [data,usage_plan,planning_time] = uuv_normal(nnum, indextemp, x_initial)
 % t1=clock;
 % clc
 % clear
@@ -37,7 +37,7 @@ plan_num = length(indextemp);
 index_cond = 1;
 
 while(1)
-    need_replan = 1;
+    need_replan = 0;
     fprintf('uuv_normal: current step %d\n', current_step);
     
     if current_step > 360
@@ -76,8 +76,8 @@ while(1)
     end
     
     if current_step == 1
-        need_replan = 1;
-%         x_pre = x_initial;
+        need_replan = 0;
+        x_pre = x_initial;
     end
 
     if need_replan == 1 
@@ -94,12 +94,14 @@ while(1)
                 ub(i) = 1;
 %                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
 %                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
-                x0(i) = unifrnd(0,1/uuv.N_s);
+%                 x0(i) = unifrnd(0,1/uuv.N_s);
+                x0(i) = x_pre(i);
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = 1- unifrnd(0,0.2);
+%                 x0(i) = 1- unifrnd(0,0.2);
+                x0(i) = x_pre(i);
 %                 x0(i) = 1 - iternum * 1/50;              
             end
 %             length(lb)

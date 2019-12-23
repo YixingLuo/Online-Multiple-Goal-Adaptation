@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
+function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map, num_condition, indextemp)
 global env
 global env_known
 global configure
@@ -47,15 +47,16 @@ rate_list = [];
 tag_list = [];
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(num) + '.mat';
+name = 'gridmap-' + string(num_map) + '.mat';
 gridmap = load(name);
-% gridmap = load('gridmap.mat');
 env = gridmap.map;
 env_known = Environment();
 
-name_con = 'condition' + string(num) + '.mat';
-cond = load(name_con);
-index_cond = 1;
+if num_map > 0
+    name_con = 'condition' + string(num_condition) + '.mat';
+    cond = load(name_con);
+    index_cond = 1;
+end
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -74,101 +75,40 @@ end
 following_point = [following_point; end_point];
 
 
-% %% ***************** PLOT *****************
-% addpath('utils')
-% addpath('trajectories')
-% trajhandle = @navigation;
-% controlhandle = @controller;
-% real_time = true;
-% params = crazyflie();
-% 
-% %% **************************** FIGURES *****************************
-% fprintf('Initializing figures...\n')
-% h_fig = figure;
-% h_3d = gca;
-% axis equal
-% grid on
-% view(3);
-% xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
-% quadcolors = lines(nquad);
-% nquad = 1;
-% %% *********************** INITIAL CONDITIONS ***********************
-% fprintf('Setting initial conditions...\n')
-% max_iter  = 5000;      % max iteration
-% starttime = 0;
-% % starttime = 2;         % start of simulation in seconds
-% tstep     = 0.01;      % this determines the time step at which the solution is given
-% cstep     = 0.05;      % image capture time interval
-% nstep     = cstep/tstep;
-% time_SIM      = starttime; % current time
-% err = []; % runtime errors
-% 
-% for qn = 1:nquad
-%     % Get start and stop position
-%     des_start = trajhandle(start_time, qn)
-%     des_stop  = trajhandle(end_time, qn)
-%     stop{qn}  = des_stop.pos;
-%     x_INITIAL{qn}    = init_state( des_start.pos, 0 );
-%     xtraj{qn} = zeros(max_iter*nstep, length(x0_INITIAL{qn}));
-%     ttraj{qn} = zeros(max_iter*nstep, 1);
-% end
-% 
-% x_VAR         = x_INITIAL;        % state
-% pos_tol   = 1e-3;
-% vel_tol   = 1e-3;
-% set(gcf,'Renderer','OpenGL')
-
-
 while (1)
-%     if no_solution_flag == 1
-%         needplan = 1;
-%         no_solution_flag = 0;
-%     else
-%         needplan = 0;
-%     end
-    needplan = 0;
+    needplan = 1;
     
-    if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-        needplan = 1;
-        if cond.condition(index_cond,1) == 1
-            configure = EnergyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 2
-                configure = TimeTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 3
-                configure = AccuracyTarget(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 4
-                configure = ViewDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 5
-                configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 6
-                configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
+    if num_map > 0
+        if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+            needplan = 1;
+            if cond.condition(index_cond,1) == 1
+                configure = EnergyTarget(configure, cond.condition(index_cond,2));
+                elseif cond.condition(index_cond,1) == 2
+                    configure = TimeTarget(configure, cond.condition(index_cond,2));
+                elseif cond.condition(index_cond,1) == 3
+                    configure = AccuracyTarget(configure, cond.condition(index_cond,2));
+                elseif cond.condition(index_cond,1) == 4
+%                     configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+                    configure = EnergyDisturbance(configure, cond.condition(index_cond,2), cond.condition(index_cond,3));
+                elseif cond.condition(index_cond,1) == 5
+                    configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
+                elseif cond.condition(index_cond,1) == 6
+                    configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
+            end
+            index_cond = index_cond+1;
         end
-        index_cond = index_cond+1;
     end
     
     fprintf(2,'uav_relaxation: current step %d\n', current_step);
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
-        if configure.forensic_target - configure.forensic_budget > 0
-            DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
-        else
-            DS_i = [information,(information - configure.forensic_budget)/(1-configure.forensic_budget)];
-        end
-        if configure.Time_budget - configure.Time_target > 0
-            DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
-        else
-            DS_t = [time, (configure.Time_budget - time)/configure.Time_budget];
-        end
-        if configure.battery_budget - configure.battery_target > 0
-            DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        else
-            fprintf(2,'goal remove!\n')
-            DS_e = [energy, (configure.battery_budget - energy) /configure.battery_budget];
-        end
-        [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
-        [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
+        DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
+        DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
+        DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
+        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+%         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';
@@ -211,7 +151,7 @@ while (1)
     width_p = 0;
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
-%     %% 1114
+    %% 1114
 %     env_known = remove_obstacle(env_known);
 %     env_known = remove_privacy(env_known);
     for oo = 1:length_o
@@ -255,9 +195,9 @@ while (1)
 %             nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.end_point(2));
 %             nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.end_point(3));
             %% 1113
-            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
             nowp_x(i+1) = max(nowp_x(i+1), 0);
             nowp_y(i+1) = max(nowp_y(i+1), 0);
             nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -287,10 +227,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-%         energy = configure.battery_per * distance;
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end        
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0
@@ -319,7 +261,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -331,8 +273,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = ub(i) - iternum * 2/30;
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -344,9 +286,16 @@ while (1)
             for i = 1: 3 %% velocity constraint for the last point
                 index = (initial_N+1) * i;
                 lb(index) = configure.velocity_min;
+                ub(index) = configure.velocity_max;
+                if (following_point(end,i)-following_point(end-1,i)) > 0
+                    ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                else
+                    lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                end
+%                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
 %                 ub(index) = configure.velocity_max;
-                ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-                ub(index) = max(lb(index),ub(index));
+%                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                ub(index) = max(lb(index),ub(index)); 
 %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
                 x0(index) = max(lb(index),ub(index));
 %                if current_point(i)> configure.end_point(i)
@@ -359,8 +308,8 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
-%                 x0(i) = ub(i) - iternum * 1/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = configure.sensor_accuracy;
+%                 x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;
@@ -429,7 +378,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=20
+       while exitflag_relax <= 0 && iternum_relax<=5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -440,8 +389,8 @@ while (1)
                for i = 1 : (initial_N+1) * 3
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
-                   x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                    x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -450,25 +399,31 @@ while (1)
 %                    end
                end        
                for i = 1: 3 %% velocity constraint for the last point                
-                   index = (initial_N+1) * i;
-                   lb_relax(index) = configure.velocity_min;
-%                    ub_relax(index) = configure.velocity_max;
-                   ub_relax(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-                   ub_relax(index) = max(lb_relax(index),ub_relax(index));  
-                   x0_relax(index) = max(lb_relax(index),ub_relax(index));
-%                    x0_relax(index) = ub_relax(index) - iternum_relax * (ub_relax(index)-lb_relax(index))/30;
+                    index = (initial_N+1) * i;
+                    lb_relax(index) = configure.velocity_min;
+                    ub_relax(index) = configure.velocity_max;
+                    if (following_point(end,i)-following_point(end-1,i)) > 0
+                        ub_relax(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    else
+                        lb_relax(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    end
+    %                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+    %                 ub(index) = configure.velocity_max;
+    %                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                    ub_relax(index) = max(lb_relax(index),ub_relax(index)); 
+    %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
+                    x0_relax(index) = max(lb_relax(index),ub_relax(index));
 %                    if current_point(i)> configure.end_point(i)
-%                         x0_relax(index) = unifrnd(lb_relax(index),0);
+%                         x0_relax(index) =  unifrnd(lb_relax(index),0);
 %                    else                   
 %                         x0_relax(index) = unifrnd(0,ub_relax(index));
 %                    end
-%                     x0_relax(index) = unifrnd(lb_relax(index),ub_relax(index));
                 end        
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                     lb_relax(i) = 0;
                     ub_relax(i) = configure.sensor_accuracy;
-                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                     x0_relax(i) = ub_relax(i) - iternum_relax * 1/30;
+%                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                    x0_relax(i) = configure.sensor_accuracy;
 %                     x0_relax(i) = x(i);
                 end
 
@@ -483,11 +438,14 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 20 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0
                     x = x_relax;
+                else
+                    relax_num = relax_num - 1;
+                    plan_num = plan_num + 1;
                 end
                 flag_relax = [flag_relax, exitflag_relax];
                 plan_x (current_step,1) = length(x);
@@ -509,9 +467,9 @@ while (1)
                 ws(1) = current_point(4);
                 for i = 1: size(following_plan,1) - 1
                     %% 1113
-                    nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-                    nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-                    nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+                    nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+                    nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+                    nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
                     nowp_x(i+1) = max(nowp_x(i+1), 0);
                     nowp_y(i+1) = max(nowp_y(i+1), 0);
                     nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -540,10 +498,12 @@ while (1)
                     distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %                   info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                     info = info + trajectory(i+1,4)*configure.Time_step;
-                    engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                    engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                 end
-        %         energy = configure.battery_per * distance;
-                energy = configure.battery_per * engy;
+                for i = 1: size(velocity_history,1)-1
+                     engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+                end
+                energy =  engy;
                 past_distance = distance;
                 time = configure.Time_step * (a-1);
                 if time == 0
@@ -593,9 +553,9 @@ while (1)
             ws(1) = current_point(4);
             for i = 1: size(following_plan,1) - 1
                 %% 1113
-                nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-                nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-                nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+                nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+                nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+                nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
                 nowp_x(i+1) = max(nowp_x(i+1), 0);
                 nowp_y(i+1) = max(nowp_y(i+1), 0);
                 nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -623,10 +583,12 @@ while (1)
                 distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
  %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
                 info = info + trajectory(i+1,4)*configure.Time_step;
-                engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
             end
-        %         energy = configure.battery_per * distance;
-            energy = configure.battery_per * engy;
+            for i = 1: size(velocity_history,1)-1
+                engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+            end
+            energy = engy;
             past_distance = distance;
             time = configure.Time_step * (a-1);
             if time == 0
@@ -663,9 +625,9 @@ while (1)
         nowp_z(1) = current_point(3);
         ws(1) = current_point(4);
         for i = 1: size(following_plan,1) - 1
-            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x - 1);
-            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y - 1);
-            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z - 1);
+            nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+            nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+            nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
             nowp_x(i+1) = max(nowp_x(i+1), 0);
             nowp_y(i+1) = max(nowp_y(i+1), 0);
             nowp_z(i+1) = max(nowp_z(i+1), 0);
@@ -693,9 +655,12 @@ while (1)
              distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
 %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
              info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
         end
-        energy = configure.battery_per * engy;
+        for i = 1: size(velocity_history,1)-1
+             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+        end        
+        energy = engy;
         past_distance = distance;
         time = configure.Time_step * (a-1);
         if time == 0

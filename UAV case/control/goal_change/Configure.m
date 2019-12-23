@@ -53,7 +53,11 @@ end_point = [9,9,9,1]
         end
         function config = AccuracyDisturbance(config, accuracy)
              config.sensor_accuracy = accuracy;
-        end       
+        end
+        function config = EnergyDisturbance(config, energy_per1, energy_per2)
+            config.battery_per = energy_per1;
+            config.battery_per2 = energy_per2;
+        end
  end
 end
 

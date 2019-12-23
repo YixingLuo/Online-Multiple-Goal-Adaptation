@@ -443,7 +443,7 @@ while (1)
 %             options.MaxFunEvals = 100000;
             t1_1 = clock;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            t2_2 = clock;
+            t2_1 = clock;
             if exitflag_relax > 0 || (iternum_relax == 1 && exitflag > 0 )
                 TIME1 = etime(t2_1,t1_1);
                 TIME2 = etime(t2_2,t1_2);

@@ -132,11 +132,11 @@ classdef Environment
             end
         end
         
-        function env = map_initial3(env, rate_obj, rate_o)
+        function env = map_initial3(env, num_o, num_p)
             global configure    
             capacity = configure.grid_x * configure.grid_y * configure.grid_z;
-            num_o = floor(rate_o * rate_obj * capacity / (4/3*pi*configure.obstacle_radius.^3));
-            num_p = floor((1-rate_o) * rate_obj * capacity / (4/3*pi*configure.privacy_radius.^3));
+%             num_o = floor(rate_o * capacity / (4/3*pi*configure.obstacle_radius.^3));
+%             num_p = floor(rate_p * capacity / (4/3*pi*configure.privacy_radius.^3));
             index_o = 0;
             for index_o = 1:1:num_o
                 [length_o, width_o] = size(env.obstacle_list);
@@ -144,9 +144,9 @@ classdef Environment
                 current_idx = 0;
                 while flag_o < 0
                     flag_o = -3;
-                    temp_x = unifrnd(0+configure.obstacle_radius, configure.grid_x-configure.obstacle_radius);
-                    temp_y = unifrnd(0+configure.obstacle_radius, configure.grid_y-configure.obstacle_radius);
-                    temp_z = unifrnd(0+configure.obstacle_radius, configure.grid_z-configure.obstacle_radius);
+                    temp_x = unifrnd(configure.start_point(1)+configure.obstacle_radius, configure.end_point(1)-configure.obstacle_radius);
+                    temp_y = unifrnd(configure.start_point(2)+configure.obstacle_radius, configure.end_point(2)-configure.obstacle_radius);
+                    temp_z = unifrnd(configure.start_point(3)+configure.obstacle_radius, configure.end_point(3)-configure.obstacle_radius);
                     current_point = [temp_x,temp_y,temp_z];
                     for oo = 1:length_o
                         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) < 2*configure.obstacle_radius
@@ -171,9 +171,9 @@ classdef Environment
                 while flag_p < 0
                     flag_p = -3;
                     iter_num = iter_num + 1;
-                    temp_x = unifrnd(0+configure.privacy_radius, configure.grid_x-configure.privacy_radius);
-                    temp_y = unifrnd(0+configure.privacy_radius, configure.grid_y-configure.privacy_radius);
-                    temp_z = unifrnd(0+configure.privacy_radius, configure.grid_z-configure.privacy_radius);
+                    temp_x = unifrnd(configure.start_point(1)+configure.privacy_radius, configure.end_point(1)-configure.privacy_radius);
+                    temp_y = unifrnd(configure.start_point(2)+configure.privacy_radius, configure.end_point(2)-configure.privacy_radius);
+                    temp_z = unifrnd(configure.start_point(3)+configure.privacy_radius, configure.end_point(3)-configure.privacy_radius);
                     current_point = [temp_x,temp_y,temp_z];
                     for pp = 1:1:length_p + length_o
                         pp;
@@ -206,7 +206,95 @@ classdef Environment
                 end
             end
         end
+        function env = map_initial_with_privacy(env, num_o, privacy_list)
+            global configure    
+            [lp, wp] = size(privacy_list);
+            for index_p = 1:lp
+                env = env.add_privacy(privacy_list(index_p,1), privacy_list(index_p,2), privacy_list(index_p,3));
+            end
             
+            for index_o = 1:1:num_o
+                [length_o, width_o] = size(env.obstacle_list);
+                [length_p, width_p] = size(env.privacy_list);
+                flag_o = -3;
+                current_idx = 0;
+                iter_num = 0;
+                while flag_o < 0
+                    flag_o = -3;
+                    iter_num = iter_num + 1;
+                    temp_x = unifrnd(configure.start_point(1)+configure.obstacle_radius, configure.end_point(1)-configure.obstacle_radius);
+                    temp_y = unifrnd(configure.start_point(2)+configure.obstacle_radius, configure.end_point(2)-configure.obstacle_radius);
+                    temp_z = unifrnd(configure.start_point(3)+configure.obstacle_radius, configure.end_point(3)-configure.obstacle_radius);
+                    current_point = [temp_x,temp_y,temp_z];
+                    for oo = 1:1:length_p + length_o
+                        if oo <= length_p
+                            if sqrt((env.privacy_list(oo, 1)-current_point(1)).^2+(env.privacy_list(oo, 2)-current_point(2)).^2+(env.privacy_list(oo, 3)-current_point(3)).^2) < configure.obstacle_radius + configure.privacy_radius
+                                flag_o = -2;
+                                current_idx = oo;
+                                break;
+                            end
+                        else
+                            if sqrt((env.obstacle_list(oo-length_p, 1)-current_point(1)).^2+(env.obstacle_list(oo-length_p, 2)-current_point(2)).^2+(env.obstacle_list(oo-length_p, 3)-current_point(3)).^2) < 2*configure.obstacle_radius
+                                flag_o = -1;
+                                current_idx = oo;
+                                break;
+                            end
+                        end
+                    end
+                    if flag_o == -3
+                        env = env.add_obstacle(temp_x, temp_y, temp_z );
+                        flag_o = 1;
+                        break
+                    end
+                end
+            end
+        end
+        
+        function env = map_initial_with_obstacle(env, num_p, obstacle_list)
+            global configure    
+            [lo, wo] = size(obstacle_list);
+            for index_o = 1:lo
+                env = env.add_obstacle(obstacle_list(index_o,1), obstacle_list(index_o,2), obstacle_list(index_o,3));
+            end
+            
+            for index_p = 1:1:num_p
+                [length_o, width_o] = size(env.obstacle_list);
+                [length_p, width_p] = size(env.privacy_list);
+                flag_p = -3;
+                current_idx = 0;
+                iter_num = 0;
+                while flag_p < 0
+                    flag_p = -3;
+                    iter_num = iter_num + 1;
+                    temp_x = unifrnd(configure.start_point(1)+configure.privacy_radius, configure.end_point(1)-configure.privacy_radius);
+                    temp_y = unifrnd(configure.start_point(2)+configure.privacy_radius, configure.end_point(2)-configure.privacy_radius);
+                    temp_z = unifrnd(configure.start_point(3)+configure.privacy_radius, configure.end_point(3)-configure.privacy_radius);
+                    current_point = [temp_x,temp_y,temp_z];
+                    for pp = 1:1:length_o + length_p
+                        if pp <= length_o
+                            if sqrt((env.obstacle_list(pp, 1)-current_point(1)).^2+(env.obstacle_list(pp, 2)-current_point(2)).^2+(env.obstacle_list(pp, 3)-current_point(3)).^2) < configure.privacy_radius + configure.obstacle_radius
+                                flag_o = -2;
+                                current_idx = pp;
+                                break;
+                            end
+                        else
+                            if sqrt((env.privacy_list(pp-length_o, 1)-current_point(1)).^2+(env.privacy_list(pp-length_o, 2)-current_point(2)).^2+(env.privacy_list(pp-length_o, 3)-current_point(3)).^2) < 2*configure.privacy_radius
+                                flag_p = -1;
+                                current_idx = pp;
+                                break;
+                            end
+                        end
+                    end
+                    if flag_p == -3
+                        env = env.add_privacy(temp_x, temp_y, temp_z );
+                        flag_p = 1;
+                        break
+                    end
+                end
+            end
+        end
+        
+        
     end
 end
 

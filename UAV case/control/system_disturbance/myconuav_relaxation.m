@@ -37,44 +37,56 @@ p_z = [p_z, configure.end_point(3)];
 % time_to_destination2 = min((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
 % time_to_destination2 = min(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
 
-% time_list = [];
-% if x(initial_N + 1) ~= 0
-%     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
-%     time_list = [time_list, time_x];
-% else
+if x(initial_N + 1) ~= 0
+    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+    c = [c, time + initial_N*tau + time_x - configure.Time_budget];
+    c = [c, -time_x];
+else
 %     ceq = [ceq , p_x(end)-p_x(end-1)];
-%     time_x = 0;
-% end
-% if x(2*(initial_N + 1)) ~= 0
-%     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
-%     time_list = [time_list, time_y];
-% else
+end
+if x(2*(initial_N + 1)) ~= 0
+    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+    c = [c, time + initial_N*tau + time_y - configure.Time_budget];
+    c = [c, -time_y];
+else
 %     ceq = [ceq , p_y(end)-p_y(end-1)];
-%     time_y = 0;
-% end
-% if x(3*(initial_N + 1)) ~= 0
-%     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
-%     time_list = [time_list, time_z];
-% else
+end
+if x(3*(initial_N + 1)) ~= 0
+    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+    c = [c, time + initial_N*tau + time_z - configure.Time_budget];
+    c = [c, -time_z];
+else
 %     ceq = [ceq , p_z(end)-p_z(end-1)];
-%     time_z = 0;
-% end
-% 
-% for i = 1:length(time_list)
-%     c = [c, - time_list(i)];
-% end
+end
+time_list = [];
+if x(initial_N + 1) ~= 0
+    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+    time_list = [time_list, time_x];
+else
+    time_x = 0;
+end
+if x(2*(initial_N + 1)) ~= 0
+    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+    time_list = [time_list, time_y];
+else
+    time_y = 0;
+end
+if x(3*(initial_N + 1)) ~= 0
+    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+    time_list = [time_list, time_z];
+else
+    time_z = 0;
+end
 
-% if length(time_list) == 2
-%     ceq = [ceq , time_list(1)-time_list(2)];
-%     elseif length(time_list) == 3
-%         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
-% end
+for i = 1:length(time_list)
+    c = [c, - time_list(i)];
+end
 
-% if length(time_list) > 0
-%     time_now = time + initial_N*tau + time_list(1);
-% else
-%     time_now = time + initial_N*tau;
-% end
+if length(time_list) == 2
+    ceq = [ceq , time_list(1)-time_list(2)];
+    elseif length(time_list) == 3
+        ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+end
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
@@ -91,11 +103,13 @@ info_now = 0;
 for i = 1:initial_N + 1
     temp_dis = sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
     distance = distance + temp_dis;
-    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
+    energy_now = energy_now + configure.battery_per * x(3*(initial_N + 1)+i) * tau + sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     info_now = info_now + x(3*(initial_N + 1)+i)*sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
 %     time_now = time_now + temp_dis/sqrt(x(i).^2+x((initial_N + 1) + i).^2+x(2*(initial_N + 1) + i).^2);
 end
-
+for i = 1:initial_N
+    energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
+end
 for i = 1:initial_N 
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end
@@ -141,13 +155,13 @@ end
 
 if ratio(1)> eplison
     for j = 1: length_o
-        for i = 1:initial_N + 1
+        for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
         end
     end
 else
     for j = 1: length_o
-        for i = 1:initial_N + 1
+        for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max)];
         end
     end
@@ -155,13 +169,13 @@ end
 
 if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N + 1
+        for i = 1:initial_N + 1 
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N + 1
+        for i = 1:initial_N  + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end

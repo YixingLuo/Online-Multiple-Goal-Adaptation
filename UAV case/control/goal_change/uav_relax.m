@@ -85,7 +85,8 @@ while (1)
                 elseif cond.condition(index_cond,1) == 3
                     configure = AccuracyTarget(configure, cond.condition(index_cond,2));
                 elseif cond.condition(index_cond,1) == 4
-                    configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+%                     configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+                    configure = EnergyDisturbance(configure, cond.condition(index_cond,2), cond.condition(index_cond,3));
                 elseif cond.condition(index_cond,1) == 5
                     configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
                 elseif cond.condition(index_cond,1) == 6
