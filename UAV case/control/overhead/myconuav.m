@@ -21,13 +21,13 @@ for i = 1: initial_N
      p_x(i+1) = x(i)*tau + p_x(i);
      p_y(i+1) = x(i+(initial_N + 1))*tau + p_y(i);
      p_z(i+1) = x(i+2*(initial_N + 1))*tau + p_z(i);
-     c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
-     c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
+%      c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
+%      c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
-% ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9
-% ceq(2) = x(2*(initial_N + 1))*tau + p_x(2*(initial_N + 1)-1) - 9
-% ceq(3) = x(3*(initial_N + 1))*tau + p_x(3*(initial_N + 1)-1) - 9
+% ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9;
+% ceq(2) = x(2*(initial_N + 1))*tau + p_x(2*(initial_N + 1)-1) - 9;
+% ceq(3) = x(3*(initial_N + 1))*tau + p_x(3*(initial_N + 1)-1) - 9;
 
 p_x = [p_x, configure.end_point(1)];
 p_y = [p_y, configure.end_point(2)];
@@ -161,14 +161,14 @@ if length_p > 0
 end
 
 for j = 1: length_o
-    for i = 1:initial_N + 1 
+    for i = 1:initial_N
         x_index = 4*(initial_N + 1) + (j-1) * (initial_N+1) + i;
         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
     end
 end
 
 for j = 1: length_p
-    for i = 1:initial_N + 1 
+    for i = 1:initial_N
         x_index = 4*(initial_N + 1) + bound_o + (j-1) * (initial_N+1) + i;
         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
     end

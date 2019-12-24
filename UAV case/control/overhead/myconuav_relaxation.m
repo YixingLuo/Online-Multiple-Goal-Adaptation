@@ -24,13 +24,17 @@ for i = 1: initial_N
      p_x(i+1) = x(i)*tau + p_x(i);
      p_y(i+1) = x(i+(initial_N + 1))*tau + p_y(i);
      p_z(i+1) = x(i+2*(initial_N + 1))*tau + p_z(i);
-     c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
-     c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
+%      c = [c, -p_x(i+1), -p_y(i+1), -p_z(i+1)];
+%      c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
 p_x = [p_x, configure.end_point(1)];
 p_y = [p_y, configure.end_point(2)];
 p_z = [p_z, configure.end_point(3)];
+
+% ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9;
+% ceq(2) = x(2*(initial_N + 1))*tau + p_x(2*(initial_N + 1)-1) - 9;
+% ceq(3) = x(3*(initial_N + 1))*tau + p_x(3*(initial_N + 1)-1) - 9;
 
 % time_to_destination = max((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
 % time_to_destination = max(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
@@ -155,13 +159,13 @@ end
 
 if ratio(1)> eplison
     for j = 1: length_o
-        for i = 1:initial_N  + 1
+        for i = 1:initial_N
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
         end
     end
 else
     for j = 1: length_o
-        for i = 1:initial_N  + 1
+        for i = 1:initial_N 
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max)];
         end
     end
@@ -169,13 +173,13 @@ end
 
 if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N + 1 
+        for i = 1:initial_N 
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N  + 1
+        for i = 1:initial_N
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end
