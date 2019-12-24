@@ -261,7 +261,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 5
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -378,7 +378,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=5
+       while exitflag_relax <= 0 && iternum_relax < 5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -438,7 +438,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax >= 5 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0

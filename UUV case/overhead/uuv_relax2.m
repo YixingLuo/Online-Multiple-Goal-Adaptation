@@ -83,7 +83,7 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum =1: 1
+        for iternum =1: 50
             lb=[];
             ub=[];
             x0=[];
@@ -91,18 +91,18 @@ while(1)
                 lb(i) = 0;
                 ub(i) = 1;
 %                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
-%                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
-%                 x0(i) = unifrnd(0,1/uuv.N_s);
+                x0(i) = 1/uuv.N_s - 0.2/50*iternum;
+%                 x0(i) = unifrnd(0,1);
 %                 x0(i) = x_pre(i);
-                x0(i) = 0;
+%                 x0(i) = 0;
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
 %                 x0(i) = x_pre(i);
-                x0(i) = 0;
-%                 x0(i) = 1- unifrnd(0,0.2);
-%                 x0(i) = 1 - iternum * 1/50;
+%                 x0(i) = 0;
+%                 x0(i) = unifrnd(0,1);
+                x0(i) = 1 - iternum * 1/50;
             end
 %             length(lb)
 %             length(x_pre)
@@ -118,12 +118,15 @@ while(1)
             % options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
             options.Display = 'off';
-            t1 = clock;
+%             t1 = clock;
+            tic
             [x,fval,exitflag]=fmincon(@objuuv_relax2,x0,[],[],[],[],lb,ub,@myconuuv_relax2,options);
-            t2=clock;
-            planning_time = [planning_time; etime(t2,t1)];
+%             t2 = clock;
+            t2_2 = toc;
+            
             if exitflag > 0 
 %                 && fval < fval_pre
+                planning_time = [planning_time; t2_2];
                 fprintf(2,'uuv_relax: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;

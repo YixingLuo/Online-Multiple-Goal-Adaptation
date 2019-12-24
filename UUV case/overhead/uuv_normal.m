@@ -41,7 +41,7 @@ while(1)
     fprintf('uuv_normal: current step %d\n', current_step);
     
     if current_step > 360
-        fprintf('last step');
+        fprintf('last step\n');
         DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget);
         DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget);
         DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target);
@@ -85,26 +85,26 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum =1: 1 
+        for iternum =1: 50 
             lb=[];
             ub=[];
             x0=[];
             for i = 1 : uuv.N_s % portion of time
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = 0;
+%                 x0(i) = 0;
 %                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
-%                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
-%                 x0(i) = unifrnd(0,1/uuv.N_s);
+                x0(i) = 1/uuv.N_s - 0.2/50*iternum;
+%                 x0(i) = unifrnd(0,1);
 %                 x0(i) = x_pre(i);
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = 0;
-%                 x0(i) = 1- unifrnd(0,0.2);
+%                 x0(i) = 0;
+%                 x0(i) = unifrnd(0,1);
 %                 x0(i) = x_pre(i);
-%                 x0(i) = 1 - iternum * 1/50;              
+                x0(i) = 1 - iternum * 1/50;              
             end
 %             length(lb)
 %             length(x_pre)
@@ -112,12 +112,16 @@ while(1)
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';  
             options.Display = 'off';
-            t1=clock;
+%             t1=clock;
+            tic;
             [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal,options);
-            t2=clock;
-            planning_time = [planning_time; etime(t2,t1)];
+%             t2=clock;
+            t2_2 = toc;
+            
             if exitflag > 0 
-%                 && fval < fval_pre
+%                 etime(t2,t1);
+%                 t2_2;
+                planning_time = [planning_time; t2_2];
                 fprintf(2,'uuv_normal: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;

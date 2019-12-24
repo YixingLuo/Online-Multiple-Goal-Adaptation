@@ -38,15 +38,12 @@ for kk = 1:length(eplison_list)
         [data,usage_plan,planning_time] = uuv_normal(num, indextemp, x_pre);
         data1 = [data1 ; data];
         usage_plan1 = [usage_plan1 ; usage_plan];
-%         planning_time1 = [planning_time1; planning_time];
-%         planning_time, planning_time1(:,iter)
         planning_time =[planning_time; zeros(360-length(planning_time),1)] ;              
         planning_time1(:,iter) = planning_time;
 
         [data,usage_plan,planning_time] = uuv_relax2(num, indextemp, x_pre);
         data2 = [data2; data]; 
         usage_plan2 = [usage_plan2 ; usage_plan];
-%         planning_time2 = [planning_time2; planning_time];
         planning_time =[planning_time; zeros(360-length(planning_time),1)];               
         planning_time2(:,iter) = planning_time;
         
@@ -54,7 +51,6 @@ for kk = 1:length(eplison_list)
         [data,usage_plan,planning_time,rate_list,tag_list] = uuv_relaxation(num, indextemp, x_pre);
         data3 = [data3; data];
         usage_plan3 = [usage_plan3 ; usage_plan];
-%         planning_time3 = [planning_time3; planning_time];
         planning_time =[planning_time; zeros(360-length(planning_time),1)];               
         planning_time3(:,iter) = planning_time;
         rate_list_ = [rate_list, zeros(3,360-size(rate_list,2))];

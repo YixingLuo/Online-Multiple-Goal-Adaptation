@@ -34,7 +34,7 @@ engy = 0;
 for i = 1:uuv.N_s
 %   engy = engy + (exp((x(i)+x(i + uuv.N_s))/2)-1)*uuv.s_energy(i);
 %             engy = engy + x(i)*(exp(x(i + 2*uuv.N_s)+x(i + uuv.N_s)))/(exp(2))*uuv.s_energy(i);
-           engy = engy + x(i)*(exp(x(i + 2*uuv.N_s)+x(i + uuv.N_s)) - 1)/(exp(2)-1)*uuv.s_energy(i);
+             engy = engy + x(i)*(exp(x(i + 2*uuv.N_s)+x(i + uuv.N_s)) - 1)/(exp(2)-1)*uuv.s_energy(i);
 %            engy = engy + x(i)*(x(i + 2*uuv.N_s)+x(i + uuv.N_s))/2*uuv.s_energy(i);
 end
 energy = pastenergy + time_left * engy;
