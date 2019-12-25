@@ -267,7 +267,7 @@ while (1)
     
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum < 1
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -371,14 +371,16 @@ while (1)
 %         options.StepTolerance = 1.0000e-10;
 %         objuav_relax(x0),myconuav_relax(x0)
 %         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-        t1 = clock;
+%         t1 = clock;
+        tic;
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
-        t2=clock;
+%         t2=clock;
+        t2=toc;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
         if exitflag > 0            
-            planning_time = [planning_time; etime(t2,t1)];
+            planning_time = [planning_time; t2];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);
             for k = 1:length(x)
@@ -468,7 +470,7 @@ while (1)
         end
     end
 
-    if iternum >= 1 && exitflag<=0
+    if iternum >= 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

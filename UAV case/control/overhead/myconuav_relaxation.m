@@ -159,13 +159,13 @@ end
 
 if ratio(1)> eplison
     for j = 1: length_o
-        for i = 1:initial_N
+        for i = 1:initial_N + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
         end
     end
 else
     for j = 1: length_o
-        for i = 1:initial_N 
+        for i = 1:initial_N + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max)];
         end
     end
@@ -173,13 +173,13 @@ end
 
 if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N 
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end
