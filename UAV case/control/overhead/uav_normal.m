@@ -256,7 +256,7 @@ while (1)
     
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum < 1
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -280,7 +280,7 @@ while (1)
 %                 end
             end
         
-            for i = 1: 1 %% velocity constraint for the last point
+            for i = 1: 3 %% velocity constraint for the last point
                 index = (initial_N+1) * i;
                 lb(index) = configure.velocity_min;
                 ub(index) = configure.velocity_max;
@@ -330,16 +330,18 @@ while (1)
 %         objuav_normal(x0),myconuav_normal(x0)
 %         x0
 %         ratio = [1,1,1,1,1];
-        t1 = clock;
+%         t1 = clock;
+        tic
         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
-        t2 = clock;
+%         t2 = clock;
+        t2 = toc;
 %         [x,fval,exitflag]=fmincon(@objuav_relaxation,x0,[],[],[],[],lb,ub,@myconuav_relaxation, options);
        
         tau = configure.Time_step;
 
         iternum = iternum + 1;
         if exitflag > 0
-            planning_time = [planning_time;etime(t2,t1)];
+            planning_time = [planning_time;t2];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);
             for k = 1:length(x)
@@ -426,7 +428,7 @@ while (1)
         end
     end
 
-    if iternum >= 1 && exitflag<=0
+    if iternum >= 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

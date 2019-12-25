@@ -12,7 +12,7 @@ a1 = mean(time1);
 c1 = std(time1);
 
 now_time1 = [];
-num1 = find(time1>(a1+3*c1)|time1<(a1-3*c1));
+num1 = find(time1>(a1+1*c1)|time1<(a1-1*c1));
 for i = 1:length(time1)
     if find(num1==i)
         continue
@@ -37,7 +37,7 @@ a2 = mean(time2);
 c2 = std(time2);
 
 now_time2 = [];
-num2 = find(time2>(a2+3*c2)|time2<(a2-3*c2));
+num2 = find(time2>(a2+1*c2)|time2<(a2-1*c2));
 for i = 1:length(time2)
     if find(num2==i)
         continue
@@ -62,7 +62,7 @@ a3 = mean(time3);
 c3 = std(time3);
 
 now_time3 = [];
-num3 = find(time3>(a3+3*c3)|time3<(a3-3*c3));
+num3 = find(time3>(a3+1*c3)|time3<(a3-1*c3));
 for i = 1:length(time3)
     if find(num3==i)
         continue
@@ -75,6 +75,6 @@ c3 = std(now_time3);
 % [counts,centers] = hist(now_time3,5);
 % figure,
 % bar(centers, counts / sum(counts),'FaceColor',[0 .5 .5],'LineWidth',1)
-% axis([0, 2, 0, 1])
+% axis([0, 1, 0, 1])
 
 statistic_time_data = [a1,c1;a2,c2;a3,c3]

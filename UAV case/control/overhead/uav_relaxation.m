@@ -263,7 +263,7 @@ while (1)
     
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum < 1
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -351,9 +351,12 @@ while (1)
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-        t1_1 = clock;
+%         t1_1 = clock;
+        tic;
         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-        t2_1 = clock;
+%         t2_1 = clock;
+        t2_1 = toc;
+        TIME1 = t2_1;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
@@ -381,7 +384,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax < 1
+       while exitflag_relax <= 0 && iternum_relax < 5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -441,12 +444,15 @@ while (1)
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
-            t1_2 = clock;
+%             t1_2 = clock;
+            tic;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            t2_2 = clock;
-            if exitflag_relax > 0 || (iternum_relax == 1 && exitflag > 0 )
-                TIME1 = etime(t2_1,t1_1);
-                TIME2 = etime(t2_2,t1_2);
+%             t2_2 = clock;
+            t2_2 = toc;
+            TIME2 = t2_2;
+            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
+%                 TIME1 = etime(t2_1,t1_1);
+%                 TIME2 = etime(t2_2,t1_2);
                 planning_time = [planning_time; TIME1 + TIME2];
                 if exitflag_relax > 0
                     x = x_relax;
@@ -536,7 +542,7 @@ while (1)
             end
        end
     elseif exitflag > 0           
-            TIME1 = etime(t2_1,t1_1);
+%             TIME1 = etime(t2_1,t1_1);
             planning_time = [planning_time; TIME1];
             fprintf('no need replanning')
             plan_num = plan_num + 1;
