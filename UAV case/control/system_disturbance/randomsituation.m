@@ -46,15 +46,15 @@ for i = 1: length(disturb)
     elseif disturb(i) == 4
 %         viewradius = (1 + unidrnd(5))/2;
 %         condition(i,:) = [4,viewradius];
-        engy1 = (40 + unidrnd(20))*0.01;
-        engy2 = (16 + unidrnd(8))*0.01;
+        engy1 = (45 + unidrnd(10))*0.01;
+        engy2 = (18 + unidrnd(4))*0.01;
         condition(i,:) = [4, engy1, engy2];
         
     elseif disturb(i) == 5
-        speed = (80 + unidrnd(20))/100;
+        speed = (90 + unidrnd(10))/100;
         condition(i,:) = [5,speed,0];
     elseif disturb(i) == 6
-        acc = (80 + unidrnd(20))/100;
+        acc = (90 + unidrnd(10))/100;
         condition(i,:) = [6,acc,0];
     end    
 end

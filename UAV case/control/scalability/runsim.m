@@ -4,9 +4,9 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('planningtime_100.mat');
-planning_time = a.planning_time;
-end_time = (length(planning_time))*tau;
+a = load('velocity_history_100_1224.mat');
+velocity_history = a.velocity_history;
+end_time = (length(velocity_history))*tau;
 runsimulation(tau,start_time,end_time);
 
 
@@ -29,11 +29,11 @@ global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_100.mat');
+a = load('planningtime_100_1224.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_100.mat');
+a = load ('velocity_history_100_1224.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_100.mat');
+a = load('trajectory_100_1224.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -69,51 +69,51 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-100.mat');
-env = gridmap.map;
-r_o = configure.obstacle_radius;
-r_p = configure.privacy_radius;
-length_o = 0;
-width_o = 0;
-length_p = 0;
-width_p = 0;
-[length_o, width_o] = size(env.obstacle_list);
-[length_p, width_p] = size(env.privacy_list);
-axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-ax1 = axes;
-for i = 1: length_o
-    r=r_o;
-    ox0=env.obstacle_list(i,1);
-    oy0=env.obstacle_list(i,2);
-    oz0=env.obstacle_list(i,3);
-    [ox,oy,oz]=sphere;
-    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-    hold on
-end
-box on
-hidden off
-axis(axis_pos);
-colormap(ax1,winter);
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-set(gca,'fontname','Times')
-
-ax2 = axes;
-for i = 1: length_p
-    r=r_p;
-    px0=env.privacy_list(i,1);
-    py0=env.privacy_list(i,2);
-    pz0=env.privacy_list(i,3);
-    [px,py,pz]=sphere;
-    mesh(px0+r*px,py0+r*py,pz0+r*pz)
-    hold on
-end
-axis off
-hidden off
-axis(axis_pos );
-colormap(ax2,autumn);
-set(gca,'fontname','Times');
+% gridmap = load('gridmap-100.mat');
+% env = gridmap.map;
+% r_o = configure.obstacle_radius;
+% r_p = configure.privacy_radius;
+% length_o = 0;
+% width_o = 0;
+% length_p = 0;
+% width_p = 0;
+% [length_o, width_o] = size(env.obstacle_list);
+% [length_p, width_p] = size(env.privacy_list);
+% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+% ax1 = axes;
+% for i = 1: length_o
+%     r=r_o;
+%     ox0=env.obstacle_list(i,1);
+%     oy0=env.obstacle_list(i,2);
+%     oz0=env.obstacle_list(i,3);
+%     [ox,oy,oz]=sphere;
+%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+%     hold on
+% end
+% box on
+% hidden off
+% axis(axis_pos);
+% colormap(ax1,winter);
+% xlabel('X')
+% ylabel('Y')
+% zlabel('Z')
+% set(gca,'fontname','Times')
+% 
+% ax2 = axes;
+% for i = 1: length_p
+%     r=r_p;
+%     px0=env.privacy_list(i,1);
+%     py0=env.privacy_list(i,2);
+%     pz0=env.privacy_list(i,3);
+%     [px,py,pz]=sphere;
+%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
+%     hold on
+% end
+% axis off
+% hidden off
+% axis(axis_pos );
+% colormap(ax2,autumn);
+% set(gca,'fontname','Times');
 
 h_3d = gca;
 grid on

@@ -265,7 +265,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 5
+    while exitflag <=0 && iternum < 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -465,7 +465,7 @@ while (1)
         end
     end
 
-    if iternum > 5 && exitflag<=0
+    if iternum >= 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;
