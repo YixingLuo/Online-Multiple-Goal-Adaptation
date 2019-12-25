@@ -1,5 +1,5 @@
 % uuv_relax(1)
-function [data,usage_plan,planning_time] = uuv_relax2(nnum, indextemp, x_initial)
+function [data,usage_plan,planning_time] = uuv_relax2(nnum, indextemp)
 % clc
 % clear
 global uuv
@@ -37,7 +37,7 @@ plan_num = length(indextemp);
 index_cond = 1;
 x_plan = [];
 while(1)
-    need_replan = 1;
+    need_replan = 0;
     fprintf('uuv_relax: current step %d\n', current_step);
     
     if current_step > 360 
@@ -76,14 +76,16 @@ while(1)
     
     if current_step == 1
         need_replan = 1;
-        x_pre = x_initial;
+%         x_pre = x_initial;
     end
 
     if need_replan == 1 
+        t1=clock;
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum =1: 50
+        time_sum = 0;
+        for iternum =1: 50 
             lb=[];
             ub=[];
             x0=[];
@@ -92,16 +94,12 @@ while(1)
                 ub(i) = 1;
 %                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
-%                 x0(i) = unifrnd(0,1);
-%                 x0(i) = x_pre(i);
-%                 x0(i) = 0;
+%                 x0(i) = unifrnd(0,1/uuv.N_s);
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-%                 x0(i) = x_pre(i);
-%                 x0(i) = 0;
-%                 x0(i) = unifrnd(0,1);
+%                 x0(i) = 1- unifrnd(0,0.2);
                 x0(i) = 1 - iternum * 1/50;
             end
 %             length(lb)
@@ -110,7 +108,7 @@ while(1)
             %%slash variable
             lb = [lb, 0, 0, 0];
             ub = [ub,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
-            x0 = [x0,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
+            x0 = [x0, 0, 0, 0];
 %             %% 1125
 %             lb = [lb, 0, 0, 0];
 %             ub = [ub,1, 1, 1];
@@ -118,18 +116,17 @@ while(1)
             % options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
             options.Display = 'off';
-%             t1 = clock;
-            tic
+            tic;
             [x,fval,exitflag]=fmincon(@objuuv_relax2,x0,[],[],[],[],lb,ub,@myconuuv_relax2,options);
-%             t2 = clock;
-            t2_2 = toc;
-            
+            t2 = toc;
+            time_sum = time_sum + t2;
             if exitflag > 0 
 %                 && fval < fval_pre
-                planning_time = [planning_time; t2_2];
                 fprintf(2,'uuv_relax: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
+%                 planning_time = [planning_time; t2];
+                planning_time = [planning_time; time_sum/iternum];
                 break
             end        
             

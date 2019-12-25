@@ -82,14 +82,14 @@ for i = 1: length(disturb)
 %         condition(i,:) = [5,idx,0];
     elseif disturb(i) == 5
         idx = unidrnd(5);
-        energy = 180 + unidrnd(20);
+        energy = 150 + unidrnd(50);
         condition(i,:) = [5,idx,energy];
 %         energy_ratio = 100 + unidrnd(50);
 %         energy = uuv.s_energy(idx)*energy_ratio/100;
 %         condition(i,:) = [5,idx,energy];
    elseif disturb(i) == 6
         idx = unidrnd(5);
-        speed = 20 + unidrnd(10);
+        speed = 15 + unidrnd(10);
         condition(i,:) = [6,idx,speed/10];
 %         speed_ratio = 50 + unidrnd(50);
 %         idx = unidrnd(5);

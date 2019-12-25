@@ -37,9 +37,9 @@ while exitflag <= 0
     x0 = [x0, 0, 0, 0];
     % options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
     optimset('Algorithm','sqp');  
-%     [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal);
-    [x,fval,exitflag]=fmincon(@objuuv_relax,x0,[],[],[],[],lb,ub,@myconuuv_relax);
-    if exitflag > 0 
+    [x,fval,exitflag]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv);
+    
+    if exitflag > 0 || iternum > 50
         fprintf(2,'uuv_initial: have solution at current step: %d \n',exitflag);
         flag = [flag,exitflag];
         f_value = [f_value, fval];
@@ -49,7 +49,7 @@ while exitflag <= 0
     iternum = iternum+1;
     end
     
-    if iternum > 10 && exitflag < 0 
+    if iternum > 50 && exitflag < 0 
         fprintf(2,'uuv_initial: no solution at current step: %d , %d\n',exitflag, current_step);
         flag = 0;
     end    

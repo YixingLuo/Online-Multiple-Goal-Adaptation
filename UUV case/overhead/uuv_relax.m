@@ -1,5 +1,5 @@
 % uuv_relax(1)
-function [data,usage_plan,planningtime] = uuv_relax(nnum, indextemp, x_initial)
+function [data,usage_plan] = uuv_relax(nnum, indextemp, x_initial)
 % clc
 % clear
 global uuv
@@ -88,14 +88,14 @@ while(1)
             for i = 1 : uuv.N_s % portion of time
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = unifrnd(0,1/uuv.N_s);
-%                 x0(i) = 1/uuv.N_s - 0.2/50*iternum;
+%                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
+                x0(i) = 1/uuv.N_s - 0.2/50*iternum;
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-                x0(i) = 1- unifrnd(0,0.2);
-%                 x0(i) = 1 - iternum * 1/50;
+%                 x0(i) = 1- unifrnd(0,0.2);
+                x0(i) = 1 - iternum * 1/50;
             end
 %             length(lb)
 %             length(x_pre)
@@ -110,25 +110,22 @@ while(1)
             x0 = [x0, 0, 0, 0];
             % options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
-            t1 = clock;
             [x,fval,exitflag,output,lambda]=fmincon(@objuuv_relax,x0,[],[],[],[],lb,ub,@myconuuv_relax,options);
 %           [c1,c2] = myconuuv(x);
 %           c =[c;c1];
 %           flag = [flag,exitflag];
 %           f_value = [f_value, fval];
   
-%             if exitflag > 0 
+            if exitflag > 0 
 %                 && fval < fval_pre
                 fprintf(2,'uuv_relax: have solution at current step: %d , %d\n',exitflag, current_step);
 %                 flag = [flag,exitflag];
 %                 f_value = [f_value, fval];
                 fval_pre = fval;
                 x_pre = x;
-                t2=clock;
-                planning_time = [planning_time; etime(t2,t1)];
 %                 x_plan = [x_plan;x];
-%                 break
-%             end        
+                break
+            end        
             
         end
     
