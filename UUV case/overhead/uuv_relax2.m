@@ -125,8 +125,8 @@ while(1)
                 fprintf(2,'uuv_relax: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
-%                 planning_time = [planning_time; t2];
-                planning_time = [planning_time; time_sum/iternum];
+                planning_time = [planning_time; t2];
+%                 planning_time = [planning_time; time_sum/iternum];
                 break
             end        
             

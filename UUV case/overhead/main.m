@@ -17,10 +17,10 @@ global eplison
 eplison_list = [0.001];
 for kk = 1:length(eplison_list)
     eplison = eplison_list(kk);
-    
-    for num = 1:50
+    iternum = 500;
+    for num = 1:iternum
 
-        k = ceil((num)/50);
+        k = ceil((num)/iternum);
         flag = 0; %% have no solution at initial point
         while flag >= 0
             [condition, indextemp] = randomsituation(num,k);
@@ -29,9 +29,9 @@ for kk = 1:length(eplison_list)
             flag = data(7)-10;
         end
 
-        iter = mod(num,50);
+        iter = mod(num,iternum);
         if iter == 0
-            iter = 50;
+            iter = iternum;
         end
 
         data3 = [data3; data];
@@ -75,12 +75,12 @@ for kk = 1:length(eplison_list)
 %         tag_list3((iter-1)*3+1:iter*3,:) = tag_list_;
     
 
-        if mod(num,50)==0
+        if mod(num,iternum)==0
             data1 = [data1; mean(data1,1)];
             data2 = [data2; mean(data2,1)];
             data3 = [data3; mean(data3,1)];
             time = datestr(now,30);
-            name = 'data' + string(time) + '.mat';
+            name = 'data' + string(time) + '_' + string(eplison) + '.mat';
             save(name);
             data1 = [];
             data2 = [];

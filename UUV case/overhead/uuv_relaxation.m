@@ -224,8 +224,8 @@ while(1)
     if need_replan == 1 
 %         if fval > 1e-6
         if (ratio(1) > eplison || ratio(2) > eplison || ratio(3) > eplison)&& exitflag_relax > 0  
-%             planning_time = [planning_time; t2_1 + t2_2];
-            planning_time = [planning_time; time_sum_1/iternum + time_sum_2/iternum_relax];
+            planning_time = [planning_time; t2_1 + t2_2];
+%             planning_time = [planning_time; time_sum_1/iternum + time_sum_2/iternum_relax];
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
@@ -269,7 +269,8 @@ while(1)
             end
    
         else
-            planning_time = [planning_time; time_sum_1/iternum];
+%             planning_time = [planning_time; time_sum_1/iternum];
+            planning_time = [planning_time; t2_1];
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
