@@ -72,9 +72,9 @@ for grid = 5:1:5
 
 
                 if mod(num_condition,iternum)==0
-                    data1(i + 1,:) = mean(data1(i-9:i,:),1);
-                    data2(i + 1,:) = mean(data2(i-9:i,:),1);
-                    data3(i + 1,:) = mean(data3(i-9:i,:),1);
+                    data1(i + 1,:) = mean(data1(i-(iternum-1):i,:),1);
+                    data2(i + 1,:) = mean(data2(i-(iternum-1):i,:),1);
+                    data3(i + 1,:) = mean(data3(i-(iternum-1):i,:),1);
                     time = datestr(now,30);
                     name = 'data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);

@@ -18,10 +18,10 @@ tag_list3 = zeros(100,100);
 
 global eplison
 eplison = 1e-6;
-iternum = 10;
+iternum = 50;
 num_o = [10];
 num_p = [5];
-for grid = 5:-1:1
+for grid = 5:-1:5
     for np = 1:length(num_p)
         for no = 1:length(num_o)
             for i = 1:3*iternum
@@ -72,9 +72,9 @@ for grid = 5:-1:1
 
 
                 if mod(num_condition,iternum)==0
-                    data1(i + 1,:) = mean(data1(i-9:i,:),1);
-                    data2(i + 1,:) = mean(data2(i-9:i,:),1);
-                    data3(i + 1,:) = mean(data3(i-9:i,:),1);
+                    data1(i + 1,:) = mean(data1(i-(iternum-1):i,:),1);
+                    data2(i + 1,:) = mean(data2(i-(iternum-1):i,:),1);
+                    data3(i + 1,:) = mean(data3(i-(iternum-1):i,:),1);
                     time = datestr(now,30);
                     name = 'data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
