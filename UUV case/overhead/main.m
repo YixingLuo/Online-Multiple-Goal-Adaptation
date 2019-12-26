@@ -17,7 +17,7 @@ global eplison
 eplison_list = [0.001];
 for kk = 1:length(eplison_list)
     eplison = eplison_list(kk);
-    iternum = 500;
+    iternum = 100;
     for num = 1:iternum
 
         k = ceil((num)/iternum);

@@ -73,7 +73,7 @@ sum = 0;
 for i = 1:uuv.N_s
     sum = sum + x(i);
 end
-ceq = [ceq, sum-1];
+% ceq = [ceq, sum-1];
 % c = [c, sum - 1];
 % sum = 0;
 % for i = uuv.N_s + 1:2*uuv.N_s
