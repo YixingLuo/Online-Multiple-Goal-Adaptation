@@ -108,9 +108,9 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR_unknown, PR_unknown] = caculate_risk(trajectory, env);
-        [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR_known, SR_unknown, PR_known, PR_unknown, plan_num, relax_num];
+        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+%         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';
@@ -153,7 +153,7 @@ while (1)
     width_p = 0;
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
-%     %% 1114
+    %% 1114
 %     env_known = remove_obstacle(env_known);
 %     env_known = remove_privacy(env_known);
     for oo = 1:length_o
@@ -263,7 +263,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -275,8 +275,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-%                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = ub(i) - iternum * 2/30;
+%                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
@@ -310,8 +310,8 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
-%                 x0(i) = ub(i) - iternum * 1/30;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = configure.sensor_accuracy;
+%                 x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;
@@ -365,7 +365,7 @@ while (1)
     end
 
 
-    exitflag_relax = 0;
+    
     %% RELAXATION
     if find(ratio > eplison) 
        rate_list = [rate_list, ratio'];
@@ -380,7 +380,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=10
+       while exitflag_relax <= 0 && iternum_relax<=5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -391,8 +391,8 @@ while (1)
                for i = 1 : (initial_N+1) * 3
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
-                   x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                    x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -424,8 +424,8 @@ while (1)
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                     lb_relax(i) = 0;
                     ub_relax(i) = configure.sensor_accuracy;
-                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-%                     x0_relax(i) = ub_relax(i) - iternum_relax * 1/30;
+%                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                    x0_relax(i) = configure.sensor_accuracy;
 %                     x0_relax(i) = x(i);
                 end
 
@@ -440,11 +440,14 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 10 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0
                     x = x_relax;
+                else
+                    relax_num = relax_num - 1;
+                    plan_num = plan_num + 1;
                 end
                 flag_relax = [flag_relax, exitflag_relax];
                 plan_x (current_step,1) = length(x);
@@ -609,7 +612,7 @@ while (1)
             end
     end
 
-       if exitflag <= 0 || (exitflag > 0 && exitflag_relax <=0)
+       if exitflag <= 0 && exitflag_relax <=0
            fprintf(2,'no solution for relax \n');
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
@@ -670,11 +673,8 @@ while (1)
         current_step = current_step + 1;
         following_plan([1],:)=[]; %%update the following plan
         following_point([1],:)=[];
-        if size(following_plan,1) > 0
-            tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
-        else
-            tt = 0;
-        end
+        
+        tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
         if tt > configure.Time_step           
             following_plan(end+1,:)=following_plan(end,:);
             following_point(end,:) = [min(following_point(end-1,1)+following_plan(end,1)*configure.Time_step, end_point(1)), min(following_point(end-1,2)+following_plan(end,2)*configure.Time_step, end_point(2)), min(following_point(end-1,3)+following_plan(end,3)*configure.Time_step,end_point(3)), following_point(end,4)];
