@@ -16,9 +16,9 @@ global eplison
 eplison = 1e-6;
 global configure
 configure = Configure();
-for i = 1:10
+for i = 1:20
 map = Environment();
-map = map_initial3(map, 10, 5);
+map = map_initial3(map, 7, 3);
 name = 'gridmap-' + string(i) + '.mat';
 save(name, 'map');
 end

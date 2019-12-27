@@ -365,7 +365,7 @@ while (1)
     end
 
 
-    
+    exitflag_relax = 0;
     %% RELAXATION
     if find(ratio > eplison) 
        rate_list = [rate_list, ratio'];
