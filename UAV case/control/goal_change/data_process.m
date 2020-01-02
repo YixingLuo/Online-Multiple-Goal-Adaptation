@@ -1,5 +1,5 @@
 data1_copy = [];
-data1_copy = data1 (1:50,:);
+data1_copy = data1 (51:100,:);
 for i = 2:2:6
     for j = 1:50
         if data1_copy(j,i)>1
@@ -36,7 +36,7 @@ for i = 1:5
 end
 
 data2_copy = [];
-data2_copy = data2 (1:50,:);
+data2_copy = data2 (51:100,:);
 for i = 2:2:6
     for j = 1:50
         if data2_copy(j,i)>1
@@ -73,7 +73,7 @@ for i = 1:5
 end
 
 data3_copy = [];
-data3_copy = data3 (1:50,:);
+data3_copy = data3 (51:100,:);
 for i = 2:2:6
     for j = 1:50
         if data3_copy(j,i)>1
