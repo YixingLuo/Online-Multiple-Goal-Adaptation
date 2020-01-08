@@ -47,28 +47,28 @@ for grid = 5:-1:5
                 end
 
 
-%                 [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
-%                 if data_2(1)> 0
-%                     data2(i,:) = data_2; 
-%                     trajectory2 = [trajectory2; trajectory];
-%                     velocity_history2 = [velocity_history2; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
-%                     planningtime2(:,i) = planning_time;                      
-%                 end
-% 
-% 
-%                 [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num_map, num_condition, indextemp);
-%                 if data_3(1)> 0
-%                     data3(i,:) = data_3;
-%                     trajectory3 = [trajectory3; trajectory];
-%                     velocity_history3 = [velocity_history3; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];               
-%                     planningtime3(:,i) = planning_time;
-%                     rate_list_ = [rate_list, zeros(5,100-size(rate_list,2))];
-%                     tag_list_ =  [tag_list, zeros(5,100-size(tag_list,2))];
-%                     rate_list3((iter-1)*5+1:iter*5,:) = rate_list_;
-%                     tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
-%                 end
+                [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
+                if data_2(1)> 0
+                    data2(i,:) = data_2; 
+                    trajectory2 = [trajectory2; trajectory];
+                    velocity_history2 = [velocity_history2; velocity_history];
+                    planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
+                    planningtime2(:,i) = planning_time;                      
+                end
+
+
+                [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num_map, num_condition, indextemp);
+                if data_3(1)> 0
+                    data3(i,:) = data_3;
+                    trajectory3 = [trajectory3; trajectory];
+                    velocity_history3 = [velocity_history3; velocity_history];
+                    planning_time =[planning_time; zeros(100-length(planning_time),1)];               
+                    planningtime3(:,i) = planning_time;
+                    rate_list_ = [rate_list, zeros(5,100-size(rate_list,2))];
+                    tag_list_ =  [tag_list, zeros(5,100-size(tag_list,2))];
+                    rate_list3((iter-1)*5+1:iter*5,:) = rate_list_;
+                    tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
+                end
 
 
                 if mod(num_condition,iternum)==0
