@@ -116,7 +116,8 @@ end
 energy_now = energy + energy_now;
 % info_now, information, distance,past_distance
 % info_now = (information * past_distance + info_now) / (past_distance + distance);
-info_now = (information * time + info_now + last_info)/(time_now);
+% info_now = (information * time + info_now + last_info)/(time_now);
+info_now = (info_now)/(initial_N * tau);
 
 
 length_o = 0;
@@ -182,26 +183,24 @@ else
 end
 
 if ratio(3)> eplison
-%     c = [c, info_now - 1];
-    c = [c, - info_now + configure.forensic_budget];
+    for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+        c = [c, -x(i)];
+    end
 else
-%     c = [c, info_now - 1];
-    c = [c, - info_now + configure.forensic_target];    
+    for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+        c = [c, configure.forensic_budget - x(i)];
+    end
 end
 
 if ratio(4)> eplison
-%     c = [c, - time_now + 0];
     c = [c, time_now - configure.Time_budget];
 else
-%     c = [c, - time_now + 0];
     c = [c, time_now - configure.Time_target];    
 end
 
 if ratio(5)> eplison
-%     c = [c, - energy_now + 0];
     c = [c, energy_now - configure.battery_budget];
 else
-%     c = [c, - energy_now + 0];
     c = [c, energy_now - configure.battery_target];    
 end    
 

@@ -3,7 +3,7 @@ function [safety_variance, safety_ratio, privacy_variance, privacy_ratio, info_v
 global env_known
 global initial_N
 global configure
-info_variance = x(end-2);
+
 time_variance = x(end-1);
 energy_variance = x(end);
 safety_variance = 0;
@@ -32,9 +32,15 @@ for i = 1:bound_p
     end
 end
 
+info_variance = 0;
+for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+   info_variance = info_variance +  max(configure.forensic_target - x(i),0);
+end
+
+
 safety_ratio = 0;
 privacy_ratio = 0;
-info_ratio = info_variance /(configure.forensic_target-configure.forensic_budget);
+info_ratio = info_variance /((initial_N+1) *(configure.forensic_target-configure.forensic_budget));
 time_ratio = time_variance /(configure.Time_budget-configure.Time_target);
 energy_ratio = energy_variance /(configure.battery_budget-configure.battery_target);
 if bound_o > 0

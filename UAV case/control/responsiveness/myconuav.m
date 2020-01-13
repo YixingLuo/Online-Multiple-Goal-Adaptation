@@ -112,10 +112,8 @@ for i = 1:initial_N
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end
 energy_now = energy + energy_now;
-% info_now, information, distance,past_distance
-% info_now = (information * past_distance + info_now) / (past_distance + distance);
-info_now = (information * time + info_now + last_info)/(time_now);
-
+% info_now = (information * time + info_now + last_info)/(time_now);
+info_now = (info_now)/(initial_N * tau);
 
 length_o = 0;
 width_o = 0;
@@ -133,13 +131,9 @@ dis_p = zeros(initial_N+1,length_p);
 % dis_p = zeros(initial_N,length_p);
 
 
-c = [c, - info_now + (configure.forensic_target - x(end-2))];
 c = [c,time_now - (configure.Time_target + x(end-1))];
 c = [c, energy_now - (configure.battery_target + x(end))];
 
-% c = [c, - info_now + configure.forensic_budget];
-% c = [c, time_now - configure.Time_budget];
-% c = [c, energy_now - configure.battery_budget];
 
 
 if length_o> 0
@@ -173,3 +167,8 @@ for j = 1: length_p
         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
     end
 end
+
+for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+   c = [c, configure.forensic_budget - x(i)];
+end
+
