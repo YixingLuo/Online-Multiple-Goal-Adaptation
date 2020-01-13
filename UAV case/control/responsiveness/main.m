@@ -39,14 +39,14 @@ num_p = [5];
 %                 num_map = grid;
                 num_map = i;
 
-                [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
-                if data_1(1)> 0
-                    data1(i,:) = data_1;
-                    trajectory1 = [trajectory1; trajectory];
-                    velocity_history1 = [velocity_history1; velocity_history];
-                    planning_time =[planning_time; zeros(100-length(planning_time),1)];
-                    planningtime1(:,i) = planning_time;                       
-                end
+%                 [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
+%                 if data_1(1)> 0
+%                     data1(i,:) = data_1;
+%                     trajectory1 = [trajectory1; trajectory];
+%                     velocity_history1 = [velocity_history1; velocity_history];
+%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
+%                     planningtime1(:,i) = planning_time;                       
+%                 end
 
 
                 [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);

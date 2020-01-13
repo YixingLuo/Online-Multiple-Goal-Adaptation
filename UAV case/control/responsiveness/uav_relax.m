@@ -241,17 +241,10 @@ while (1)
             information = 0;
         else
             information = info/time;
-        end 
-%         if distance == 0
-%             information = 0;
-%         else
-%             information = info/distance;
-%         end        
+        end   
 
         current_step = current_step + 1;
         
-%         fprintf(2,'with planning: following_point previous:\n')
-%         following_point, following_plan
         following_plan([1],:)=[]; %%update the following plan
         following_point([1],:)=[];
 
@@ -269,8 +262,6 @@ while (1)
     exitflag = 0;
     iternum = 0;
     while exitflag <=0 && iternum <= 5
-%         infeasible = 1;
-%         while infeasible
             lb=[];
             ub=[];
             x0=[];
@@ -342,35 +333,12 @@ while (1)
                 x0 = [x0,0];
             end   
 
-            lb = [lb,0, 0, 0];
-            ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
-            x0 = [x0,0, 0, 0];
+            
+            lb = [lb, 0, 0];
+            ub = [ub,configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
+            x0 = [x0, 0, 0];
 
-%             lb = [lb,0,0, 0, 0, 0];
-%             ub = [ub,1,1,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
-%             x0 = [x0,1,1,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
-%             
-%             constr = mycon(x0)
-%             constr_value = constr(constr>=0);
-%             if isempty(constr_value)
-%                 infeasible = 0;
-%                 break
-%             end  
-%         end
-        %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy
-%         options.StepTolerance = 1e-10;
-%         options.MaxFunctionEvaluations = 100000;
-%         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-%         options.algorithm = 'sqp';
         options.algorithm = 'sqp';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
-%         options.MaxIter = 10000;
-%         options.MaxFunEvals = 100000;
-%         options.StepTolerance = 1.0000e-10;
-%         objuav_relax(x0),myconuav_relax(x0)
-%         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
        
         tau = configure.Time_step;

@@ -335,9 +335,9 @@ while (1)
                 ub = [ub,configure.privacy_max];
                 x0 = [x0,0];
             end
-            lb = [lb, 0, 0, 0];
-            ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
-            x0 = [x0,0, 0, 0];
+            lb = [lb, 0, 0];
+            ub = [ub, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
+            x0 = [x0, 0, 0];
 
 
         %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy

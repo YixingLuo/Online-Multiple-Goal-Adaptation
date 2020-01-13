@@ -87,7 +87,8 @@ end
 energy_now = energy + energy_now;
 % info_now, information, distance,past_distance
 % info_now = (information * past_distance + info_now) / (past_distance + distance);
-info_now = (information * time + info_now + last_info)/(time_now);
+% info_now = (information * time + info_now + last_info)/(time_now);
+info_now = (info_now)/(initial_N * tau);
 
 
 
