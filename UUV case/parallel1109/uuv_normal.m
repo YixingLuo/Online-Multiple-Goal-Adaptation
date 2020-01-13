@@ -106,17 +106,17 @@ while(1)
 %             length(x_pre)
 %             x0 = x_pre;
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-            options.algorithm = 'sqp';  
+            options.algorithm = 'sqp'; 
+            options.Display = 'off';
+            tic;
             [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal,options);
-    
+            t2 = toc;
             if exitflag > 0 
 %                 && fval < fval_pre
                 fprintf(2,'uuv_normal: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
-                %% 1127
-                t2=clock;
-                planning_time = [planning_time; etime(t2,t1)];
+                planning_time = [planning_time; t2];
                 break
             end     
         end

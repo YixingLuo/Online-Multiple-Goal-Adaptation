@@ -1,4 +1,4 @@
-function [c,ceq] = myconuuv_relax(x)
+function [c,ceq] = myconuuv_relax2(x)
 c=[];
 ceq=[];
 global pastdistance

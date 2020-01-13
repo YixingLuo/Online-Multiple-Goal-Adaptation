@@ -79,6 +79,7 @@ while(1)
     end
 
     if need_replan == 1 
+        time_sum_1 = 0;
         t1=clock;
         exitflag = 0;
 %         iternum = 0;
@@ -114,6 +115,7 @@ while(1)
 %             options.MaxFunEvals=100000;
             [x,fval,exitflag]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv,options);
             t2_1 = toc;
+            time_sum_1 = time_sum_1 + t2_1;
 %           flag = [flag,exitflag];
 %           f_value = [f_value, fval];
 %           x_plan = [x_plan;x];
@@ -195,6 +197,7 @@ while(1)
                 tic;
                 [x_relax,fval_relax,exitflag_relax]=fmincon(@objuuv_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuuv_relaxation,options);
                 t2_2 = toc;
+                time_sum_2 = time_sum_2 + t2_2;
                 
                 if exitflag_relax > 0  
 %                     && fval_relax < fval_pre_relax

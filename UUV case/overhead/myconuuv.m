@@ -26,7 +26,7 @@ for i = 1:uuv.N_s
 end
 accuracy  = (pastaccuracy * pasttime + acc * time_left) / (pasttime + time_left);
 c=[c, - accuracy + (uuv.acc_target - x(end-2))];
-% c = [c, - accuracy + uuv.acc_budget];
+c = [c, - accuracy + uuv.acc_budget];
 
 
 %% energy
@@ -39,7 +39,7 @@ for i = 1:uuv.N_s
 end
 energy = pastenergy + time_left * engy;
 c=[c, energy - (uuv.energy_target + x(end))];
-% c = [c, energy - uuv.energy_budget];
+c = [c, energy - uuv.energy_budget];
 % c=[c, (uuv.energy_budget - energy) /(uuv.energy_budget - uuv.energy_target)-1];
 % c=[c, -(uuv.energy_budget - energy) /(uuv.energy_budget - uuv.energy_target)];
 % c=[c,(distance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)-1];
@@ -51,7 +51,7 @@ sum = 0;
 for i = 1:uuv.N_s
     sum = sum + x(i);
 end
-% ceq = [sum-1];
+ceq = [sum-1];
 % c = [c, sum - 1];
 % sum = 0;
 % for i = uuv.N_s + 1:2*uuv.N_s
