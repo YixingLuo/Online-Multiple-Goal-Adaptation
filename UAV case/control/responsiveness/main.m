@@ -18,16 +18,17 @@ tag_list3 = zeros(100,100);
 
 global eplison
 eplison = 1e-6;
-iternum = 30;
-num_o = [8];
-num_p = [4];
-for grid = 29:-1:29
+iternum = 20;
+num_o = [10];
+num_p = [5];
+% for grid = 29:-1:29
+% for num = 1:20
     for np = 1:length(num_p)
         for no = 1:length(num_o)
             for i = 1 : iternum
                 k = ceil(i/iternum);
                 num_condition = i;
-    %             map_initialize(num, num_o(no),num_p(np));
+                map_initialize(i, num_o(no),num_p(np));
                 [condition, indextemp] = randomsituation(num_condition,k);
                 index(num_condition,:) =  indextemp;
     %             indextemp = index(num,:);
@@ -35,7 +36,8 @@ for grid = 29:-1:29
                 if iter == 0
                     iter = iternum;
                 end          
-                num_map = grid;
+%                 num_map = grid;
+                num_map = i;
 
                 [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
                 if data_1(1)> 0
@@ -97,5 +99,5 @@ for grid = 29:-1:29
             end
         end
     end
-end
+% end
 
