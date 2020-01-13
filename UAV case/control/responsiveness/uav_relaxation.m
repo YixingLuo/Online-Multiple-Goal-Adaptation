@@ -1,6 +1,9 @@
 % clc
 % clear
 % num = 1;
+% num_map = 29;
+% num_condition = 14;
+% indextemp = [4,12,22];
 function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map, num_condition, indextemp)
 global env
 global env_known
@@ -109,11 +112,11 @@ while (1)
         [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
-%         name1 = 'planningtime.mat';
+%         name1 = 'planningtime_relaxation.mat';
 %         save(name1, 'planning_time');
-%         name2 = 'trajectory.mat';
+%         name2 = 'trajectory_relaxation.mat';
 %         save(name2, 'trajectory');
-%         name3 = 'velocity_history.mat';
+%         name3 = 'velocity_history_relaxation.mat';
 %         save(name3, 'velocity_history');
         break
     end

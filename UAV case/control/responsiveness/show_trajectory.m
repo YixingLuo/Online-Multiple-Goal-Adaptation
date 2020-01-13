@@ -1,5 +1,9 @@
 global env
 global configure
+gridmap = load('gridmap-29.mat');
+env = gridmap.map;
+a = load('trajectory_normal.mat');
+trajectory = a.trajectory;
 % figure('visible','off')
 % env = map;
 figure,
@@ -76,39 +80,39 @@ end
 % plot3(xx,yy,zz,'r')
 % axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 
-a=0;
-b=0;
-[a, b] = size(trajectory3);
-xx=[];
-yy=[];
-zz=[];
-dis = [];
-for i =1:a
-    xx = [xx, trajectory3(i,1)];
-    yy = [yy, trajectory3(i,2)];
-    zz = [zz, trajectory3(i,3)];           
-end
-
-scatter3(xx,yy,zz,'k.')
-hold on
-plot3(xx,yy,zz,'r')
-axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
-
 % a=0;
 % b=0;
-% [a, b] = size(trajectory);
+% [a, b] = size(trajectory3);
 % xx=[];
 % yy=[];
 % zz=[];
 % dis = [];
 % for i =1:a
-%     xx = [xx, trajectory(i,1)];
-%     yy = [yy, trajectory(i,2)];
-%     zz = [zz, trajectory(i,3)];           
+%     xx = [xx, trajectory3(i,1)];
+%     yy = [yy, trajectory3(i,2)];
+%     zz = [zz, trajectory3(i,3)];           
 % end
 % 
 % scatter3(xx,yy,zz,'k.')
 % hold on
 % plot3(xx,yy,zz,'r')
 % axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
+
+a=0;
+b=0;
+[a, b] = size(trajectory);
+xx=[];
+yy=[];
+zz=[];
+dis = [];
+for i =1:a
+    xx = [xx, trajectory(i,1)];
+    yy = [yy, trajectory(i,2)];
+    zz = [zz, trajectory(i,3)];           
+end
+
+scatter3(xx,yy,zz,'k.')
+hold on
+plot3(xx,yy,zz,'r')
+axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z])
 

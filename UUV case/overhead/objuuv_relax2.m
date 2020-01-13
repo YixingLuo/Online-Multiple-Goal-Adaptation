@@ -23,5 +23,6 @@ global eplison
 %         y(i) = 1;
 %     end
 % end
-f = x(end-2) + x(end-1)/uuv.distance_max + x(end)/uuv.energy_budget;
+% f = x(end-2) + x(end-1)/uuv.distance_max + x(end)/uuv.energy_budget;
+f = x(end-2)/(uuv.acc_target-uuv.acc_budget) + x(end-1)/(uuv.distance_target-uuv.distance_budget) + x(end)/(uuv.energy_budget - uuv.energy_target);
 % f = y(1)*x(end-2-3)/1 + y(2)*x(end-1-3)/uuv.distance_max + y(3)* x(end-3)/uuv.energy_budget;
