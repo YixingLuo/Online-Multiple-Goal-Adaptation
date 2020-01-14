@@ -168,7 +168,7 @@ for j = 1: length_p
     end
 end
 
-for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-   c = [c, configure.forensic_budget - x(i)];
-end
+% for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+%    c = [c, configure.forensic_budget - x(i)];
+% end
 

@@ -183,9 +183,9 @@ else
 end
 
 if ratio(3)> eplison
-    for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-        c = [c, configure.forensic_budget - x(i)];
-    end
+%     for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+%         c = [c, configure.forensic_budget - x(i)];
+%     end
 else
     for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
         c = [c, configure.forensic_target - x(i)];

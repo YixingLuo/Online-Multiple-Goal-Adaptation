@@ -260,7 +260,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
             lb=[];
             ub=[];
             x0=[];
@@ -305,7 +305,8 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+%                 lb(i) = 0;
+                lb(i) = configure.forensic_budget;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.forensic_target;
 %                 x0(i) = unifrnd(lb(i),ub(i));
@@ -435,7 +436,7 @@ while (1)
         end
     end
 
-    if iternum > 10 && exitflag<=0
+    if iternum > 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

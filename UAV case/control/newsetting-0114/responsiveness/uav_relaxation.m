@@ -263,7 +263,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -308,7 +308,8 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+%                 lb(i) = 0;
+                lb(i) = configure.forensic_budget;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.forensic_target;
 %                 x0(i) = unifrnd(lb(i),ub(i));
@@ -380,7 +381,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=10
+       while exitflag_relax <= 0 && iternum_relax<=5
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -422,7 +423,8 @@ while (1)
 %                    end
                 end        
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                    lb_relax(i) = 0;
+%                     lb_relax(i) = 0;
+                    lb_relax(i) = configure.forensic_budget;
                     ub_relax(i) = configure.sensor_accuracy;
 %                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
                     x0_relax(i) = configure.forensic_target;
@@ -440,7 +442,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            if exitflag_relax > 0 || (iternum_relax == 10 && exitflag > 0 )
+            if exitflag_relax > 0 || (iternum_relax == 5 && exitflag > 0 )
                 t2=clock;
                 planning_time = [planning_time; etime(t2,t1)];
                 if exitflag_relax > 0

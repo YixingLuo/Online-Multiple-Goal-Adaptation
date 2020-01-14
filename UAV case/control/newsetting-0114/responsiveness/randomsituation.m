@@ -38,7 +38,7 @@ condition = [];
 
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy = 34 + unidrnd(6); 
+        energy = 37 + unidrnd(6); 
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
         time = 18 + unidrnd(4);

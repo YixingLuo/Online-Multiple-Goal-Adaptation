@@ -17,7 +17,7 @@ tag_list3 = zeros(100,100);
 % index = [];
 
 global eplison
-eplison = 1e-4;
+eplison = 1e-6;
 iternum = 1;
 num_o = [10];
 num_p = [5];
@@ -49,14 +49,14 @@ num_p = [5];
 %                 end
 
 
-                [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
-                if data_2(1)> 0
-                    data2(i,:) = data_2; 
-                    trajectory2 = [trajectory2; trajectory];
-                    velocity_history2 = [velocity_history2; velocity_history];
-                    planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
-                    planningtime2(:,i) = planning_time;                      
-                end
+%                 [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
+%                 if data_2(1)> 0
+%                     data2(i,:) = data_2; 
+%                     trajectory2 = [trajectory2; trajectory];
+%                     velocity_history2 = [velocity_history2; velocity_history];
+%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
+%                     planningtime2(:,i) = planning_time;                      
+%                 end
 
 
                 [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num_map, num_condition, indextemp);
