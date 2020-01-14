@@ -14,7 +14,7 @@ tag_list3 = zeros(100,100);
 
 % index = [];
 global eplison
-eplison_list = [0.005];
+eplison_list = [0.0001];
 for kk = 1:length(eplison_list)
     eplison = eplison_list(kk);
     

@@ -35,6 +35,7 @@ cond = load(name);
 need_replan = 0;
 plan_num = length(indextemp);
 index_cond = 1;
+acc_achieve = 0;
 
 while(1)
     need_replan = 0;
@@ -42,10 +43,11 @@ while(1)
     
     if current_step > 360
         fprintf('last step');
-        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)
-        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)
-        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target)
-        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy]
+        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget);
+        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget);
+        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target);
+        
+        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy, acc_achieve, (];
 %         [num, text, raw] = xlsread('data.xls');
 %         [rowN, columnN]=size(raw);
 %         sheet=1;
@@ -107,6 +109,7 @@ while(1)
 %             x0 = x_pre;
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp'; 
+            options.Display = 'off';
             tic;
             [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal,options);
             t2 = toc;
@@ -139,6 +142,9 @@ while(1)
             acc = acc + x(i)*uuv.s_accuracy(i)*x(i+2*uuv.N_s);
         end
         acc_list = [acc_list, acc];
+        if acc > uuv.acc_target
+            acc_achieve = acc_achieve + 1;
+        end
         pastaccuracy = (pastaccuracy * pasttime + acc * uuv.time_step) / (pasttime + uuv.time_step);
          
         %% energy
@@ -186,6 +192,9 @@ while(1)
             acc = acc + x_pre(i)*uuv.s_accuracy(i)*x_pre(i+2*uuv.N_s);
         end
         acc_list = [acc_list, acc];
+        if acc > uuv.acc_target
+            acc_achieve = acc_achieve + 1;
+        end
         pastaccuracy = (pastaccuracy * pasttime + acc * uuv.time_step) / (pasttime + uuv.time_step);
          
         %% energy
