@@ -17,6 +17,7 @@ for i = 1:5
 end
 %% risk
 data1_risk = [];
+data1_copy (:,1) = data1_copy(:,end);
 for i = 1:2:5
     for j = 1:50
         if data1_copy(j,i)>0.95
@@ -54,6 +55,7 @@ for i = 1:5
 end
 %% risk
 data2_risk = [];
+data2_copy (:,1) = data2_copy(:,end);
 for i = 1:2:5
     for j = 1:50
         if data2_copy(j,i)>0.95
@@ -91,6 +93,7 @@ for i = 1:5
 end
 %% risk
 data3_risk = [];
+data3_copy (:,1) = data3_copy(:,end);
 for i = 1:2:5
     for j = 1:50
         if data3_copy(j,i)>0.95
@@ -107,4 +110,22 @@ end
 data3_risk_mean = [];
 for i = 1:5
     data3_risk_mean(i,:) = mean(data3_risk_sorted(1+5*(5-i):50-5*(5-i),:));
+end
+
+data1_achievement = [0,0,0,0];
+for i = 1:50
+    j =  data1_risk(i,1) + data1_risk(i,2) + data1_risk(i,3);
+    data1_achievement(j+1) = data1_achievement(j+1) +1;  
+end
+
+data2_achievement = [0,0,0,0];
+for i = 1:50
+    j =  data2_risk(i,1) + data2_risk(i,2) + data2_risk(i,3);
+    data2_achievement(j+1) = data2_achievement(j+1) +1;  
+end
+
+data3_achievement = [0,0,0,0];
+for i = 1:50
+    j =  data3_risk(i,1) + data3_risk(i,2) + data3_risk(i,3);
+    data3_achievement(j+1) = data3_achievement(j+1) +1;  
 end

@@ -1,5 +1,5 @@
-% clc
-% clear
+clc
+clear
 data1 = [];
 data2 = [];
 data3 = [];

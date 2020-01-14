@@ -60,7 +60,7 @@ for i = 1: length(disturb)
 %         distance = max(uuv.distance_target*distance_ratio/100,uuv.distance_budget + 1);
         condition(i,:) = [2,distance,0];
     elseif disturb(i) == 3
-        acc = 90 + unidrnd(10);
+        acc = 85 + unidrnd(10);
         condition(i,:) = [3,acc/100,0];
 %         acc = 92;
 %         condition(i,:) = [3,acc/100,0];
@@ -70,7 +70,7 @@ for i = 1: length(disturb)
 %         condition(i,:) = [3,acc,0];
     elseif disturb(i) == 4
         idx = unidrnd(5); 
-        acc = uuv.s_accuracy(idx)*100 - unidrnd(8);
+        acc = uuv.s_accuracy(idx)*(90+unidrnd(10))/100;
         condition(i,:) = [4,idx,acc/100];    
 %         acc_ratio = 50 + unidrnd(50);
 %         acc = uuv.s_accuracy(idx)*acc_ratio/100;
@@ -81,15 +81,14 @@ for i = 1: length(disturb)
 %         condition(i,:) = [5,idx,0];
     elseif disturb(i) == 5
         idx = unidrnd(5);
-        energy = uuv.s_energy(idx) + unidrnd(12);
+        energy = uuv.s_energy(idx)*(90+unidrnd(10))/100;
         condition(i,:) = [5,idx,energy];
 %         energy_ratio = 100 + unidrnd(50);
 %         energy = uuv.s_energy(idx)*energy_ratio/100;
 %         condition(i,:) = [5,idx,energy];
    elseif disturb(i) == 6
         idx = unidrnd(5);
-        uuv.s_speed(idx)
-        speed = uuv.s_speed(idx)*10 - unidrnd(6);
+        speed = uuv.s_speed(idx)*(90+unidrnd(10))/100;
         condition(i,:) = [6,idx,speed/10];
 %         speed_ratio = 50 + unidrnd(50);
 %         idx = unidrnd(5);

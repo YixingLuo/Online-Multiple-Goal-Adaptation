@@ -2,7 +2,7 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('velocity_history_normal.mat');
+a = load('velocity_history_relaxation.mat');
 velocity_history = a.velocity_history;
 end_time = (length(velocity_history))*tau;
 runsimulation(tau,start_time,end_time);
@@ -28,11 +28,11 @@ global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_normal.mat');
+a = load('planningtime_relaxation.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_normal.mat');
+a = load ('velocity_history_relaxation.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_normal.mat');
+a = load('trajectory_relaxation.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
