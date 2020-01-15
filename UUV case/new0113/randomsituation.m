@@ -60,7 +60,7 @@ for i = 1: length(disturb)
 %         distance = max(uuv.distance_target*distance_ratio/100,uuv.distance_budget + 1);
         condition(i,:) = [2,distance,0];
     elseif disturb(i) == 3
-        acc = 85 + unidrnd(10);
+        acc = 80 + unidrnd(10);
         condition(i,:) = [3,acc/100,0];
 %         acc = 92;
 %         condition(i,:) = [3,acc/100,0];
