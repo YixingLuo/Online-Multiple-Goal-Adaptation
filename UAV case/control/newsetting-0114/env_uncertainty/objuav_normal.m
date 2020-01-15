@@ -81,7 +81,7 @@ for i = 1:initial_N
     energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
 end
 
-for i = 1:initial_N + 1
+for i = 1:initial_N 
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end
 energy_now = energy + energy_now;
@@ -175,12 +175,16 @@ end
 % if bound_p > 0
 %     f = f + PR/bound_p;
 % end
+
 f = 0;
 f1 = max(0,(configure.forensic_target - info_now));
+% f1 = (configure.forensic_target - info_now);
 f = f + f1.^2;
 f2 = max(0,(time_now -  configure.Time_target)/ (configure.Time_budget));
+% f2 = (time_now -  configure.Time_target)/ (configure.Time_budget);
 f = f + f2.^2;
 f3 = max(0,(energy_now - configure.battery_target)/ (configure.battery_budget));
+% f3 = (energy_now - configure.battery_target)/ (configure.battery_budget);
 f = f + f3.^2;
 
 %% 1219

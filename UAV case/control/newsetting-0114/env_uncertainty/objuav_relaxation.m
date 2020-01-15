@@ -91,7 +91,7 @@ energy_now = energy + energy_now;
 % info_now = (information * past_distance + info_now) / (past_distance + distance);
 % info_now = (information * time + info_now + last_info)/(time_now);
 info_now = (info_now + last_info)/(initial_N  * tau + last_time);
-% info_now = (info_now)/((initial_N + 1) * tau);
+% info_now = (info_now)/((initial_N ) * tau);
 
 
 
@@ -106,10 +106,6 @@ bound_o = length_o * (initial_N+1);
 bound_p = length_p * (initial_N+1);
 dis_o = zeros(initial_N+1,length_o);
 dis_p = zeros(initial_N+1,length_p);
-% bound_o = length_o * (initial_N);
-% bound_p = length_p * (initial_N);
-% dis_o = zeros(initial_N,length_o);
-% dis_p = zeros(initial_N,length_p);
 
 if length_o> 0
     for i = 1:initial_N + 1
@@ -161,6 +157,12 @@ for j = 1: length_p
     end
 end
 
+%% 0115
+sum_z = 0;
+for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+   sum_z = sum_z +  max((configure.forensic_target - x(i)/(configure.forensic_target - configure.forensic_budget)),0);
+end
+sum_z = sum_z/((initial_N+1));
 
 %% 1118
 f = 0;
@@ -183,7 +185,8 @@ if ratio(2)> eplison
 %     f = f + PR;
 end
 if ratio(3)> eplison
-    f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+%     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+    f = f + sum_z;
 %     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
 end
 if ratio(4)> eplison

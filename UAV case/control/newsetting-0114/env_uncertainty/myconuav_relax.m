@@ -86,18 +86,18 @@ p_z = [p_z, configure.end_point(3)];
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
-    last_info = 0;
+%     last_info = 0;
 else
 %     time_now = time + initial_N*tau + time_x;
     time_now = time + initial_N*tau + sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-    last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
+%     last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
 end
 
 % time_now = time + initial_N*tau + sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
 % time_now = time + initial_N*tau + time_to_destination;
 distance = 0;
 energy_now = 0;
-info_now = 0;
+% info_now = 0;
 for i = 1:initial_N + 1
     temp_dis = sqrt((p_x(i+1)-p_x(i)).^2+(p_y(i+1)-p_y(i)).^2+(p_z(i+1)-p_z(i)).^2);
     distance = distance + temp_dis;
@@ -108,12 +108,12 @@ end
 for i = 1:initial_N
     energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
 end
-for i = 1:initial_N 
-    info_now = info_now + x(3*(initial_N + 1)+i) * tau;
-end
+% for i = 1:initial_N 
+%     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
+% end
 energy_now = energy + energy_now;
 % info_now = (information * time + info_now + last_info)/(time_now);
-info_now = (info_now)/(initial_N * tau);
+% info_now = (info_now)/(initial_N * tau);
 
 length_o = 0;
 width_o = 0;

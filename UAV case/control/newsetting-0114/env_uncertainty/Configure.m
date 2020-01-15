@@ -33,6 +33,8 @@ end_point = [9,9,9,1]
  methods
         function config = Configure(config)
             config.N = floor(config.viewradius) / (config.Time_step * config.velocity_max);
+            config.start_point(4) = config.forensic_target;
+            config.end_point(4) = config.forensic_target;
 %             config.N = 4;
         end
         function config = EnergyTarget(config, battery_target)

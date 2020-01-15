@@ -76,7 +76,7 @@ end
 
 num_acc = 0;
 for i = 1:a
-    if trajectory(i,4) > configure.forensic_target
+    if trajectory(i,4) >= configure.forensic_target
         num_acc = num_acc + 1;
     end
 end

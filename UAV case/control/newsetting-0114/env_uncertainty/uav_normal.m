@@ -127,6 +127,7 @@ while (1)
     
     fprintf('initial current point: [%f , %f, %f, %f]\n', current_point)
     if size(following_plan, 1) == 1
+        current_step = current_step + 1;
         fprintf(2,'the last step!\n')
         dis = sqrt((current_point(1)-end_point(1))^2 + (current_point(2)-end_point(2))^2 + (current_point(3)-end_point(3))^2);
         following_plan(1,1) = (end_point(1)-current_point(1))/configure.velocity_max;
@@ -259,12 +260,10 @@ while (1)
         end
         continue
     end
-    t1=clock;
+
     exitflag = 0;
     iternum = 0;
     while exitflag <=0 && iternum <= 5
-%         infeasible = 1;
-%         while infeasible
             lb=[];
             ub=[];
             x0=[];
@@ -275,15 +274,6 @@ while (1)
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
                 x0(i) = ub(i) - iternum * 2/30;              
-%                 x0(i) = ub(i)/2;
-%                 x0(i) = following_plan(1,1);
-%                 x0(i) = unifrnd(lb(i),ub(i));
-%                 bound_index = ceil(i/(initial_N+1));
-%                 if current_point(bound_index)> configure.end_point(bound_index)
-%                     x0(i) = unifrnd(lb(i),-0.1);
-%                 else                   
-%                     x0(i) = unifrnd(0.1,ub(i));
-%                 end
             end
         
             for i = 1: 3 %% velocity constraint for the last point
@@ -295,21 +285,12 @@ while (1)
                 else
                     lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
                 end
-%                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-%                 ub(index) = configure.velocity_max;
-%                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
                 ub(index) = max(lb(index),ub(index)); 
-%                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
                 x0(index) = max(lb(index),ub(index));
-%                if current_point(i)> configure.end_point(i)
-%                     x0(index) = unifrnd(lb(index),0);
-%                else                   
-%                     x0(index) = unifrnd(0,ub(index));
-%                end
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+                lb(i) = configure.forensic_budget;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.forensic_target;
 %                 x0(i) = unifrnd(lb(index),ub(index));
@@ -327,24 +308,16 @@ while (1)
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
         options.Display = 'off';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
-%         options.MaxIter = 10000;
-%         options.MaxFunEvals = 100000;
-%         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-%         objuav_normal(x0),myconuav_normal(x0)
-%         x0
-%         ratio = [1,1,1,1,1];
+
+        tic;
         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
-%         [x,fval,exitflag]=fmincon(@objuav_relaxation,x0,[],[],[],[],lb,ub,@myconuav_relaxation, options);
+        t2 = toc;
        
         tau = configure.Time_step;
 
         iternum = iternum + 1;
         if exitflag > 0
-            t2=clock;
-            planning_time = [planning_time; etime(t2,t1)];
+            planning_time = [planning_time; t2];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);
             for k = 1:length(x)
