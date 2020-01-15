@@ -18,7 +18,7 @@ eplison_list = [0.0001];
 for kk = 1:length(eplison_list)
     eplison = eplison_list(kk);
     
-    for num = 1:300
+    for num = 51:300
 
         k = ceil((num)/50);
 %         flag = 0; %% have no solution at initial point

@@ -13,7 +13,7 @@ time_target = 10*60*60;
 time_step = 100;
 energy_budget =6*1e6;
 energy_target = 5.4*1e6;
-acc_budget = 0.80;
+acc_budget = 0.70;
 acc_target = 0.90;
 
 N = 5;

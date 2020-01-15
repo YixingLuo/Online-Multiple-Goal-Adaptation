@@ -117,15 +117,16 @@ for i = 1:50
     j =  data1_risk(i,1) + data1_risk(i,2) + data1_risk(i,3);
     data1_achievement(j+1) = data1_achievement(j+1) +1;  
 end
-
+data1_achievement = flip(data1_achievement');
 data2_achievement = [0,0,0,0];
 for i = 1:50
     j =  data2_risk(i,1) + data2_risk(i,2) + data2_risk(i,3);
     data2_achievement(j+1) = data2_achievement(j+1) +1;  
 end
-
+data2_achievement = flip(data2_achievement');
 data3_achievement = [0,0,0,0];
 for i = 1:50
     j =  data3_risk(i,1) + data3_risk(i,2) + data3_risk(i,3);
     data3_achievement(j+1) = data3_achievement(j+1) +1;  
 end
+data3_achievement = flip(data3_achievement');
