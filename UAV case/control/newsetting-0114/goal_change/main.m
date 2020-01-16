@@ -18,7 +18,7 @@ tag_list3 = zeros(100,100);
 
 global eplison
 eplison = 1e-6;
-iternum = 10;
+iternum = 50;
 num_o = [10];
 num_p = [5];
 for grid = 5:-1:5

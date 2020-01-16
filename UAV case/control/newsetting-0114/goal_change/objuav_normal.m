@@ -176,22 +176,27 @@ end
 %     f = f + PR/bound_p;
 % end
 
-f = 0;
-f1 = max(0,(configure.forensic_target - info_now));
-% f1 = (configure.forensic_target - info_now);
-f = f + f1.^2;
-f2 = max(0,(time_now -  configure.Time_target)/ (configure.Time_budget));
-% f2 = (time_now -  configure.Time_target)/ (configure.Time_budget);
-f = f + f2.^2;
-f3 = max(0,(energy_now - configure.battery_target)/ (configure.battery_budget));
-% f3 = (energy_now - configure.battery_target)/ (configure.battery_budget);
-f = f + f3.^2;
+% f = 0;
+% f1 = max(0,(configure.forensic_target - info_now));
+% % f1 = (configure.forensic_target - info_now);
+% f = f + f1.^2;
+% f2 = max(0,(time_now -  configure.Time_target)/ (configure.Time_budget));
+% % f2 = (time_now -  configure.Time_target)/ (configure.Time_budget);
+% f = f + f2.^2;
+% f3 = max(0,(energy_now - configure.battery_target)/ (configure.battery_budget));
+% % f3 = (energy_now - configure.battery_target)/ (configure.battery_budget);
+% f = f + f3.^2;
 
-%% 1219
+% %% 1219
 % f = 0;
 % f = f + ((configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)).^2;
 % f = f + ((energy_now - configure.battery_target)/(configure.Time_budget - configure.Time_target)).^2;
 % f = f + ((time_now -  configure.Time_target)/(configure.battery_budget-configure.battery_target)).^2;
+
+f = 0;
+f = f + abs((configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget));
+f = f + abs((energy_now - configure.battery_target)/(configure.Time_budget - configure.Time_target));
+f = f + abs((time_now -  configure.Time_target)/(configure.battery_budget-configure.battery_target));
 
 % if num_o > 0
 %     f = f + (SR/num_o).^2;
@@ -208,8 +213,10 @@ f = f + f3.^2;
 
 
 if bound_o > 0
-    f = f + (SR/bound_o).^2;
+%     f = f + (SR/bound_o).^2;
+    f = f + (SR/bound_o);
 end
 if bound_p > 0
-    f = f + (PR/bound_p).^2;
+%     f = f + (PR/bound_p).^2;
+    f = f + (PR/bound_p);
 end

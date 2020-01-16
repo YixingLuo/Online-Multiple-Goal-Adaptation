@@ -185,8 +185,8 @@ if ratio(2)> eplison
 %     f = f + PR;
 end
 if ratio(3)> eplison
-%     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
-    f = f + sum_z;
+    f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+%     f = f + sum_z;
 %     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
 end
 if ratio(4)> eplison

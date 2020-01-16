@@ -46,21 +46,21 @@ index = sort(index1);
 % end
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy_ratio = 49 + unidrnd(10);
+        energy_ratio = 45 + unidrnd(5);
         energy = energy_ratio * 1e5;
 %         energy_ratio = 45;
 %         energy = energy_ratio * 1e5;
 %         energy = min(uuv.energy_target* energy_ratio/100,uuv.energy_budget - 1);
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
-        distance_ratio = 95 + unidrnd(10);
+        distance_ratio = 100 + unidrnd(5);
         distance = distance_ratio * 1e3;
 %         distance_ratio = 110;
 %         distance = distance_ratio * 1e3;
 %         distance = max(uuv.distance_target*distance_ratio/100,uuv.distance_budget + 1);
         condition(i,:) = [2,distance,0];
     elseif disturb(i) == 3
-        acc = 80 + unidrnd(10);
+        acc = 90 + unidrnd(5);
         condition(i,:) = [3,acc/100,0];
 %         acc = 92;
 %         condition(i,:) = [3,acc/100,0];

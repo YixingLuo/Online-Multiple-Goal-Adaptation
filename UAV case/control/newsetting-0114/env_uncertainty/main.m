@@ -18,44 +18,57 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison = 1e-6;
 iternum = 10;
-num_o = [10,20,30];
+num_o = [5,15,25,35,45];
 num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum 
             num = i;
-            map_initialize(num, num_o(no));
-            iter = mod(num,iternum);
-            if iter == 0
-                iter = iternum;
-            end               
-
-                    [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
-                    if data_1(1)> 0
-%                         data1(i,:) =  data_1;
-                        trajectory1 = [trajectory1; trajectory];
-                        velocity_history1 = [velocity_history1; velocity_history];
-                        planning_time =[planning_time; zeros(100-length(planning_time),1)];
-                        planningtime1(:,i) = planning_time;                       
-                    end
+%             map_initialize(num, num_o(no));
+%             iter = mod(num,iternum);
+%             if iter == 0
+%                 iter = iternum;
+%             end               
+            map_flag = 0;
+            while map_flag == 0
+                map_initialize(num, num_o(no));
+                iter = mod(num,iternum);
+                if iter == 0
+                    iter = iternum;
+                end    
+                [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
+                if data_1(1)> 0
+                    data1(i,:) =  data_1;
+                    trajectory1 = [trajectory1; trajectory];
+                    velocity_history1 = [velocity_history1; velocity_history];
+                    planning_time =[planning_time; zeros(100-length(planning_time),1)];
+                    planningtime1(:,i) = planning_time;  
+                    map_flag = 1;
+                end
+            end
+%                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
+%                     if data_1(1)> 0
+% %                         data1(i,:) =  data_1;
+%                         trajectory1 = [trajectory1; trajectory];
+%                         velocity_history1 = [velocity_history1; velocity_history];
+%                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
+%                         planningtime1(:,i) = planning_time;                       
+%                     end
 
 
 
                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
                     if data_2(1)> 0
-%                         data2(i,:) =  data_2; 
+                        data2(i,:) =  data_2; 
                         trajectory2 = [trajectory2; trajectory];
                         velocity_history2 = [velocity_history2; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
                         planningtime2(:,i) = planning_time;                      
                     end
 
-
-
-
                     [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num);
                     if data_3(1)> 0
-%                         data3(i,:) =  data_3;
+                        data3(i,:) =  data_3;
                         trajectory3 = [trajectory3; trajectory];
                         velocity_history3 = [velocity_history3; velocity_history];
                         planning_time =[planning_time; zeros(100-length(planning_time),1)];               
@@ -66,11 +79,11 @@ for np = 1:length(num_p)
                         tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
                     end
 
-                if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
-                    data1 = [data1; data_1];
-                    data2 = [data2; data_2];
-                    data3 = [data3; data_3];
-                end
+%                 if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
+%                     data1 = [data1; data_1];
+%                     data2 = [data2; data_2];
+%                     data3 = [data3; data_3];
+%                 end
     
                 if mod(num,iternum)==0
                     data1(i + 1,:) = mean(data1,1);

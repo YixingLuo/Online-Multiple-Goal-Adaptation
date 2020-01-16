@@ -41,7 +41,7 @@ for i = 1: length(disturb)
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
         rate = unifrnd (0,1);
-        accuracy = (80 + unidrnd(20))/100;
+        accuracy = (85 + unidrnd(10))/100;
         condition(i,:) = [3,accuracy];
     elseif disturb(i) == 4
 %         viewradius = (1 + unidrnd(5))/2;
