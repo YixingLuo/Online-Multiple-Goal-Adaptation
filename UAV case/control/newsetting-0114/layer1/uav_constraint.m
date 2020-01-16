@@ -422,7 +422,7 @@ while (1)
         if exitflag <= 0
             fprintf(2,'no solution \n');
             no_solution_flag = 1;
-            break;
+%             break;
             nowp_x = [];
             nowp_y = [];
             nowp_z = [];

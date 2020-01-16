@@ -414,7 +414,7 @@ while (1)
                 break           
             end
        end
-       if exitflag_relax > 0
+       if exitflag_relax >= 0
                relax_num = relax_num + 1;
                 planning_time = [planning_time; t2_1 + t2_2];
                 flag_relax = [flag_relax, exitflag_relax];
@@ -654,13 +654,13 @@ while (1)
             end
     end
          exitflag, exitflag_relax, ratio
-       if exitflag <= 0 && exitflag_relax <= 0
+       if exitflag <= 0 && exitflag_relax < 0
            plan_num = plan_num + 1;
            fprintf(2,'no solution for relaxation \n');
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
 %            tag_list = [0;0;0;0;0];
-           break;
+%            break;
         nowp_x = [];
         nowp_y = [];
         nowp_z = [];
