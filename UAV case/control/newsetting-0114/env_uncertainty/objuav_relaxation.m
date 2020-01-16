@@ -83,15 +83,15 @@ for i = 1:initial_N
     energy_now = energy_now + configure.battery_per2 * sqrt((x(i+1)-x(i)).^2+(x(2*(initial_N + 1)+i+1)-x(2*(initial_N + 1)+i)).^2+(x(3*(initial_N + 1)+i+1)-x(3*(initial_N + 1)+i)).^2); 
 end
 
-for i = 1:initial_N 
+for i = 1:initial_N + 1
     info_now = info_now + x(3*(initial_N + 1)+i) * tau;
 end
 energy_now = energy + energy_now;
 % info_now, information, distance,past_distance
 % info_now = (information * past_distance + info_now) / (past_distance + distance);
 % info_now = (information * time + info_now + last_info)/(time_now);
-info_now = (info_now + last_info)/(initial_N  * tau + last_time);
-% info_now = (info_now)/((initial_N ) * tau);
+% info_now = (info_now + last_info)/(initial_N  * tau + last_time);
+info_now = (info_now)/((initial_N ) * tau);
 
 
 

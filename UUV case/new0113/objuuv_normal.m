@@ -8,8 +8,6 @@ global pastenergy
 global pastaccuracy
 global ratio
 
-f=[];
-
 %% time
 time_left = uuv.time_target - pasttime;
 
@@ -19,7 +17,7 @@ for i = 1:uuv.N_s
    acc = acc + x(i)*uuv.s_accuracy(i)*x(i+2*uuv.N_s);
 end
 % accuracy  = (pastaccuracy * pasttime + acc * time_left) / (pasttime + time_left);
-accuracy = (acc * time_left)/time_left;
+accuracy = acc;
 
 %% distance
 speed = 0;

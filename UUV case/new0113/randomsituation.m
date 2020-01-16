@@ -44,23 +44,24 @@ index = sort(index1);
 %         break
 %     end
 % end
+condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy_ratio = 45 + unidrnd(5);
+        energy_ratio = 49 + unidrnd(10);
         energy = energy_ratio * 1e5;
 %         energy_ratio = 45;
 %         energy = energy_ratio * 1e5;
 %         energy = min(uuv.energy_target* energy_ratio/100,uuv.energy_budget - 1);
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
-        distance_ratio = 100 + unidrnd(5);
+        distance_ratio = 95 + unidrnd(10);
         distance = distance_ratio * 1e3;
 %         distance_ratio = 110;
 %         distance = distance_ratio * 1e3;
 %         distance = max(uuv.distance_target*distance_ratio/100,uuv.distance_budget + 1);
         condition(i,:) = [2,distance,0];
     elseif disturb(i) == 3
-        acc = 90 + unidrnd(5);
+        acc = 85 + unidrnd(10);
         condition(i,:) = [3,acc/100,0];
 %         acc = 92;
 %         condition(i,:) = [3,acc/100,0];
@@ -70,7 +71,7 @@ for i = 1: length(disturb)
 %         condition(i,:) = [3,acc,0];
     elseif disturb(i) == 4
         idx = unidrnd(5); 
-        acc = uuv.s_accuracy(idx)*(90+unidrnd(10))/100;
+        acc = 20 + unidrnd(30);
         condition(i,:) = [4,idx,acc/100];    
 %         acc_ratio = 50 + unidrnd(50);
 %         acc = uuv.s_accuracy(idx)*acc_ratio/100;
@@ -81,14 +82,14 @@ for i = 1: length(disturb)
 %         condition(i,:) = [5,idx,0];
     elseif disturb(i) == 5
         idx = unidrnd(5);
-        energy = uuv.s_energy(idx)*(100+unidrnd(10))/100;
+        energy = 200 + unidrnd(50);
         condition(i,:) = [5,idx,energy];
 %         energy_ratio = 100 + unidrnd(50);
 %         energy = uuv.s_energy(idx)*energy_ratio/100;
 %         condition(i,:) = [5,idx,energy];
    elseif disturb(i) == 6
         idx = unidrnd(5);
-        speed = uuv.s_speed(idx)*(90+unidrnd(10))/100;
+        speed = 10 + unidrnd(15);
         condition(i,:) = [6,idx,speed/10];
 %         speed_ratio = 50 + unidrnd(50);
 %         idx = unidrnd(5);

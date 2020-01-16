@@ -1,5 +1,6 @@
 function [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env)
 global configure
+global eplison
 length_o = 0;
 width_o = 0;
 length_p = 0;
@@ -48,7 +49,7 @@ for j = 1: length_o
 %         SR = SR + min(1,(dis_o(i, j)-(configure.radius + configure.obstacle_radius))/configure.obstacle_max);
         safety_risk = max(0,((configure.radius + configure.obstacle_radius + configure.obstacle_max) - dis_o(i, j))/configure.obstacle_max);
         SR = SR + safety_risk;
-        if safety_risk > 0
+        if safety_risk > eplison
             num_o = num_o + 1;
         end
     end
@@ -67,7 +68,7 @@ for j = 1: length_p
             privacy_risk = 0;
         end
         PR = PR + privacy_risk;
-        if privacy_risk > 0
+        if privacy_risk > eplison
             num_p = num_p + 1;
         end
     end
@@ -76,7 +77,7 @@ end
 
 num_acc = 0;
 for i = 1:a
-    if trajectory(i,4) >= configure.forensic_target
+    if trajectory(i,4) >= configure.forensic_target - eplison
         num_acc = num_acc + 1;
     end
 end
