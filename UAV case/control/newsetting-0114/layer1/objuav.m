@@ -3,10 +3,10 @@ global configure
 global initial_N
 global env_known
 
-% temp_f = (initial_N+1)*( x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
+% temp_f = (initial_N+1)* (x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
 temp_f = (x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
-% temp_f = x(end)/configure.battery_budget + x(end-1)/configure.Time_budget;
-% temp_f = x(end) + x(end-1);
+% temp_f = x(end)/configure.battery_budget + x(end-1)/configure.Time_budget + x(end-2);
+% temp_f = x(end) + x(end-1) + x(end-2);
 
 length_o = 0;
 width_o = 0;
@@ -59,5 +59,3 @@ end
 
 % f = sum_x + sum_y + sum_z + temp_f;
 f = sum_x;
-
-

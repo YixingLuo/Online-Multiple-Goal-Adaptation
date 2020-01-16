@@ -344,8 +344,6 @@ while (1)
             break
         end
     end
-
-    ratio
     
     %% RELAXATION
     if ratio(1) > eplison
@@ -402,7 +400,7 @@ while (1)
 %             [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@obj_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@mycon_relax, options_relax);
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
-            options.display = 'off';
+%             options.display = 'off';
 %             options.tolx = 1e-10;
 %             options.tolfun = 1e-10;
 %             options.TolCon = 1e-10;           
@@ -412,8 +410,12 @@ while (1)
             tic;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
             t2_2 = toc;
-            if exitflag_relax >= 0 
-                relax_num = relax_num + 1;
+            if exitflag_relax > 0 
+                break           
+            end
+       end
+       if exitflag_relax > 0
+               relax_num = relax_num + 1;
                 planning_time = [planning_time; t2_1 + t2_2];
                 flag_relax = [flag_relax, exitflag_relax];
                 plan_x (current_step,1) = length(x);
@@ -491,8 +493,7 @@ while (1)
                 if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
                     following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
                 end
-                break           
-            elseif exitflag > 0 
+       elseif exitflag > 0
                 plan_num = plan_num + 1;
                 fprintf('no need replanning')
                 planning_time = [planning_time; t2_1];
@@ -571,7 +572,6 @@ while (1)
                 if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
                     following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
                 end
-            end
        end
     elseif exitflag > 0 
             plan_num = plan_num + 1;
@@ -653,8 +653,8 @@ while (1)
                 following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
             end
     end
-         exitflag, exitflag_relax
-       if exitflag <= 0 && exitflag_relax < 0
+         exitflag, exitflag_relax, ratio
+       if exitflag <= 0 && exitflag_relax <= 0
            plan_num = plan_num + 1;
            fprintf(2,'no solution for relaxation \n');
            no_solution_flag = 1;

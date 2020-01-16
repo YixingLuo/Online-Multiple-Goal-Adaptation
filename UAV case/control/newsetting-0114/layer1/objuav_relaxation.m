@@ -171,6 +171,7 @@ if ratio(1)> eplison
         f = f + SR/bound_o;
     end
 end
+
 % if ratio(2)> eplison
 %     if bound_p > 0
 %         f = f + PR/bound_p;

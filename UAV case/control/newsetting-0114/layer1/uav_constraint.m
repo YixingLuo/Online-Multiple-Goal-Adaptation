@@ -321,13 +321,10 @@ while (1)
         [x,fval,exitflag]=fmincon(@objuav_constraint,x0,[],[],[],[],lb,ub,@myconuav_constraint,options);
         t2 = toc;
         tau = configure.Time_step;
-
-        if exitflag >= 0
+%         exitflag
+        if exitflag > 0
             [safety_variance, safety_ratio, privacy_variance, privacy_ratio, info_variance, info_ratio, time_variance, time_ratio, energy_variance, energy_ratio] = goal_selection(x);
             ratio = [safety_ratio, privacy_ratio, info_ratio, time_ratio, energy_ratio];
-            if safety_ratio > eplison
-                break
-            end
             planning_time = [planning_time; t2];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);
@@ -368,7 +365,7 @@ while (1)
                 following_point(i,:) = [nowp_x(i),nowp_y(i),nowp_z(i), ws(i)];
             end
             next_point = following_point(2,:);
-
+%             current_point, next_point
             current_point = next_point;
             fprintf('next point: [%f , %f, %f, %f]\n', current_point)
             traj = [trajectory; current_point];
@@ -415,8 +412,12 @@ while (1)
             end
 
             break
-        end
+        end 
     end
+    
+        if safety_ratio > eplison
+            break
+        end
 
         if exitflag < 0
             fprintf(2,'no solution \n');
