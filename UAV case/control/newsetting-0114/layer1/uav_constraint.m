@@ -419,7 +419,7 @@ while (1)
             break
         end
 
-        if exitflag < 0
+        if exitflag <= 0
             fprintf(2,'no solution \n');
             no_solution_flag = 1;
             break;
