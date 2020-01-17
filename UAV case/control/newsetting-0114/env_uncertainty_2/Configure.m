@@ -8,8 +8,8 @@ privacy_likelihood = 0.3
 map_likehood = 1
 obstacle_radius = 0.5
 privacy_radius = 0.8
-obstacle_max = 0.5  %R_max
-privacy_max = 1 % R_high
+obstacle_max = 0.2  %R_max
+privacy_max = 0.5 % R_high
 battery_budget = 60
 battery_target = 30
 battery_per = 0.5
@@ -33,6 +33,8 @@ end_point = [9,9,9,1]
  methods
         function config = Configure(config)
             config.N = floor(config.viewradius) / (config.Time_step * config.velocity_max);
+            config.start_point(4) = config.forensic_target;
+            config.end_point(4) = config.forensic_target;
 %             config.N = 4;
         end
         function config = EnergyTarget(config, battery_target)
