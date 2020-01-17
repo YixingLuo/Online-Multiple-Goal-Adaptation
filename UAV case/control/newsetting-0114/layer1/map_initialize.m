@@ -18,6 +18,14 @@ save(name, 'map');
 % map = map_initial3(map, 0, 5);
 % name = 'gridmap-' + string(0) + '.mat';
 % save(name, 'map');
+
+% for i = 1:100
+% map = Environment();
+% map = map_initial3(map, 8, 4);
+% name = 'gridmap-' + string(i) + '.mat';
+% save(name, 'map');
+% end
+
 % [data3, trajectory3,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(0);
 % [data2, trajectory2,velocity_history,planning_time] = uav_relax(0);
 % [data1, trajectory1,velocity_history,planning_time] = uav_normal(0);

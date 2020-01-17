@@ -101,7 +101,7 @@ while (1)
 %         end
 %     end
     
-    fprintf(2,'uav_relaxation: current step %d\n', current_step);
+    fprintf(2,'uav_relaxation: current step %d %d\n', current_step, num_map);
     exitflag = 0;
     exitflag_relax = 0;
     
@@ -135,9 +135,9 @@ while (1)
         current_step = current_step + 1;
         fprintf(2,'the last step!\n')
         dis = sqrt((current_point(1)-end_point(1))^2 + (current_point(2)-end_point(2))^2 + (current_point(3)-end_point(3))^2);
-        following_plan(1,1) = (end_point(1)-current_point(1))/configure.velocity_max;
-        following_plan(1,2) = (end_point(2)-current_point(2))/configure.velocity_max;
-        following_plan(1,3) = (end_point(3)-current_point(3))/configure.velocity_max;
+%         following_plan(1,1) = (end_point(1)-current_point(1))/configure.velocity_max;
+%         following_plan(1,2) = (end_point(2)-current_point(2))/configure.velocity_max;
+%         following_plan(1,3) = (end_point(3)-current_point(3))/configure.velocity_max;
         last_t = dis/sqrt(following_plan(1,1)^2 + following_plan(1,2)^2 + following_plan(1,3)^2);
 %         information = (information * past_distance + following_plan(1,4) * dis) / (past_distance + dis);
         information = (information * time + following_plan(1,4) * last_t)/(time + last_t);
@@ -320,9 +320,9 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
+        options.tolx = 1e-10;
+        options.tolfun = 1e-10;
+        options.TolCon = 1e-10;
         options.Display = 'off';
 %         options.algorithm = 'interior-point-convex'; 
 %         options.MaxIter = 10000;
@@ -397,9 +397,9 @@ while (1)
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
             options.display = 'off';
-%             options.tolx = 1e-10;
-%             options.tolfun = 1e-10;
-%             options.TolCon = 1e-10;           
+            options.tolx = 1e-10;
+            options.tolfun = 1e-10;
+            options.TolCon = 1e-10;           
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;

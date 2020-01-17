@@ -58,4 +58,4 @@ end
 % sum_z = sum_z/((initial_N+1)*(configure.forensic_target-configure.forensic_budget));
 
 % f = sum_x + sum_y + sum_z + temp_f;
-f = sum_x;
+f = sum_x + sum_y;

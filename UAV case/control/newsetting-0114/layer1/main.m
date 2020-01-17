@@ -22,7 +22,7 @@ num_o = [10];
 num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i = 1:iternum 
+        for i = 1:100
             num = i;
 %             map_initialize(num, num_o(no));
             iter = mod(num,iternum);
@@ -90,7 +90,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'S+Pdata' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

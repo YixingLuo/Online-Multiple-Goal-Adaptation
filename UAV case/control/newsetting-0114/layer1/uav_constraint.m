@@ -10,7 +10,7 @@ global configure
 configure = Configure();
 global eplison 
 % eplison = 0.01;
-current_step = 1;
+current_step = 0;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),configure.start_point(4)];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),configure.end_point(4)];
 
@@ -19,7 +19,6 @@ current_point = start_point;
 global trajectory
 trajectory = [current_point];
 % trajectory = [];
-global plan_x
 global plan_con
 global time
 global information
@@ -37,7 +36,6 @@ flag=[];
 f_value=[];
 f_lambda=[];
 plan_con = zeros(100, 100);
-plan_x = zeros(100, 100);
 following_plan = []; %% the initial plan and update online
 following_point = [start_point];
 planning_time = [];
@@ -98,7 +96,7 @@ while (1)
 %         end
 %     end
     
-    fprintf(2,'uav_constraint: current step %d\n', current_step);
+    fprintf(2,'uav_constraint: current step %d %d \n', current_step, num_map);
 %     following_point, following_plan
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
@@ -130,8 +128,8 @@ while (1)
         fprintf(2,'the last step!\n')
         dis = sqrt((current_point(1)-end_point(1))^2 + (current_point(2)-end_point(2))^2 + (current_point(3)-end_point(3))^2);
         if dis > 0
-            following_plan(1,2) = (end_point(2)-current_point(2))/configure.velocity_max;
-            following_plan(1,3) = (end_point(3)-current_point(3))/configure.velocity_max;
+%             following_plan(1,2) = (end_point(2)-current_point(2))/configure.velocity_max;
+%             following_plan(1,3) = (end_point(3)-current_point(3))/configure.velocity_max;
             last_t = dis/sqrt(following_plan(1,1)^2 + following_plan(1,2)^2 + following_plan(1,3)^2);
     %         information = (information * past_distance + following_plan(1,4) * dis) / (past_distance + dis);
             information = (information * time + following_plan(1,4) * last_t)/(time + last_t);
@@ -327,10 +325,6 @@ while (1)
 %             ratio = [safety_ratio, privacy_ratio, info_ratio, time_ratio, energy_ratio];
             planning_time = [planning_time; t2];
             plan_num = plan_num + 1;
-            plan_x (current_step,1) = length(x);
-            for k = 1:length(x)
-                plan_x (current_step,k+1) = x(k);
-            end
             fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
 
             for k = 1: (initial_N+1) 

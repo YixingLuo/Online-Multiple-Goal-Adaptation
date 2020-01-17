@@ -11,7 +11,7 @@ global eplison
 global ratio
 configure = Configure();
 % eplison = 0;
-current_step = 1;
+current_step = 0;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),configure.start_point(4)];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),configure.end_point(4)];
 
@@ -20,7 +20,6 @@ current_point = start_point;
 global trajectory
 trajectory = [current_point];
 % trajectory = [];
-global plan_x
 global plan_con
 global time
 global information
@@ -38,7 +37,6 @@ flag=[];
 flag_relax=[];
 f_lambda=[];
 plan_con = zeros(100, 100);
-plan_x = zeros(100, 100);
 following_plan = []; %% the initial plan and update online
 following_point = [start_point];
 relax_num = 0;
@@ -101,7 +99,7 @@ while (1)
 %         end
 %     end
     
-    fprintf(2,'uav_relaxation: current step %d\n', current_step);
+    fprintf(2,'uav_relaxation: current step %d %d\n', current_step, num_map);
     exitflag = 0;
     exitflag_relax = 0;
     
@@ -135,9 +133,9 @@ while (1)
         current_step = current_step + 1;
         fprintf(2,'the last step!\n')
         dis = sqrt((current_point(1)-end_point(1))^2 + (current_point(2)-end_point(2))^2 + (current_point(3)-end_point(3))^2);
-        following_plan(1,1) = (end_point(1)-current_point(1))/configure.velocity_max;
-        following_plan(1,2) = (end_point(2)-current_point(2))/configure.velocity_max;
-        following_plan(1,3) = (end_point(3)-current_point(3))/configure.velocity_max;
+%         t_x = (end_point(1)-current_point(1))/configure.velocity_max;
+%         t_y = (end_point(2)-current_point(2))/configure.velocity_max;
+%         t_z = (end_point(3)-current_point(3))/configure.velocity_max;
         last_t = dis/sqrt(following_plan(1,1)^2 + following_plan(1,2)^2 + following_plan(1,3)^2);
 %         information = (information * past_distance + following_plan(1,4) * dis) / (past_distance + dis);
         information = (information * time + following_plan(1,4) * last_t)/(time + last_t);
@@ -346,7 +344,7 @@ while (1)
     end
     
     %% RELAXATION
-    if ratio(1) > eplison
+    if ratio(1) > eplison || ratio(2) > eplison
        rate_list = [rate_list, ratio'];
        tag = [0,0,0,0,0];
 %        tag = [0];
@@ -414,14 +412,10 @@ while (1)
                 break           
             end
        end
-       if exitflag_relax >= 0
+       if exitflag_relax > 0
                relax_num = relax_num + 1;
                 planning_time = [planning_time; t2_1 + t2_2];
                 flag_relax = [flag_relax, exitflag_relax];
-                plan_x (current_step,1) = length(x);
-                for k = 1:length(x)
-                    plan_x (current_step,k+1) = x(k);
-                end
                 fprintf(2,"there is a solution for relax!!%d, %d\n",exitflag_relax,current_step)
 
                 for k = 1: (initial_N+1) 
@@ -498,10 +492,6 @@ while (1)
                 fprintf('no need replanning')
                 planning_time = [planning_time; t2_1];
                 flag = [flag, exitflag];
-                plan_x (current_step,1) = length(x);
-                for k = 1:length(x)
-                    plan_x (current_step,k+1) = x(k);
-                end
                 fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
 
                 for k = 1: (initial_N+1) 
@@ -578,10 +568,6 @@ while (1)
             fprintf('no need replanning')
             planning_time = [planning_time; t2_1];
             flag = [flag, exitflag];
-            plan_x (current_step,1) = length(x);
-            for k = 1:length(x)
-                plan_x (current_step,k+1) = x(k);
-            end
             fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
 
             for k = 1: (initial_N+1) 
@@ -654,7 +640,7 @@ while (1)
             end
     end
 %          exitflag, exitflag_relax, ratio
-       if exitflag <= 0 && exitflag_relax < 0
+       if exitflag <= 0 && exitflag_relax <= 0
            plan_num = plan_num + 1;
            fprintf(2,'no solution for relaxation \n');
            no_solution_flag = 1;
