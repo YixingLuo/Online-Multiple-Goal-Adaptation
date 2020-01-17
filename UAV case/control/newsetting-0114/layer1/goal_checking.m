@@ -1,4 +1,4 @@
-function [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env)
+function [SR, DS_SR, PR, DS_PR, DS_acc] = goal_checking(trajectory, env)
 global configure
 length_o = 0;
 width_o = 0;
@@ -48,7 +48,7 @@ for j = 1: length_o
     for i = 1:a
 %         SR = SR + min(1,(dis_o(i, j)-(configure.radius + configure.obstacle_radius))/configure.obstacle_max);
         safety_risk = max(0,((configure.radius + configure.obstacle_radius + configure.obstacle_max) - dis_o(i, j))/configure.obstacle_max);
-        if dis_o(i, j) < configure.radius + configure.obstacle_radius
+        if dis_o(i, j) < configure.radius + configure.obstacle_radius  + configure.obstacle_max
             unsafe = 1;
         end
         SR = SR + safety_risk;

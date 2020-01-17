@@ -157,7 +157,8 @@ end
 for j = 1: length_o
     for i = 1:initial_N + 1 
         x_index = 4*(initial_N + 1) + (j-1) * (initial_N+1) + i;
-        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
+%         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
+        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max) ];
     end
 end
 

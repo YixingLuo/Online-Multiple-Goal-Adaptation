@@ -78,7 +78,7 @@ following_point = [following_point; end_point];
 
 
 while (1)
-    needplan = 1;
+    needplan = 0;
     
 %     if num_map > 0
 %         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
@@ -653,7 +653,7 @@ while (1)
                 following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
             end
     end
-         exitflag, exitflag_relax, ratio
+%          exitflag, exitflag_relax, ratio
        if exitflag <= 0 && exitflag_relax < 0
            plan_num = plan_num + 1;
            fprintf(2,'no solution for relaxation \n');

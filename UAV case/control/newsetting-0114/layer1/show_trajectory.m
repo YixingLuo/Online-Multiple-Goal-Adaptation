@@ -1,6 +1,6 @@
 global env
 global configure
-% gridmap = load('gridmap-29.mat');
+gridmap = load('gridmap-1.mat');
 % env = gridmap.map;
 % a = load('trajectory_normal.mat');
 % trajectory = a.trajectory;
