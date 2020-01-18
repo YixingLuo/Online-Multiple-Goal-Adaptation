@@ -194,11 +194,11 @@ end
 %     end
 % end
 
-% if ratio(4)> eplison
+if ratio(4)> eplison
     c = [c, time_now - configure.Time_budget];
-% else
-%     c = [c, time_now - configure.Time_target];    
-% end
+else
+    c = [c, time_now - configure.Time_target];    
+end
 
 % if ratio(5)> eplison
     c = [c, energy_now - configure.battery_budget];

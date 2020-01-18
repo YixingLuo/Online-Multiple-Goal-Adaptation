@@ -180,5 +180,5 @@ end
 %         end
 %     end
     
-%     c = [c, time_now - configure.Time_budget];
+    c = [c, time_now - configure.Time_target];
 %     c = [c, energy_now - configure.battery_target];    
