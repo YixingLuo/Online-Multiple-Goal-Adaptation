@@ -17,8 +17,8 @@ tag_list3 = zeros(100,100);
 
 global eplison
 eplison = 1e-6;
-iternum = 10;
-num_o = [10];
+iternum = 50;
+num_o = [10,20,30,40,50];
 num_p = [5];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
@@ -66,18 +66,18 @@ for np = 1:length(num_p)
                         planningtime2(:,i) = planning_time;                      
                     end
 
-%                     [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num);
-%                     if data_3(1)> 0
-%                         data3(i,:) =  data_3;
-%                         trajectory3 = [trajectory3; trajectory];
-%                         velocity_history3 = [velocity_history3; velocity_history];
-%                         planning_time =[planning_time; zeros(100-length(planning_time),1)];               
-%                         planningtime3(:,i) = planning_time;
-%                         rate_list_ = [rate_list, zeros(5,100-size(rate_list,2))];
-%                         tag_list_ =  [tag_list, zeros(5,100-size(tag_list,2))];
-%                         rate_list3((iter-1)*5+1:iter*5,:) = rate_list_;
-%                         tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
-%                     end
+                    [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num);
+                    if data_3(1)> 0
+                        data3(i,:) =  data_3;
+                        trajectory3 = [trajectory3; trajectory];
+                        velocity_history3 = [velocity_history3; velocity_history];
+                        planning_time =[planning_time; zeros(100-length(planning_time),1)];               
+                        planningtime3(:,i) = planning_time;
+                        rate_list_ = [rate_list, zeros(5,100-size(rate_list,2))];
+                        tag_list_ =  [tag_list, zeros(5,100-size(tag_list,2))];
+                        rate_list3((iter-1)*5+1:iter*5,:) = rate_list_;
+                        tag_list3((iter-1)*5+1:iter*5,:) = tag_list_;                       
+                    end
 
 %                 if data_1(1)>0 && data_2(1)>0 && data_3(1)>0
 %                     data1 = [data1; data_1];
