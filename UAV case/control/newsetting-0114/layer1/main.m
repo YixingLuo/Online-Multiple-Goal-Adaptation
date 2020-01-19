@@ -90,7 +90,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'S+P+T+Edata' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'S+P+T+E+Adata' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

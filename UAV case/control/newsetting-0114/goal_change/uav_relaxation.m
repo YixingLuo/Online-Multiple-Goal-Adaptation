@@ -78,7 +78,7 @@ following_point = [following_point; end_point];
 
 
 while (1)
-    needplan = 1;
+    needplan = 0;
     
     if num_map > 0
         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
@@ -320,9 +320,9 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
+        options.tolx = 1e-10;
+        options.tolfun = 1e-10;
+        options.TolCon = 1e-10;
         options.Display = 'off';
 %         options.algorithm = 'interior-point-convex'; 
 %         options.MaxIter = 10000;
@@ -397,9 +397,9 @@ while (1)
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
             options.display = 'off';
-%             options.tolx = 1e-10;
-%             options.tolfun = 1e-10;
-%             options.TolCon = 1e-10;           
+            options.tolx = 1e-10;
+            options.tolfun = 1e-10;
+            options.TolCon = 1e-10;           
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;

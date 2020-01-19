@@ -24,7 +24,7 @@ num_p = [5];
 for grid = 5:-1:5
     for np = 1:length(num_p)
         for no = 1:length(num_o)
-            for i = 51 :3*iternum
+            for i = 1 :3*iternum
                 k = ceil(i/iternum);
                 num_condition = i;
     %             map_initialize(num, num_o(no),num_p(np));

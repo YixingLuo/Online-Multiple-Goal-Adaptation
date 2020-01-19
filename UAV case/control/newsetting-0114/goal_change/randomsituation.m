@@ -34,10 +34,10 @@ condition = [];
 
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy = 24 + unidrnd(12); 
+        energy = 24 + unidrnd(6); 
         condition(i,:) = [1,energy];
     elseif disturb(i) == 2
-        time = 12 + unidrnd(8);
+        time = 16 + unidrnd(4);
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
         rate = unifrnd (0,1);
