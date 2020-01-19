@@ -60,7 +60,7 @@ set(h,'Position',[xlim(1)-(xlim(2)-xlim(1))*0.05,ylim(1)])
 % relax_for_5 = [];
 % for i = 1:size(relax_sum,1)/5
 %     for j = 1:5
-%         relax_sum((i-1)*5+j) = relax_sum((i-1)*5+j) /(data3(i,end-1) + data3(i,end));
+%         relax_sum((i-1)*5+j) = relax_sum((i-1)*5+j) /(data3(i,end-2) + data3(i,end-1));
 %     end  
 % end
 % for i = 1:size(relax_sum,1)/5

@@ -57,5 +57,5 @@ for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
 end
 % sum_z = sum_z/((initial_N+1)*(configure.forensic_target-configure.forensic_budget));
 
-% f = sum_x + sum_y + sum_z + temp_f;
-f = sum_x + sum_y + x(end-1)/(configure.Time_budget-configure.Time_target);
+f = sum_x + sum_y + sum_z + temp_f;
+% f = sum_x + sum_y + x(end-1)/(configure.Time_budget-configure.Time_target) +  x(end)/(configure.battery_budget-configure.battery_target);

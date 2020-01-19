@@ -384,11 +384,11 @@ while (1)
                     x0_relax(index) = max(lb_relax(index),ub_relax(index));
                 end        
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-%                     if ratio(3)> eplison
+                    if ratio(3)> eplison
                         lb_relax(i) = configure.forensic_budget;
-%                     else
-%                         lb_relax(i) = configure.forensic_target;
-%                     end
+                    else
+                        lb_relax(i) = configure.forensic_target;
+                    end
                     ub_relax(i) = configure.sensor_accuracy;
                     x0_relax(i) = configure.forensic_target;
 %                     x0_relax(i) = unifrnd(lb_relax(i), ub_relax(i));

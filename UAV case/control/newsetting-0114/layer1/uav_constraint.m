@@ -281,7 +281,8 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = configure.forensic_budget;
+%                 lb(i) = configure.forensic_budget;
+                lb(i) = configure.forensic_target;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.forensic_target;
 %                 x0(i) = unifrnd(lb(i), ub(i));
