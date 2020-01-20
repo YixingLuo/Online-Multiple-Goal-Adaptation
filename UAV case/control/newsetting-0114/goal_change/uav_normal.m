@@ -79,7 +79,7 @@ following_point = [following_point; end_point];
 
 
 while (1)
-    needplan = 0;
+    needplan = 1;
     
     if num_map > 0
         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
