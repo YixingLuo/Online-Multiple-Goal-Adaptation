@@ -139,7 +139,7 @@ c = [c,time_now - (configure.Time_target + x(end-1))];
 c = [c, energy_now - (configure.battery_target + x(end))];
 
 c = [c, - info_now + configure.forensic_budget];
-c = [c, time_now - configure.Time_budget];
+c = [c, time_now - configure.Time_target];
 c = [c, energy_now - configure.battery_budget];
 
 
@@ -172,7 +172,7 @@ end
 for j = 1: length_p
     for i = 1:initial_N + 1 
         x_index = 4*(initial_N + 1) + bound_o + (j-1) * (initial_N+1) + i;
-        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
-%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
+%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
+        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
     end
 end

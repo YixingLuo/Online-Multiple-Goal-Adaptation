@@ -37,7 +37,7 @@ eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e
                 if mod(num,iternum)==0
                     data3 = [data3; mean(data3,1)];
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(10)  + '_' + string(eplison) + '_'+ string(5) + '.mat';
+                    name = 'data' + string(time) + '_10_' + string(eplison) + '_5.mat';
                     save(name);
                     data3 = [];
                     trajectory3 = [];
