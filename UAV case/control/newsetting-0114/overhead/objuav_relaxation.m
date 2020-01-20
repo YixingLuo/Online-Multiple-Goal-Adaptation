@@ -1,10 +1,8 @@
 function f = objuav_relaxation(x)
-x;
 sum = 0;
 global configure
 global initial_N
 global env_known
-global configure
 global current_point
 global time
 global ratio
@@ -59,13 +57,13 @@ p_z = [p_z, configure.end_point(3)];
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
-    last_info = 0;
-    last_time = 0;
+%     last_info = 0;
+%     last_time = 0;
 else
 %     time_now = time + initial_N*tau + time_x;
     time_now = time + initial_N*tau + sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-    last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-    last_time = sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
+%     last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
+%     last_time = sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
 end
 
 distance = 0;
@@ -84,14 +82,14 @@ for i = 1:initial_N
 end
 
 for i = 1:initial_N + 1
-    info_now = info_now + x(3*(initial_N + 1)+i) * tau;
+    info_now = info_now + x(3*(initial_N + 1)+i);
 end
 energy_now = energy + energy_now;
 % info_now, information, distance,past_distance
 % info_now = (information * past_distance + info_now) / (past_distance + distance);
 % info_now = (information * time + info_now + last_info)/(time_now);
 % info_now = (info_now + last_info)/(initial_N  * tau + last_time);
-info_now = (info_now)/((initial_N ) * tau);
+info_now = (info_now)/((initial_N ));
 
 
 
@@ -158,11 +156,11 @@ for j = 1: length_p
 end
 
 %% 0115
-sum_z = 0;
-for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-   sum_z = sum_z +  max((configure.forensic_target - x(i)/(configure.forensic_target - configure.forensic_budget)),0);
-end
-sum_z = sum_z/((initial_N+1));
+% sum_z = 0;
+% for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+%    sum_z = sum_z +  max((configure.forensic_target - x(i)/(configure.forensic_target - configure.forensic_budget)),0);
+% end
+% sum_z = sum_z/((initial_N+1));
 
 %% 1118
 f = 0;

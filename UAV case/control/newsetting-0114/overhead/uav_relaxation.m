@@ -159,8 +159,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -288,7 +288,7 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = configure.forensic_budget;
                 ub(i) = configure.sensor_accuracy;
-                x0(i) = configure.forensic_target;
+                x0(i) = configure.sensor_accuracy;
             end
     
             length_o = 0;
@@ -320,9 +320,9 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
-        options.tolx = 1e-10;
-        options.tolfun = 1e-10;
-        options.TolCon = 1e-10;
+%         options.tolx = 1e-10;
+%         options.tolfun = 1e-10;
+%         options.TolCon = 1e-10;
         options.Display = 'off';
 %         options.algorithm = 'interior-point-convex'; 
 %         options.MaxIter = 10000;
@@ -389,7 +389,7 @@ while (1)
                         lb_relax(i) = configure.forensic_target;
                     end
                     ub_relax(i) = configure.sensor_accuracy;
-                    x0_relax(i) = configure.forensic_target;
+                    x0_relax(i) = configure.sensor_accuracy;
                 end
 
 %             options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );   
@@ -397,9 +397,9 @@ while (1)
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.algorithm = 'sqp';
             options.display = 'off';
-            options.tolx = 1e-10;
-            options.tolfun = 1e-10;
-            options.TolCon = 1e-10;           
+%             options.tolx = 1e-10;
+%             options.tolfun = 1e-10;
+%             options.TolCon = 1e-10;           
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;

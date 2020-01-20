@@ -79,7 +79,7 @@ following_point = [following_point; end_point];
 
 
 while (1)
-    needplan = 0;
+    needplan = 1;
     
 %     if num_map > 0
 %         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
@@ -155,8 +155,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -292,7 +292,7 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = configure.forensic_budget;
                 ub(i) = configure.sensor_accuracy;
-                x0(i) = configure.forensic_target;
+                x0(i) = configure.sensor_accuracy;
 %                 x0(i) = unifrnd(lb(index),ub(index));
             end
     

@@ -75,7 +75,7 @@ following_point = [following_point; end_point];
 
 
 while (1)
-    needplan = 0;
+    needplan = 1;
     
 %     if num_map > 0 
 %         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
@@ -154,8 +154,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1124
-%     env_view = remove_obstacle(env_view);
-%     env_view = remove_privacy(env_view);
+    env_view = remove_obstacle(env_view);
+    env_view = remove_privacy(env_view);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;

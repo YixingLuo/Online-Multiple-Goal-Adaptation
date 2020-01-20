@@ -1,17 +1,13 @@
 function f = objuav_normal(x)
-x;
 sum = 0;
 global configure
 global initial_N
 global env_known
-global configure
 global current_point
 global time
-global ratio
 global energy
 global information
 global past_distance
-global eplison
 
 f=[];
 tau = configure.Time_step;
@@ -59,13 +55,13 @@ p_z = [p_z, configure.end_point(3)];
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
-    last_info = 0;
-    last_time = 0;
+%     last_info = 0;
+%     last_time = 0;
 else
 %     time_now = time + initial_N*tau + time_x;
     time_now = time + initial_N*tau + sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-    last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-    last_time =  sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
+%     last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
+%     last_time =  sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
 end
 
 distance = 0;
@@ -176,16 +172,16 @@ end
 %     f = f + PR/bound_p;
 % end
 
-% f = 0;
-% f1 = max(0,(configure.forensic_target - info_now));
-% % f1 = (configure.forensic_target - info_now);
-% f = f + f1.^2;
-% f2 = max(0,(time_now -  configure.Time_target)/ (configure.Time_budget));
-% % f2 = (time_now -  configure.Time_target)/ (configure.Time_budget);
-% f = f + f2.^2;
-% f3 = max(0,(energy_now - configure.battery_target)/ (configure.battery_budget));
-% % f3 = (energy_now - configure.battery_target)/ (configure.battery_budget);
-% f = f + f3.^2;
+f = 0;
+f1 = max(0,(configure.forensic_target - info_now));
+% f1 = (configure.forensic_target - info_now);
+f = f + f1.^2;
+f2 = max(0,(time_now -  configure.Time_target)/ (configure.Time_budget));
+% f2 = (time_now -  configure.Time_target)/ (configure.Time_budget);
+f = f + f2.^2;
+f3 = max(0,(energy_now - configure.battery_target)/ (configure.battery_budget));
+% f3 = (energy_now - configure.battery_target)/ (configure.battery_budget);
+f = f + f3.^2;
 
 %% 1219
 % f = 0;
@@ -200,10 +196,10 @@ end
 %     f = f + (PR/num_p).^2;
 % end
 
-f = 0;
-f = f + ((configure.forensic_target-info_now)).^2;
-f = f + ((energy_now - configure.battery_target)/(configure.Time_budget - configure.Time_target)).^2;
-f = f + ((time_now -  configure.Time_target)/(configure.battery_budget - configure.battery_target)).^2;
+% f = 0;
+% f = f + ((configure.forensic_target-info_now)).^2;
+% f = f + ((energy_now - configure.battery_target)/(configure.Time_budget - configure.Time_target)).^2;
+% f = f + ((time_now -  configure.Time_target)/(configure.battery_budget - configure.battery_target)).^2;
 
 
 
