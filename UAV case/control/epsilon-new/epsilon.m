@@ -8,7 +8,7 @@ planningtime3 = zeros(100,100);
 rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 global eplison
-eplison_list = [0,1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1,1];
+eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1];
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
         num_obs = [20];
@@ -37,7 +37,7 @@ eplison_list = [0,1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,
                 if mod(num,iternum)==0
                     data3 = [data3; mean(data3,1)];
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(eplison) + '.mat';
+                    name = 'data' + string(time) + '_' + string(10)  + '_' + string(eplison) + '_'+ string(5) + '.mat';
                     save(name);
                     data3 = [];
                     trajectory3 = [];
