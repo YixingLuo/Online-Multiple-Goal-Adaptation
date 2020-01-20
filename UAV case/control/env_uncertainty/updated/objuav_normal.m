@@ -1,4 +1,4 @@
-function f = objuav_relaxation(x)
+function f = objuav_normal(x)
 x;
 sum = 0;
 global configure
@@ -159,36 +159,38 @@ end
 
 
 %% 1118
-f = 0;
-if ratio(1)> eplison
-    if bound_o > 0
-        f = f + SR/bound_o;
-    end
-%     if length_o > 0
-%         f = f + SR/length_o;
-%     end
-%     f = f + SR;
-end
-% if ratio(2)> eplison
-%     if bound_p > 0
-%         f = f + PR/bound_p;
-%     end
-% %     if length_p > 0
-% %         f = f + PR/length_p;
-% %     end
-% %     f = f + PR;
+% f = 0;
+% if bound_o > 0
+%     f = f + SR/bound_o;
 % end
-% if ratio(3)> eplison
-%     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
-% %     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);
+% if bound_p > 0
+%     f = f + PR/bound_p;
 % end
-% if ratio(4)> eplison
-%     f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
-% %     f = f + (time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target);
-% end
-% if ratio(5)> eplison
-%     f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
-% %     f = f + (energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target);
-% end
+% f = f + max(0,(configure.forensic_target-info_now)); 
+% f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget ));
+% f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget));
 
+% f = 0;
+% if bound_o > 0
+%     f = f + SR/bound_o;
+% end
+% if bound_p > 0
+%     f = f + PR/bound_p;
+% end
+% f = f + max(0,(configure.forensic_target - info_now)/(configure.forensic_target - configure.forensic_budget)); 
+% f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+% f = f + max(0,(energy_now - configure.battery_target)/ (configure.battery_budget-configure.battery_target));
+
+%% 1219
+f = 0;
+f = f + ((configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)).^2;
+f = f + ((energy_now - configure.battery_target)/(configure.Time_budget - configure.Time_target)).^2;
+f = f + ((time_now -  configure.Time_target)/(configure.battery_budget-configure.battery_target)).^2;
+
+if bound_o > 0
+    f = f + (SR/bound_o).^2;
+end
+if bound_p > 0
+    f = f + (PR/bound_p).^2;
+end
 

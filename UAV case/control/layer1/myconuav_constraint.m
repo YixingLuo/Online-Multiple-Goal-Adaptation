@@ -138,9 +138,9 @@ c = [c, - info_now + (configure.forensic_target - x(end-2))];
 c = [c,time_now - (configure.Time_target + x(end-1))];
 c = [c, energy_now - (configure.battery_target + x(end))];
 
-% c = [c, - info_now + configure.forensic_budget];
-% c = [c, time_now - configure.Time_budget];
-% c = [c, energy_now - configure.battery_budget];
+c = [c, - info_now + configure.forensic_budget];
+c = [c, time_now - configure.Time_budget];
+c = [c, energy_now - configure.battery_budget];
 
 
 if length_o> 0

@@ -1,4 +1,4 @@
-function [c,ceq] = myconuav(x)
+function [c,ceq] = myconuav_relax(x)
 c=[];
 ceq=[];
 global configure

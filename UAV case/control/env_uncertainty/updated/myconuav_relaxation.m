@@ -1,4 +1,4 @@
-function [c,ceq] = myconuav(x)
+function [c,ceq] = myconuav_relaxation(x)
 c=[];
 ceq=[];
 global configure
@@ -9,6 +9,9 @@ global energy
 global past_distance
 global env_known
 global initial_N
+global ratio
+global eplison
+
 tau = configure.Time_step;
 p_x = [];
 p_y = [];
@@ -25,13 +28,14 @@ for i = 1: initial_N
      c = [c, p_x(i+1)-(configure.grid_x-configure.radius), p_y(i+1)-(configure.grid_y-configure.radius), p_z(i+1)-(configure.grid_z-configure.radius)];
 end
 
-% ceq(1) = x(initial_N + 1)*tau + p_x(initial_N) - 9
-% ceq(2) = x(2*(initial_N + 1))*tau + p_x(2*(initial_N + 1)-1) - 9
-% ceq(3) = x(3*(initial_N + 1))*tau + p_x(3*(initial_N + 1)-1) - 9
-
 p_x = [p_x, configure.end_point(1)];
 p_y = [p_y, configure.end_point(2)];
 p_z = [p_z, configure.end_point(3)];
+
+% time_to_destination = max((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
+% time_to_destination = max(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
+% time_to_destination2 = min((p_x(end)-p_x(initial_N + 1))/x(initial_N + 1), (p_y(end)-p_y(initial_N + 1))/x(2*(initial_N + 1)));
+% time_to_destination2 = min(time_to_destination, (p_z(end)-p_z(initial_N + 1))/x(3*(initial_N + 1)));
 
 if x(initial_N + 1) ~= 0
     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
@@ -93,8 +97,6 @@ else
     last_info = x(4*(initial_N + 1))*sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
 end
 
-% time_now = time + initial_N*tau + sqrt((p_x(end)-p_x(initial_N + 1)).^2+(p_y(end)-p_y(initial_N + 1)).^2+(p_z(end)-p_z(initial_N + 1)).^2) /sqrt(x(initial_N + 1).^2+x(2*(initial_N + 1)).^2+x(3*(initial_N + 1)).^2);
-% time_now = time + initial_N*tau + time_to_destination;
 distance = 0;
 energy_now = 0;
 info_now = 0;
@@ -133,15 +135,6 @@ dis_p = zeros(initial_N+1,length_p);
 % dis_p = zeros(initial_N,length_p);
 
 
-c = [c, - info_now + (configure.forensic_target - x(end-2))];
-c = [c,time_now - (configure.Time_target + x(end-1))];
-c = [c, energy_now - (configure.battery_target + x(end))];
-
-% c = [c, - info_now + configure.forensic_budget];
-% c = [c, time_now - configure.Time_budget];
-% c = [c, energy_now - configure.battery_budget];
-
-
 if length_o> 0
     for i = 1:initial_N + 1
         for j = 1: length_o
@@ -160,16 +153,62 @@ if length_p > 0
     end
 end
 
-for j = 1: length_o
-    for i = 1:initial_N + 1 
-        x_index = 4*(initial_N + 1) + (j-1) * (initial_N+1) + i;
-        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
+if ratio(1)> eplison
+    for j = 1: length_o
+        for i = 1:initial_N  + 1
+            c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
+        end
+    end
+else
+    for j = 1: length_o
+        for i = 1:initial_N  + 1
+            c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max)];
+        end
     end
 end
 
-for j = 1: length_p
-    for i = 1:initial_N + 1 
-        x_index = 4*(initial_N + 1) + bound_o + (j-1) * (initial_N+1) + i;
-        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
+if ratio(2)> eplison
+    for j = 1: length_p
+        for i = 1:initial_N + 1 
+            c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
+        end
+    end
+else
+    for j = 1: length_p
+        for i = 1:initial_N  + 1
+            c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
+        end
     end
 end
+
+if ratio(3)> eplison
+%     c = [c, info_now - 1];
+    c = [c, - info_now + configure.forensic_budget];
+else
+%     c = [c, info_now - 1];
+    c = [c, - info_now + configure.forensic_target];    
+end
+
+if ratio(4)> eplison
+%     c = [c, - time_now + 0];
+    c = [c, time_now - configure.Time_budget];
+else
+%     c = [c, - time_now + 0];
+    c = [c, time_now - configure.Time_target];    
+end
+
+if ratio(5)> eplison
+%     c = [c, - energy_now + 0];
+    c = [c, energy_now - configure.battery_budget];
+else
+%     c = [c, - energy_now + 0];
+    c = [c, energy_now - configure.battery_target];    
+end    
+
+% c=[c, -time_to_destination];
+
+
+
+
+
+
