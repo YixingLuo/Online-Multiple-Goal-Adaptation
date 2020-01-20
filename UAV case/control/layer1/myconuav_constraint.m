@@ -139,7 +139,7 @@ c = [c,time_now - (configure.Time_target + x(end-1))];
 c = [c, energy_now - (configure.battery_target + x(end))];
 
 c = [c, - info_now + configure.forensic_budget];
-c = [c, time_now - configure.Time_target];
+c = [c, time_now - configure.Time_budget];
 c = [c, energy_now - configure.battery_budget];
 
 

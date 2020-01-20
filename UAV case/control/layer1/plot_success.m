@@ -1,5 +1,5 @@
 figure,
-layer1_success = [1,0.99,0.75,0.72,0.43];
+layer1_success = [0.98,0.93,0.88,0.88,0.87];
 layer2_success = [1,1,0.99,0.98,0.98];
 k=[1,2,3,4,5];
 plot(k,layer1_success,'-^','linewidth',1.2,'Color',[0.8500 0.3250 0.0980],'MarkerFaceColor',[0.8500 0.3250 0.0980],'MarkerEdgeColor',[0.8500 0.3250 0.0980])
