@@ -172,7 +172,7 @@ end
 for j = 1: length_p
     for i = 1:initial_N + 1 
         x_index = 4*(initial_N + 1) + bound_o + (j-1) * (initial_N+1) + i;
-%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
-        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
+        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
+%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
     end
 end

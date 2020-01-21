@@ -66,7 +66,7 @@ for j = 1: length_p
 %         PR = PR + min(1,(dis_p(i, j)-(configure.radius + configure.privacy_radius))/configure.privacy_max);
         disk_risk = max(0,((configure.radius + configure.privacy_radius + configure.privacy_max) - dis_p(i, j))/configure.privacy_max);
         omega = trajectory(i,4);
-        if dis_p(i, j) < configure.radius + configure.privacy_radius + configure.privacy_max
+        if dis_p(i, j) < configure.radius + configure.privacy_radius
             unprivacy = 1;
         end
         if disk_risk > 0
