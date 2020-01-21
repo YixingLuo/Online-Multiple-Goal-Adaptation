@@ -342,9 +342,10 @@ while (1)
         %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
-        options.algorithm = 'sqp';
-        options.tolx = 1e-10;
-        options.tolfun = 1e-10;
+        options.Algorithm = 'sqp';
+        options.Display = 'off';
+        options.Tolx = 1e-10;
+        options.Tolfun = 1e-10;
         options.TolCon = 1e-10;
 %         options.algorithm = 'interior-point-convex'; 
 %         options.MaxIter = 10000;
@@ -432,9 +433,10 @@ while (1)
 %             options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );   
 %             [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@obj_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@mycon_relax, options_relax);
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-            options.algorithm = 'sqp';
-            options.tolx = 1e-10;
-            options.tolfun = 1e-10;
+            options.Algorithm = 'sqp';
+            options.Display = 'off';
+            options.Tolx = 1e-10;
+            options.Tolfun = 1e-10;
             options.TolCon = 1e-10;           
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
