@@ -361,8 +361,8 @@ while (1)
 %         options.MaxFunctionEvaluations = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %         options.algorithm = 'sqp';
-        options.algorithm = 'sqp';
-        options.display = 'off';
+        options.Algorithm = 'sqp';
+        options.Display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;

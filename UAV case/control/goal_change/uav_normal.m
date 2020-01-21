@@ -96,16 +96,16 @@ while (1)
         end
     end
 
-    fprintf(2,'uav_normal: current step %d\n', current_step);
+    fprintf(2,'uav_normal: current step %d %d\n', current_step, num_condition);
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+        [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num];
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num,DS_acc];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';
@@ -317,7 +317,8 @@ while (1)
         %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
-        options.algorithm = 'sqp';
+        options.Algorithm = 'sqp';
+        options.Display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;

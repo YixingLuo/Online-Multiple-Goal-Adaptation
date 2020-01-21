@@ -319,8 +319,8 @@ while (1)
         %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
-        options.algorithm = 'sqp';
-        options.display = 'off';
+        options.Algorithm = 'sqp';
+        options.Display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;
