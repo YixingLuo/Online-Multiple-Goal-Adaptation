@@ -98,7 +98,7 @@ while (1)
 %         index_cond = index_cond+1;
 %     end
 
-    fprintf(2,'uav_normal: current step %d\n', current_step);
+    fprintf(2,'uav_normal: current step %d %d\n', current_step, num);
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
@@ -320,6 +320,7 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.algorithm = 'sqp';
+        options.display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;

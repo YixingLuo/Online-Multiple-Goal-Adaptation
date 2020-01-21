@@ -98,7 +98,7 @@ while (1)
 %         index_cond = index_cond+1;
 %     end
     
-    fprintf(2,'uav_relax: current step %d\n', current_step);
+    fprintf(2,'uav_relax: current step %d %d\n', current_step, num);
 %     following_point, following_plan
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
@@ -362,6 +362,7 @@ while (1)
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %         options.algorithm = 'sqp';
         options.algorithm = 'sqp';
+        options.display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;

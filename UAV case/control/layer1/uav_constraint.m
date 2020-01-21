@@ -263,8 +263,8 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-                x0(i) = ub(i) - iternum * 2/30;
-%                 x0(i) = unifrnd(lb(i), ub(i));
+%                 x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = unifrnd(lb(i), ub(i));
             end
         
             for i = 1: 3 %% velocity constraint for the last point
@@ -283,8 +283,8 @@ while (1)
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
-                x0(i) = configure.sensor_accuracy;
-%                 x0(i) = unifrnd(lb(i),ub(i));
+%                 x0(i) = configure.sensor_accuracy;
+                x0(i) = unifrnd(lb(i),ub(i));
             end
     
             length_o = 0;
