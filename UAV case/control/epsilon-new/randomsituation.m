@@ -7,8 +7,8 @@
 function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global configure
-l = [3];
-disturb = randi([4,6],1,l(k));
+l = [4];
+disturb = randi([1,6],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);
 K=randperm(length(a));
@@ -19,10 +19,10 @@ index = sort(index1);
 condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy = 15 + unidrnd(10); 
+        energy = 16 + unidrnd(8); 
         condition(i,:) = [1,energy];
     elseif disturb(i) == 2
-        time = 12 + unidrnd(6);
+        time = 9 + unidrnd(6);
         condition(i,:) = [2,time];
     elseif disturb(i) == 3
         accuracy = 85 + unidrnd(10);
@@ -40,6 +40,9 @@ for i = 1: length(disturb)
 end
 name = 'condition' + string(num) + '.mat';
 save(name, 'condition');
+name = 'index' + string(num) + '.mat';
+save(name, 'index');
+
 
 
 

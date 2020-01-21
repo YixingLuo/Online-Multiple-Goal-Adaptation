@@ -1,6 +1,6 @@
 clc
 clear
-iternum = 20;
+iternum = 100;
 data3 = [];
 trajectory3 = [];
 velocity_history3 = [];
@@ -8,11 +8,11 @@ planningtime3 = zeros(100,100);
 rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 global eplison
-eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1];
+eplison_list = [0,1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,5e-1];
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [10];
-        for nobs = 1:10
+%         eplison = 0;
+        for nobs = 1:iternum
 %             for i = 1:iternum
                 num = nobs;
                 i = nobs;
@@ -20,8 +20,9 @@ eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e
                 if iter == 0
                     iter = iternum;
                 end
-
-                [data, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num);
+                name = 'index' + string(num) + '.mat';
+                indextemp = load(name);
+                [data, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num,num,indextemp.index);
                 if data(1)> 0
                     data3(i,:) = data;
                     trajectory3 = [trajectory3; trajectory];

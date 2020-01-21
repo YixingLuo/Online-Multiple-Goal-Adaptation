@@ -33,56 +33,56 @@ p_x = [p_x, configure.end_point(1)];
 p_y = [p_y, configure.end_point(2)];
 p_z = [p_z, configure.end_point(3)];
 
-if x(initial_N + 1) ~= 0
-    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
-    c = [c, time + initial_N*tau + time_x - configure.Time_budget];
-    c = [c, -time_x];
-else
-%     ceq = [ceq , p_x(end)-p_x(end-1)];
-end
-if x(2*(initial_N + 1)) ~= 0
-    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
-    c = [c, time + initial_N*tau + time_y - configure.Time_budget];
-    c = [c, -time_y];
-else
-%     ceq = [ceq , p_y(end)-p_y(end-1)];
-end
-if x(3*(initial_N + 1)) ~= 0
-    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
-    c = [c, time + initial_N*tau + time_z - configure.Time_budget];
-    c = [c, -time_z];
-else
-%     ceq = [ceq , p_z(end)-p_z(end-1)];
-end
-time_list = [];
-if x(initial_N + 1) ~= 0
-    time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
-    time_list = [time_list, time_x];
-else
-    time_x = 0;
-end
-if x(2*(initial_N + 1)) ~= 0
-    time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
-    time_list = [time_list, time_y];
-else
-    time_y = 0;
-end
-if x(3*(initial_N + 1)) ~= 0
-    time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
-    time_list = [time_list, time_z];
-else
-    time_z = 0;
-end
-
-for i = 1:length(time_list)
-    c = [c, - time_list(i)];
-end
-
-if length(time_list) == 2
-    ceq = [ceq , time_list(1)-time_list(2)];
-    elseif length(time_list) == 3
-        ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
-end
+% if x(initial_N + 1) ~= 0
+%     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+%     c = [c, time + initial_N*tau + time_x - configure.Time_budget];
+%     c = [c, -time_x];
+% else
+% %     ceq = [ceq , p_x(end)-p_x(end-1)];
+% end
+% if x(2*(initial_N + 1)) ~= 0
+%     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+%     c = [c, time + initial_N*tau + time_y - configure.Time_budget];
+%     c = [c, -time_y];
+% else
+% %     ceq = [ceq , p_y(end)-p_y(end-1)];
+% end
+% if x(3*(initial_N + 1)) ~= 0
+%     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+%     c = [c, time + initial_N*tau + time_z - configure.Time_budget];
+%     c = [c, -time_z];
+% else
+% %     ceq = [ceq , p_z(end)-p_z(end-1)];
+% end
+% time_list = [];
+% if x(initial_N + 1) ~= 0
+%     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
+%     time_list = [time_list, time_x];
+% else
+%     time_x = 0;
+% end
+% if x(2*(initial_N + 1)) ~= 0
+%     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
+%     time_list = [time_list, time_y];
+% else
+%     time_y = 0;
+% end
+% if x(3*(initial_N + 1)) ~= 0
+%     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
+%     time_list = [time_list, time_z];
+% else
+%     time_z = 0;
+% end
+% 
+% for i = 1:length(time_list)
+%     c = [c, - time_list(i)];
+% end
+% 
+% if length(time_list) == 2
+%     ceq = [ceq , time_list(1)-time_list(2)];
+%     elseif length(time_list) == 3
+%         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+% end
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
@@ -137,9 +137,9 @@ c = [c, - info_now + (configure.forensic_target - x(end-2))];
 c = [c,time_now - (configure.Time_target + x(end-1))];
 c = [c, energy_now - (configure.battery_target + x(end))];
 
-% c = [c, - info_now + configure.forensic_budget];
-% c = [c, time_now - configure.Time_budget];
-% c = [c, energy_now - configure.battery_budget];
+c = [c, - info_now + configure.forensic_budget];
+c = [c, time_now - configure.Time_budget];
+c = [c, energy_now - configure.battery_budget];
 
 
 if length_o> 0

@@ -8,7 +8,7 @@ function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global uuv
 % uuv = UnmannedUnderwaterVehicle();
-l = [9];
+l = [6];
 disturb = randi([1,6],1,l(k));
 % if k == 1
 %     disturb = [4,5,6];   
@@ -47,14 +47,14 @@ index = sort(index1);
 condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy_ratio = 45 + unidrnd(5);
+        energy_ratio = 45 + unidrnd(10);
         energy = energy_ratio * 1e5;
 %         energy_ratio = 45;
 %         energy = energy_ratio * 1e5;
 %         energy = min(uuv.energy_target* energy_ratio/100,uuv.energy_budget - 1);
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
-        distance_ratio = 100 + unidrnd(5);
+        distance_ratio = 100 + unidrnd(10);
         distance = distance_ratio * 1e3;
 %         distance_ratio = 110;
 %         distance = distance_ratio * 1e3;
@@ -73,7 +73,7 @@ for i = 1: length(disturb)
         idx = unidrnd(5); 
         acc = 20 + unidrnd(30);
         condition(i,:) = [4,idx,acc/100];    
-%         acc_ratio = 50 + unidrnd(50);
+%         acc_ratio = 80 + unidrnd(20);
 %         acc = uuv.s_accuracy(idx)*acc_ratio/100;
 %         condition(i,:) = [4,idx,acc];
 

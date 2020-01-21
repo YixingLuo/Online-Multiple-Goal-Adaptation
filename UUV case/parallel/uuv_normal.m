@@ -42,10 +42,10 @@ while(1)
     
     if current_step > 360
         fprintf('last step');
-        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)
-        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)
-        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target)
-        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy]
+        DS_A = min((pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget),1);
+        DS_D = min((pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget),1);
+        DS_E = min((uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target),1);
+        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy];
 %         [num, text, raw] = xlsread('data.xls');
 %         [rowN, columnN]=size(raw);
 %         sheet=1;
@@ -106,7 +106,8 @@ while(1)
 %             length(x_pre)
 %             x0 = x_pre;
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-            options.algorithm = 'sqp';  
+            options.Algorithm = 'sqp';  
+            options.Display = 'off';
             [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal,options);
     
             if exitflag > 0 

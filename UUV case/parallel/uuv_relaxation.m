@@ -38,17 +38,19 @@ x_relax=[];
 need_replan = 0;
 plan_num = length(indextemp);
 index_cond = 1;
+acc_achieve = 0;
+
 while(1)
     need_replan = 0;
     fprintf('uuv_relaxation: current step %d\n', current_step);
    
 %     current_step
-    if current_step >= 360 
+    if current_step > 360 
         fprintf('last step');
-        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)
-        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)
-        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target)
-        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy, relax_num, current_step];
+        DS_A = min((pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget),1);
+        DS_D = min((pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget),1);
+        DS_E = min((uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target),1);
+        data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy, relax_num, relax_num/360, acc_achieve, acc_achieve/360];
         break
     end
     
@@ -106,11 +108,14 @@ while(1)
             ub = [ub,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
             x0 = [x0, 0, 0, 0];
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-            optimset('Algorithm','sqp','MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 ); 
-            options.algorithm = 'sqp';
+%             optimset('Algorithm','sqp','MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 ); 
+            options.Algorithm = 'sqp';
+            options.Display = 'off';
+            tic;
 %             options.MaxIter=100000;
 %             options.MaxFunEvals=100000;
             [x,fval,exitflag]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv,options);
+            t2_1 = toc;
 %           flag = [flag,exitflag];
 %           f_value = [f_value, fval];
 %           x_plan = [x_plan;x];
@@ -187,9 +192,12 @@ while(1)
 %                 options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',10000, 'tolx',1e-10,'tolfun',1e-10, 'TolCon',1e-10 ,'MaxFunEvals', 10000);
 %                 [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@objuuv_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@myconuuv_relax, options_relax);
                 
-                options.algorithm = 'sqp';                
+                options.Algorithm = 'sqp';  
+                options.Display = 'off';
+                tic;
                 [x_relax,fval_relax,exitflag_relax]=fmincon(@objuuv_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuuv_relaxation,options);
-%                 fval_relax,fval_pre_relax
+                t2_2 = toc;
+                
                 if exitflag_relax > 0  
 %                     && fval_relax < fval_pre_relax
 %                     flag_relax=[flag_relax, exitflag_relax];
@@ -197,9 +205,7 @@ while(1)
                     fprintf(2,'uuv_relaxation: have solution at current step: %d , %d\n',exitflag, current_step);
                     fval_pre_relax = fval_relax;
                     x_pre = x_relax;
-                    %% 1127
-                    t2=clock;
-                    planning_time = [planning_time; etime(t2,t1)];
+
                     break
                 end
 
@@ -217,6 +223,7 @@ while(1)
     if need_replan == 1 
 %         if fval > 1e-6
         if (ratio(1) > eplison || ratio(2) > eplison || ratio(3) > eplison)&& exitflag_relax > 0  
+            planning_time = [planning_time; t2_1 + t2_2];
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
@@ -231,6 +238,10 @@ while(1)
                 acc = acc + x_relax(i)*uuv.s_accuracy(i)*x_relax(i+2*uuv.N_s);
             end
             acc_list = [acc_list, acc];
+            %% 0113
+            if acc > uuv.acc_target
+                acc_achieve = acc_achieve + 1;
+            end    
             pastaccuracy = (pastaccuracy * pasttime + acc * uuv.time_step) / (pasttime + uuv.time_step);       
             %% energy
             engy = 0;
@@ -260,6 +271,7 @@ while(1)
             end
    
         else
+            planning_time = [planning_time; t2_1];
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
@@ -274,6 +286,10 @@ while(1)
                 acc = acc + x(i)*uuv.s_accuracy(i)*x(i+2*uuv.N_s);
             end
             acc_list = [acc_list, acc];
+            %% 0113
+            if acc > uuv.acc_target
+                acc_achieve = acc_achieve + 1;
+            end    
             pastaccuracy = (pastaccuracy * pasttime + acc * uuv.time_step) / (pasttime + uuv.time_step);        
             %% energy
             engy = 0;
@@ -317,6 +333,10 @@ while(1)
             acc = acc + x_pre(i)*uuv.s_accuracy(i)*x_pre(i+2*uuv.N_s);
         end
         acc_list = [acc_list, acc];
+        %% 0113
+        if acc > uuv.acc_target
+            acc_achieve = acc_achieve + 1;
+        end    
         pastaccuracy = (pastaccuracy * pasttime + acc * uuv.time_step) / (pasttime + uuv.time_step);         
         %% energy
         engy = 0;

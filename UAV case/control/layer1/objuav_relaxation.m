@@ -169,15 +169,15 @@ if ratio(1)> eplison
 %     end
 %     f = f + SR;
 end
-if ratio(2)> eplison
-    if bound_p > 0
-        f = f + PR/bound_p;
-    end
-%     if length_p > 0
-%         f = f + PR/length_p;
+% if ratio(2)> eplison
+%     if bound_p > 0
+%         f = f + PR/bound_p;
 %     end
-%     f = f + PR;
-end
+% %     if length_p > 0
+% %         f = f + PR/length_p;
+% %     end
+% %     f = f + PR;
+% end
 % if ratio(3)> eplison
 %     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
 % %     f = f + (configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget);

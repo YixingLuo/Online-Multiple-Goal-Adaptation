@@ -33,6 +33,10 @@ p_x = [p_x, configure.end_point(1)];
 p_y = [p_y, configure.end_point(2)];
 p_z = [p_z, configure.end_point(3)];
 
+% ceq = [ceq, p_x(end)-p_x(end-1)*x(initial_N + 1)*tau];
+% ceq = [ceq, p_y(end)-p_y(end-1)*x(2*(initial_N + 1))*tau];
+% ceq = [ceq, p_z(end)-p_z(end-1)*x(3*(initial_N + 1))*tau];
+
 % if x(initial_N + 1) ~= 0
 %     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
 %     c = [c, time + initial_N*tau + time_x - configure.Time_budget];
