@@ -11,7 +11,7 @@ global eplison
 eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e-4,5e-4,1e-3,5e-3,1e-2,5e-2,1e-1,5e-1];
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
-        num_obs = [10];
+        num_obs = [20];
         for nobs = 1:10
 %             for i = 1:iternum
                 num = nobs;
@@ -46,8 +46,8 @@ eplison_list = [1e-10,5e-10,1e-9,5e-9,1e-8,5e-8,1e-7,5e-7,1e-6,5e-6,1e-5,5e-5,1e
                     rate_list3 = zeros(100,100);
                     tag_list3 = zeros(100,100);
                 end
+            end
         end
-    end
 %     end
 % end
 
