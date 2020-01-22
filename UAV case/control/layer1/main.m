@@ -31,6 +31,7 @@ for np = 1:length(num_p)
             end               
 
                     [data_2, trajectory,velocity_history,planning_time] = uav_constraint(num);
+%                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
                     if data_2(1)> 0
                         data2(i,:) =  data_2; 
                         trajectory2 = [trajectory2; trajectory];
@@ -57,7 +58,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'S+data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'S+P+data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

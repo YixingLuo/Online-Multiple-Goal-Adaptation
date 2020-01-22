@@ -8,7 +8,7 @@ planningtime3 = zeros(100,100);
 rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 global eplison
-eplison_list = [0,1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,5e-1];
+eplison_list = [1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,5e-1];
     for ep = 1:length(eplison_list)
         eplison = eplison_list(ep);
 %         eplison = 0;

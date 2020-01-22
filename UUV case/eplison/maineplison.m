@@ -8,7 +8,7 @@ global eplison
 % eplison_list = [0.005];
 % eplison_list = [0.01];
 iternum = 100;
-eplison_list = [0,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,5e-1];
+eplison_list = [0,1e-30,1e-25,1e-20,1e-15];
 % eplison_list = [1e-7,5e-7];
 for ep = 1:length(eplison_list)
     eplison = eplison_list(ep);
@@ -43,7 +43,7 @@ for ep = 1:length(eplison_list)
         if mod(num,iternum)==0
             data3 = [data3; mean(data3,1)];
             time = datestr(now,30);
-            name = 'data' + string(time) + string(eplison) + '.mat';
+            name = 'data' + string(time) +'-'+ string(eplison) + '.mat';
             save(name);
             data3 = [];
             usage_plan3 = [];

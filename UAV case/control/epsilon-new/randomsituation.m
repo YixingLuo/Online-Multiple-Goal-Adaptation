@@ -20,23 +20,27 @@ condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
         energy = 16 + unidrnd(8); 
-        condition(i,:) = [1,energy];
+        condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
         time = 9 + unidrnd(6);
-        condition(i,:) = [2,time];
+        condition(i,:) = [2,time,0];
     elseif disturb(i) == 3
         accuracy = 85 + unidrnd(10);
-        condition(i,:) = [3,accuracy/100];
+        condition(i,:) = [3,accuracy/100,0];
     elseif disturb(i) == 4
-        viewradius = 15 + unidrnd(10);
-        condition(i,:) = [4,viewradius/10];
+%         viewradius = (1 + unidrnd(5))/2;
+%         condition(i,:) = [4,viewradius];
+        engy1 = (50 + unidrnd(5))*0.01;
+        engy2 = (20 + unidrnd(4))*0.01;
+        condition(i,:) = [4, engy1, engy2];
+        
     elseif disturb(i) == 5
-        speed = 5 + unidrnd(5);
-        condition(i,:) = [5,speed/10];
+        speed = (80 + unidrnd(20))/100;
+        condition(i,:) = [5,speed,0];
     elseif disturb(i) == 6
-        acc = 50 + unidrnd(50);
-        condition(i,:) = [6,acc/100];
-    end    
+        acc = (80 + unidrnd(20))/100;
+        condition(i,:) = [6,acc,0];
+    end     
 end
 name = 'condition' + string(num) + '.mat';
 save(name, 'condition');

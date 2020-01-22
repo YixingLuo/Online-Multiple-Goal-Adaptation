@@ -44,9 +44,9 @@ while(1)
 %     current_step
     if current_step >= 360 
         fprintf('last step');
-        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)
-        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)
-        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target)
+        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget);
+        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget);
+        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target);
         data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy, relax_num, current_step];
         break
     end

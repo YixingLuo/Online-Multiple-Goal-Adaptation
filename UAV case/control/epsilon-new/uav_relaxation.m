@@ -526,12 +526,6 @@ while (1)
             elseif exitflag > 0 && iternum_relax == 5
                 plan_num = plan_num + 1;
                 fprintf('no need replanning')
-                planning_time = [planning_time; t2_1];
-                flag = [flag, exitflag];
-                plan_x (current_step,1) = length(x);
-                for k = 1:length(x)
-                    plan_x (current_step,k+1) = x(k);
-                end
                 fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
 
                 for k = 1: (initial_N+1) 

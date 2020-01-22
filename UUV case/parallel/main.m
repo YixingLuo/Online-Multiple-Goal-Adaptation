@@ -14,7 +14,7 @@ data3 = [];
 iternum = 500;
 % index = [];
 global eplison
-eplison_list = 1e-6;
+eplison_list = 1e-15;
 for kk = 1:length(eplison_list)
     eplison = eplison_list(kk);
     
@@ -68,7 +68,7 @@ for kk = 1:length(eplison_list)
             data2 = [data2; mean(data2,1)];
             data3 = [data3; mean(data3,1)];
             time = datestr(now,30);
-            name = 'data' + string(time) +'-'+ string(k) + '.mat';
+            name = 'data' + string(time)+'-'+string(eplison) +'-'+ string(k) + '.mat';
             save(name);
             data1 = [];
             data2 = [];

@@ -1,4 +1,4 @@
-function [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env)
+function [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env)
 global configure
 length_o = 0;
 width_o = 0;
@@ -18,10 +18,10 @@ for i =1:a
     p_z = [p_z, trajectory(i,3)];            
 end
 
-bound_o = length_o * (a);
-bound_p = length_p * (a);
-dis_o = zeros(a-1,length_o);
-dis_p = zeros(a-1,length_p);
+bound_o = length_o * a;
+bound_p = length_p * a;
+dis_o = zeros(a,length_o);
+dis_p = zeros(a,length_p);
 
 if length_o> 0
     for i = 1:a
@@ -48,7 +48,7 @@ for j = 1: length_o
     for i = 1:a
 %         SR = SR + min(1,(dis_o(i, j)-(configure.radius + configure.obstacle_radius))/configure.obstacle_max);
         safety_risk = max(0,((configure.radius + configure.obstacle_radius + configure.obstacle_max) - dis_o(i, j))/configure.obstacle_max);
-        if dis_o(i, j) < configure.radius + configure.obstacle_radius 
+        if dis_o(i, j) < configure.radius + configure.obstacle_radius
             unsafe = 1;
         end
         SR = SR + safety_risk;
@@ -81,6 +81,7 @@ for j = 1: length_p
     end
 end
 
+
 num_acc = 0;
 for i = 1:a
     if trajectory(i,4) >= configure.forensic_target
@@ -96,6 +97,13 @@ if unsafe
 elseif unprivacy
     DS_PR = -1;
 end
+
+% if bound_o>0
+%     DS_SR = 1 - SR/bound_o;
+% end
+% if bound_p>0
+%     DS_PR = 1 - PR/bound_p;
+% end
 
 % if num_o > 0
 %     DS_SR = SR/num_o;
