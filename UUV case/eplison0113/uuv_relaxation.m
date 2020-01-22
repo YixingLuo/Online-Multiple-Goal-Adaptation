@@ -109,7 +109,7 @@ while(1)
             x0 = [x0, 0, 0, 0];
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %             optimset('Algorithm','sqp','MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 ); 
-            options.algorithm = 'sqp';
+            options.Algorithm = 'sqp';
             options.Display = 'off';
             tic;
 %             options.MaxIter=100000;
@@ -192,7 +192,7 @@ while(1)
 %                 options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',10000, 'tolx',1e-10,'tolfun',1e-10, 'TolCon',1e-10 ,'MaxFunEvals', 10000);
 %                 [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@objuuv_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@myconuuv_relax, options_relax);
                 
-                options.algorithm = 'sqp';  
+                options.Algorithm = 'sqp';  
                 options.Display = 'off';
                 tic;
                 [x_relax,fval_relax,exitflag_relax]=fmincon(@objuuv_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuuv_relaxation,options);

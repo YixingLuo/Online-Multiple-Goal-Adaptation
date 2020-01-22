@@ -1,9 +1,10 @@
 clc
 clear
+iternum = 100;
 data3 = [];
 usage_plan3 = [];
-planning_time3 = zeros(360,50);
-iternum = 50;
+planning_time3 = zeros(360,iternum);
+
 % index = [];
 global eplison
 % eplison_list = [0.005];
@@ -17,7 +18,7 @@ for ep = 1:length(eplison_list)
 %     num =1;
 %     index = unidrnd(2,369,9,1);
     
-%         k = ceil((num)/50);
+%         k = ceil((num)/iternum);
 %         flag = 0; %% have no solution at initial point
 %         while flag == 0
 %             [condition, indextemp] = randomsituation(num,k);
@@ -37,7 +38,7 @@ for ep = 1:length(eplison_list)
             iter = iternum;
         end
         planning_time3(:,iter) = planning_time;
-        rate_list_ = [rate_list, zeros(3,50-size(rate_list,2))];
+        rate_list_ = [rate_list, zeros(3,iternum-size(rate_list,2))];
         rate_list3((iter-1)*3+1:iter*3,:) = rate_list_;
 
         if mod(num,iternum)==0
@@ -48,7 +49,7 @@ for ep = 1:length(eplison_list)
             data3 = [];
             usage_plan3 = [];
             index = [];
-            planning_time3 = zeros(360,50);
+            planning_time3 = zeros(360,iternum);
         end
     end
 end
