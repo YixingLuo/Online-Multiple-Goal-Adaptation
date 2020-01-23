@@ -143,11 +143,11 @@ while(1)
         [acc_variance, acc_ratio, distance_variance, distance_ratio, energy_variance, energy_ratio] = relaxation_ratio(x_pre);
         ratio = [acc_ratio, distance_ratio, energy_ratio];  
 %         if fval > 1e-6
-        if ratio(1) > eplison || ratio(2) > eplison || ratio(3) > eplison
+        if ratio(1) > eplison(1) || ratio(2) > eplison(2) || ratio(3) > eplison(3)
             rate_list = [rate_list, ratio'];
             tag = [0,0,0];
             for kk = 1:3
-                if ratio(kk) > eplison
+                if ratio(kk) > eplison(kk)
                     tag(kk)=1;
                 end
             end
@@ -220,7 +220,7 @@ while(1)
     %%update x
     if need_replan == 1 
 %         if fval > 1e-6
-        if (ratio(1) > eplison || ratio(2) > eplison || ratio(3) > eplison)&& exitflag_relax > 0  
+        if (ratio(1) > eplison(1) || ratio(2) > eplison(2) || ratio(3) > eplison(3))&& exitflag_relax > 0  
             planning_time = [planning_time; t2_1 + t2_2];
             %% distance
             speed_now = 0;

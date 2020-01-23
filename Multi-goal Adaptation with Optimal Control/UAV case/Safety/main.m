@@ -16,8 +16,8 @@ rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 
 global eplison
-eplison = 1e-20;
-iternum = 20;
+eplison = [0,0,1e-3,1e-2,1e-2];
+iternum = 10;
 num_o = 19:19:19*5;
 num_p = [14];
 for np = 1:length(num_p)
@@ -30,14 +30,14 @@ for np = 1:length(num_p)
                 iter = iternum;
             end               
 
-                    [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
-                    if data_1(1)> 0
-                        data1(i,:) =  data_1;
-                        trajectory1 = [trajectory1; trajectory];
-                        velocity_history1 = [velocity_history1; velocity_history];
-                        planning_time =[planning_time; zeros(100-length(planning_time),1)];
-                        planningtime1(:,i) = planning_time;                       
-                    end
+%                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
+%                     if data_1(1)> 0
+% %                         data1(i,:) =  data_1;
+%                         trajectory1 = [trajectory1; trajectory];
+%                         velocity_history1 = [velocity_history1; velocity_history];
+%                         planning_time =[planning_time; zeros(100-length(planning_time),1)];
+%                         planningtime1(:,i) = planning_time;                       
+%                     end
 
 
 
@@ -77,7 +77,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

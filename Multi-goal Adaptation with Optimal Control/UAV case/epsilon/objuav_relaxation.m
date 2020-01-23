@@ -160,7 +160,7 @@ end
 
 %% 1118
 f = 0;
-if ratio(1)> eplison
+if ratio(1)> 0
     if bound_o > 0
         f = f + SR/bound_o;
     end
@@ -169,7 +169,7 @@ if ratio(1)> eplison
 %     end
 %     f = f + SR;
 end
-if ratio(2)> eplison
+if ratio(2)> 0
     if bound_p > 0
         f = f + PR/bound_p;
     end

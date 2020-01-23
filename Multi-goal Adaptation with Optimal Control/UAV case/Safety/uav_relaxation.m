@@ -342,11 +342,11 @@ while (1)
 
     
     %% RELAXATION
-    if find(ratio > eplison) 
+    if ratio(1)>eplison(1) || ratio(2)>eplison(2) || ratio(3)>eplison(3) || ratio(4)>eplison(4) || ratio(5)>eplison(5)
        rate_list = [rate_list, ratio'];
        tag = [0,0,0,0,0];
         for kk = 1:5
-            if ratio(kk) > eplison
+            if ratio(kk) > eplison(kk)
                 tag(kk)=1;
             end
         end

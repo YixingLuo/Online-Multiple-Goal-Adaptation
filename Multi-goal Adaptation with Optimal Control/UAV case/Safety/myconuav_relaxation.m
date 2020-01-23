@@ -161,7 +161,7 @@ if length_p > 0
     end
 end
 
-if ratio(1)> eplison
+if ratio(1)> eplison (1)
     for j = 1: length_o
         for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
@@ -175,7 +175,7 @@ else
     end
 end
 
-if ratio(2)> eplison
+if ratio(2)> eplison(2)
     for j = 1: length_p
         for i = 1:initial_N + 1 
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
@@ -189,7 +189,7 @@ else
     end
 end
 
-if ratio(3)> eplison
+if ratio(3)> eplison(3)
 %     c = [c, info_now - 1];
     c = [c, - info_now + configure.forensic_budget];
 else
@@ -197,7 +197,7 @@ else
     c = [c, - info_now + configure.forensic_target];    
 end
 
-if ratio(4)> eplison
+if ratio(4)> eplison(4)
 %     c = [c, - time_now + 0];
     c = [c, time_now - configure.Time_budget];
 else
@@ -205,7 +205,7 @@ else
     c = [c, time_now - configure.Time_target];    
 end
 
-if ratio(5)> eplison
+if ratio(5)> eplison(5)
 %     c = [c, - energy_now + 0];
     c = [c, energy_now - configure.battery_budget];
 else

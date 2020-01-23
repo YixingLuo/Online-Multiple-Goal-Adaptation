@@ -49,7 +49,7 @@ if bound_p > 0
 end
 
 
-f = sum_x + sum_y;
+f = sum_x ;
 
 
 

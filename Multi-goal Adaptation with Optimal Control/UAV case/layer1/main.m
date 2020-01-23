@@ -16,10 +16,10 @@ rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 
 global eplison
-eplison = 1e-6;
-iternum = 100;
-num_o = [10];
-num_p = [5];
+eplison = [0,0,1e-6,1e-6,1e-3];
+iternum = 50;
+num_o = [38];
+num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum 
@@ -30,8 +30,8 @@ for np = 1:length(num_p)
                 iter = iternum;
             end               
 
-                    [data_2, trajectory,velocity_history,planning_time] = uav_constraint(num);
-%                     [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
+%                     [data_2, trajectory,velocity_history,planning_time] = uav_constraint(num);
+                    [data_2, trajectory,velocity_history,planning_time] = uav_relax(num);
                     if data_2(1)> 0
                         data2(i,:) =  data_2; 
                         trajectory2 = [trajectory2; trajectory];
@@ -58,7 +58,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'S+P+data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'S+data' + string(time) + '_' + string(num_o(no))  + '_' + string(eplison) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

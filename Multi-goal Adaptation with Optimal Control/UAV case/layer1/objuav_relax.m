@@ -51,4 +51,5 @@ if bound_p > 0
 end
 
 
-f = sum_x + sum_y + temp_f;
+% f = sum_x + sum_y + temp_f;
+f = sum_x;

@@ -106,9 +106,9 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+        [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num];
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num,DS_acc];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';
@@ -151,8 +151,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1124
-    env_view = remove_obstacle(env_view);
-    env_view = remove_privacy(env_view);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;

@@ -105,9 +105,9 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+        [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num];
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num,DS_acc];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';

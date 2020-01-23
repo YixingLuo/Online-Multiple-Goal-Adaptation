@@ -1,4 +1,4 @@
-size = 50;
+size = 100;
 data1_copy = [];
 data1_copy = data1 (1:size,:);
 for i = 1:2:5

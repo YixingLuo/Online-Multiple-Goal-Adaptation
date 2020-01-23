@@ -161,7 +161,7 @@ if length_p > 0
     end
 end
 
-if ratio(1)> eplison
+if ratio(1)>0
     for j = 1: length_o
         for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
@@ -175,7 +175,7 @@ else
     end
 end
 
-if ratio(2)> eplison
+if ratio(2)> 0
     for j = 1: length_p
         for i = 1:initial_N + 1 
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
