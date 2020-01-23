@@ -16,9 +16,9 @@ rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [0,0,1e-3,1e-2,1e-2];
+eplison = [1e-20,1e-20,1e-20,1e-20,1e-20];
 iternum = 10;
-num_o = 19:19:19*5;
+num_o = [95];
 num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
@@ -32,7 +32,7 @@ for np = 1:length(num_p)
 
 %                     [data_1, trajectory,velocity_history,planning_time] = uav_normal(num);
 %                     if data_1(1)> 0
-% %                         data1(i,:) =  data_1;
+%                         data1(i,:) =  data_1;
 %                         trajectory1 = [trajectory1; trajectory];
 %                         velocity_history1 = [velocity_history1; velocity_history];
 %                         planning_time =[planning_time; zeros(100-length(planning_time),1)];

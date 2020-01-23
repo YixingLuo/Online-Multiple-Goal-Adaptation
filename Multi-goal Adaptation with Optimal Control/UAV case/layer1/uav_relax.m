@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time] = uav_relax(num_map)
+function [data, trajectory,velocity_history,planning_time] = uav_relax(num)
 global env
 global env_known
 global configure
@@ -43,11 +43,16 @@ plan_num = 0;
 data = zeros(1,11);
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(num_map) + '.mat';
+name = 'gridmap-' + string(num) + '.mat';
 gridmap = load(name);
+% gridmap = load('gridmap.mat');
 env = gridmap.map;
 env_known = Environment();
 env_view = Environment();
+
+% name_con = 'condition' + string(num) + '.mat';
+% cond = load(name_con);
+% index_cond = 1;
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -67,30 +72,33 @@ following_point = [following_point; end_point];
 
 
 while (1)
+%     if no_solution_flag == 1
+%         needplan = 1;
+%         no_solution_flag = 0;
+%     else
+%         needplan = 0;
+%     end
     needplan = 1;
     
-%     if num_map > 0 
-%         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-%             needplan = 1;
-%             if cond.condition(index_cond,1) == 1
-%                 configure = EnergyTarget(configure, cond.condition(index_cond,2));
-%                 elseif cond.condition(index_cond,1) == 2
-%                     configure = TimeTarget(configure, cond.condition(index_cond,2));
-%                 elseif cond.condition(index_cond,1) == 3
-%                     configure = AccuracyTarget(configure, cond.condition(index_cond,2));
-%                 elseif cond.condition(index_cond,1) == 4
-% %                     configure = ViewDisturbance(configure, cond.condition(index_cond,2));
-%                     configure = EnergyDisturbance(configure, cond.condition(index_cond,2), cond.condition(index_cond,3));
-%                 elseif cond.condition(index_cond,1) == 5
-%                     configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
-%                 elseif cond.condition(index_cond,1) == 6
-%                     configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
-%             end
-%             index_cond = index_cond+1;
+%     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+%         needplan = 1;
+%         if cond.condition(index_cond,1) == 1
+%             configure = EnergyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 2
+%                 configure = TimeTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 3
+%                 configure = AccuracyTarget(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 4
+%                 configure = ViewDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 5
+%                 configure = SpeedDisturbance(configure, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 6
+%                 configure = AccuracyDisturbance(configure, cond.condition(index_cond,2));
 %         end
+%         index_cond = index_cond+1;
 %     end
     
-    fprintf(2,'uav_relax: current step %d %d\n', current_step, num_map);
+    fprintf(2,'uav_relax: current step %d %d\n', current_step, num);
 %     following_point, following_plan
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
@@ -143,8 +151,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1124
-%     env_view = remove_obstacle(env_view);
-%     env_view = remove_privacy(env_view);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -271,7 +279,7 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-                x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = ub(i) - iternum * 2/5;
 %                 x0(i) = 0;
 %                 x0(i) = ub(i);
 %                 x0(i) = unifrnd(lb(i),ub(i));
@@ -364,7 +372,7 @@ while (1)
 %         objuav_relax(x0),myconuav_relax(x0)
 %         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
-
+       
         tau = configure.Time_step;
 
         iternum = iternum + 1;
@@ -459,12 +467,7 @@ while (1)
             break
         end
     end
-    [safety_variance, safety_ratio, privacy_variance, privacy_ratio, info_variance, info_ratio, time_variance, time_ratio, energy_variance, energy_ratio] = goal_selection(x);
-    ratio = [safety_ratio, privacy_ratio, info_ratio, time_ratio, energy_ratio];
-    if ratio(1)> 0
-%         data = ratio;
-        break
-    end
+
     if iternum > 5 && exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;

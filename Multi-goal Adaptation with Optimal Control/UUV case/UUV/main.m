@@ -17,7 +17,7 @@ tag_list3 = zeros(100,100);
 global eplison
 eplison_list = [1e-3];
 % for kk = 1:length(eplison_list)
-    eplison = [0.0001,0,0];
+    eplison = [0.001,0,0];
     
     for num = 1:6*iternum
 

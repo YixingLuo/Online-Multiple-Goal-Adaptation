@@ -40,22 +40,22 @@ energy = pastenergy + time_left * engy;
 %% DS (max, accuracy, distance, energy)
 tempf = 0;
 if ratio(1)> eplison(1)
-%     tempf = tempf + max(0,(uuv.acc_target-accuracy)/(uuv.acc_target-uuv.acc_budget));
-    tempf = tempf + (uuv.acc_target-accuracy)/(uuv.acc_target-uuv.acc_budget);
+    tempf = tempf + max(0,(uuv.acc_target-accuracy)/(uuv.acc_target-uuv.acc_budget));
+%     tempf = tempf + (uuv.acc_target-accuracy)/(uuv.acc_target-uuv.acc_budget);
 %     tempf = tempf - min(1,(accuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget));
 % else
 %     tempf = tempf - 1;
 end
 if ratio(2)> eplison(2)
-%     tempf = tempf + max(0,(uuv.distance_target-distance)/ (uuv.distance_target-uuv.distance_budget));
-    tempf = tempf + (uuv.distance_target-distance)/ (uuv.distance_target-uuv.distance_budget);
+    tempf = tempf + max(0,(uuv.distance_target-distance)/ (uuv.distance_target-uuv.distance_budget));
+%     tempf = tempf + (uuv.distance_target-distance)/ (uuv.distance_target-uuv.distance_budget);
 %     tempf = tempf -min(1,(distance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget));
 % else
 %     tempf = tempf - 1;
 end
 if ratio(3)> eplison(3)
-%     tempf  = tempf  + max(0,(energy -  uuv.energy_target)/ (uuv.energy_budget - uuv.energy_target));
-    tempf  = tempf  + (energy -  uuv.energy_target)/ (uuv.energy_budget - uuv.energy_target);
+    tempf  = tempf  + max(0,(energy -  uuv.energy_target)/ (uuv.energy_budget - uuv.energy_target));
+%     tempf  = tempf  + (energy -  uuv.energy_target)/ (uuv.energy_budget - uuv.energy_target);
 %     tempf  = tempf -min(1,(uuv.energy_budget - energy) /(uuv.energy_budget - uuv.energy_target));
 % else
 %     tempf = tempf - 1;

@@ -313,7 +313,7 @@ while (1)
             ub = [ub,configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
             x0 = [x0, 0, 0];
 
-%         options.Algorithm = 'sqp';
+        options.Algorithm = 'sqp';
         options.Display = 'off';
         tic;
         [x,fval,exitflag]=fmincon(@objuav_constraint,x0,[],[],[],[],lb,ub,@myconuav_constraint,options);
