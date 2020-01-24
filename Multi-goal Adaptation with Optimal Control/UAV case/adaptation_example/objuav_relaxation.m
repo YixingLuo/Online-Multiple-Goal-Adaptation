@@ -160,18 +160,22 @@ end
 
 %% 1118
 f = 0;
-if ratio(1)> eplison
-%     f = f + SR/bound_o;
-    if num_o > 0
-        f = f + SR/num_o;
+if ratio(1)> 0
+    if bound_o > 0
+        f = f + SR/bound_o;
     end
+%     if length_o > 0
+%         f = f + SR/length_o;
+%     end
 %     f = f + SR;
 end
-if ratio(2)> eplison
-%     f = f + PR/bound_p;
-    if num_p > 0
-        f = f + PR/num_p;
+if ratio(2)> 0
+    if bound_p > 0
+        f = f + PR/bound_p;
     end
+%     if length_p > 0
+%         f = f + PR/length_p;
+%     end
 %     f = f + PR;
 end
 if ratio(3)> eplison

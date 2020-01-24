@@ -8,6 +8,11 @@ map = Environment();
 % gridmap = gridmap.map;
 % privacy_list = gridmap.privacy_list;
 % map = map_initial_with_privacy(map, num_o, privacy_list);
+
+% gridmap = gridmap.map;
+% obstacle_list = gridmap.obstacle_list;
+% map = map_initial_with_obstacle(map, num_p, obstacle_list);
+
 map = map_initial3(map, num_o, num_p);
 name = 'gridmap-' + string(num) + '.mat';
 save(name, 'map');
@@ -15,7 +20,7 @@ save(name, 'map');
 
 
 % map = Environment();
-% map = map_initial3(map, 0, 14);
+% map = map_initial3(map, 19, 0);
 % name = 'gridmap-' + string(0) + '.mat';
 % save(name, 'map');
 % [data3, trajectory3,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(0);

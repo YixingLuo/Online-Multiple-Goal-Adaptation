@@ -331,18 +331,21 @@ while (1)
     
             for i = 1:bound_o %% safe
                 lb = [lb,0];
-                ub = [ub,configure.obstacle_max];
+%                 ub = [ub,configure.obstacle_max];
+                ub = [ub,0];
                 x0 = [x0,0];
             end
     
             for i = 1:bound_p %% privacy
                 lb = [lb,0];
-                ub = [ub,configure.privacy_max];
+%                 ub = [ub,configure.privacy_max];
+                ub = [ub,0];
                 x0 = [x0,0];
             end   
 
             lb = [lb,0, 0, 0];
-            ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
+%             ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
+            ub = [ub,0,0,0];
             x0 = [x0,0, 0, 0];
 
 %             lb = [lb,0,0, 0, 0, 0];

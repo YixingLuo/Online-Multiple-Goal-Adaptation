@@ -1,6 +1,6 @@
 figure,
-layer1_success = [0.98,0.93,0.88,0.88,0.87];
-layer2_success = [1,1,0.99,0.98,0.98];
+layer1_success = [0.97,0.96,0.74,0.67,0.47];
+layer2_success = [0.99,0.99,0.98,0.98,0.98];
 k=[1,2,3,4,5];
 plot(k,layer1_success,'-^','linewidth',1.2,'Color',[0.8500 0.3250 0.0980],'MarkerFaceColor',[0.8500 0.3250 0.0980],'MarkerEdgeColor',[0.8500 0.3250 0.0980])
 hold on
@@ -12,7 +12,7 @@ h = xlabel({'Number of target goals'},'Fontname', 'Times New Roman');
 ylabel('Success Probability','Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
-axis([1, 5, 0, 1.1])
+axis([0, 6, 0, 1.1])
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');

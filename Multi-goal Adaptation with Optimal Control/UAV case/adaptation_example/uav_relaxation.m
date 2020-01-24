@@ -1,17 +1,17 @@
 %% [3,0.950000000000000;6,0.880000000000000;5,0.930000000000000]
-clc
-clear
-indextemp = [15,18,29];
-num = 29;
+% clc
+% clear
+% indextemp = [15,18,29];
+% num = 29;
 % uav_relaxation2(num, indextemp)
-% function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num, indextemp)
+function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map,num_condition, indextemp)
 global env
 global env_known
 global configure
 global eplison
 global ratio
 configure = Configure();
-eplison = 1e-6;
+% eplison = 1e-6;
 current_step = 1;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),0];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),0];
@@ -50,13 +50,13 @@ rate_list = [];
 tag_list = [];
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(num) + '.mat';
+name = 'gridmap-' + string(num_map) + '.mat';
 gridmap = load(name);
 % gridmap = load('gridmap.mat');
 env = gridmap.map;
 env_known = Environment();
 
-name_con = 'condition' + string(num) + '.mat';
+name_con = 'condition' + string(num_condition) + '.mat';
 cond = load(name_con);
 cond = cond.condition;
 index_cond = 1;
@@ -163,8 +163,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -358,6 +358,7 @@ while (1)
 %         options.StepTolerance = 1e-10;
 %         options.MaxFunctionEvaluations = 100000;
         options.Algorithm = 'sqp';
+        options.Display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;
@@ -448,6 +449,7 @@ while (1)
 %             [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@obj_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@mycon_relax, options_relax);
 %             options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
             options.Algorithm = 'sqp';
+            options.Display = 'off';
 %             options.tolx = 1e-10;
 %             options.tolfun = 1e-10;
 %             options.TolCon = 1e-10;           
@@ -699,4 +701,4 @@ while (1)
        end
     
     end
-% end
+end
