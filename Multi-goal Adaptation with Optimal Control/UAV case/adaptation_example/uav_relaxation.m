@@ -16,7 +16,7 @@ global configure
 global eplison
 global ratio
 configure = Configure();
-eplison = [1e-6,1e-6,1e-6,1e-6,1e-6];
+eplison = [0,0,1e-6,1e-6,1e-6];
 current_step = 1;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),0];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),0];
@@ -102,10 +102,13 @@ while (1)
             configure = EnergyTarget(configure, cond(index_cond,2));
             elseif cond(index_cond,1) == 2
                 configure = TimeTarget(configure, cond(index_cond,2));
+%                 configure.Time_target
+%                 frintf('change time_target')
             elseif cond(index_cond,1) == 3
                 configure = AccuracyTarget(configure, cond(index_cond,2));
             elseif cond(index_cond,1) == 4
-                configure = ViewDisturbance(configure, cond(index_cond,2));
+%                 configure = ViewDisturbance(configure, cond(index_cond,2));
+                configure = EnergyDisturbance(configure, cond(index_cond,2), cond(index_cond,3));
             elseif cond(index_cond,1) == 5
                 configure = SpeedDisturbance(configure, cond(index_cond,2));
             elseif cond(index_cond,1) == 6
@@ -115,6 +118,12 @@ while (1)
     end
     
     fprintf(2,'uav_relaxation: current step %d\n', current_step);
+    [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
+    SR_list = [SR_list;SR_risk];
+    PR_list = [PR_list;PR_risk];
+    acc_list = [acc_list;information];
+    energy_list = [energy_list;energy];
+    time_list = [time_list;time];
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
@@ -126,9 +135,10 @@ while (1)
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num, DS_acc];
         name1 = 'planningtime_relaxation.mat';
         save(name1, 'planning_time');
+        trajectory = trajectory(2:end,:);        
         name2 = 'trajectory_relaxation.mat';
-        trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
+%         velocity_history = velocity_history(1:end-1,:);  
         name3 = 'velocity_history_relaxation.mat';
         save(name3, 'velocity_history');
         break
@@ -159,12 +169,12 @@ while (1)
         trajectory = traj;
         velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
         
-        [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
-        SR_list = [SR_list;SR_risk];
-        PR_list = [PR_list;PR_risk];
-        acc_list = [acc_list;information];
-        energy_list = [energy_list;energy];
-        time_list = [time_list;time];
+%         [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
+%         SR_list = [SR_list;SR_risk];
+%         PR_list = [PR_list;PR_risk];
+%         acc_list = [acc_list;information];
+%         energy_list = [energy_list;energy];
+%         time_list = [time_list;time];
         
         continue
     end
@@ -195,13 +205,9 @@ while (1)
             end
         end
     end
-    
-    [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
-    SR_list = [SR_list;SR_risk];
-    PR_list = [PR_list;PR_risk];
-    acc_list = [acc_list;information];
-    energy_list = [energy_list;energy];
-    time_list = [time_list;time];
+    name = 'env_known-' + string(current_step) + '.mat';
+    save(name, 'env_known');
+
     
 %     %% 1122
 %     if needplan == 1
@@ -402,7 +408,7 @@ while (1)
     
     %% RELAXATION
     if ratio(1)>eplison(1) || ratio(2)>eplison(2) || ratio(3)>eplison(3) || ratio(4)>eplison(4) || ratio(5)>eplison(5)
-       rate_list = [rate_list, ratio'];
+       rate_list(current_step,:) = [ratio'];
        tag = [0,0,0,0,0];
         for kk = 1:5
             if ratio(kk) > eplison(kk)
@@ -411,7 +417,7 @@ while (1)
         end
         tag_list = [tag_list, tag'];
        fprintf(2,"need relexation!! %d %d\n" ,relax_num + 1, current_step);   
-       ratio, current_step
+%        ratio, current_step
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
@@ -477,7 +483,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
-            exitflag_relax
+%             exitflag_relax
             if exitflag_relax > 0 
                 relax_num = relax_num + 1;
 

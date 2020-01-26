@@ -6,7 +6,7 @@ length_p = 0;
 width_p = 0;
 [length_o, width_o] = size(env.obstacle_list);
 [length_p, width_p] = size(env.privacy_list);
-configure = Configure();
+% configure = Configure();
 
 [a, b] = size(trajectory);
 p_x=[];

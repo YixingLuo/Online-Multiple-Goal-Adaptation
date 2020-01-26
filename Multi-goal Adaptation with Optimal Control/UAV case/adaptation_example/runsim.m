@@ -213,7 +213,7 @@ for iter = 1:max_iter
             desired_state = trajhandle(time, qn);
             QP{qn}.UpdateQuadPlot(x{qn}, [desired_state.pos; desired_state.vel], time);
 %             h_title = title(sprintf('iteration: %d, time: %4.2f s', iter, time));
-            h_title = title(sprintf('Time: %4.2f s', time));
+%             h_title = title(sprintf('Time: %4.2f s', time));
             xlabel('X')
             ylabel('Y')
             zlabel('Z')
@@ -234,7 +234,7 @@ for iter = 1:max_iter
         desired_state = trajhandle(time + cstep, qn);
         QP{qn}.UpdateQuadPlot(x{qn}, [desired_state.pos; desired_state.vel], time + cstep);
 %         set(h_title, 'String', sprintf('iteration: %d, time: %4.2f s', iter, time + cstep));
-        set(h_title, 'String',(sprintf('Time: %4.2f s', time + cstep)));
+%         set(h_title, 'String',(sprintf('Time: %4.2f s', time + cstep)));
         xlabel('X')
         ylabel('Y')
         zlabel('Z')
