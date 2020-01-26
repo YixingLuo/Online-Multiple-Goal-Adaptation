@@ -1,17 +1,22 @@
 %% [3,0.950000000000000;6,0.880000000000000;5,0.930000000000000]
-% clc
-% clear
-% indextemp = [15,18,29];
-% num = 29;
+clc
+clear
+indextemp = [9,16,19];
+num_map = 13;
+SR_list = [];
+PR_list = [];
+energy_list = [];
+acc_list = [];
+time_list = [];
 % uav_relaxation2(num, indextemp)
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map,num_condition, indextemp)
+% function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map,num_condition, indextemp)
 global env
 global env_known
 global configure
 global eplison
 global ratio
 configure = Configure();
-% eplison = 1e-6;
+eplison = [1e-6,1e-6,1e-6,1e-6,1e-6];
 current_step = 1;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),0];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),0];
@@ -56,9 +61,11 @@ gridmap = load(name);
 env = gridmap.map;
 env_known = Environment();
 
-name_con = 'condition' + string(num_condition) + '.mat';
-cond = load(name_con);
-cond = cond.condition;
+% name_con = 'condition' + string(num_condition) + '.mat';
+% cond = load(name_con);
+% cond = cond.condition;
+cond = [4,0.530000000000000,0.230000000000000;5,0.960000000000000,0;2,12,0];
+
 index_cond = 1;
 
 % cond = [5,0.95;1,28;3,0.92];
@@ -151,6 +158,14 @@ while (1)
         traj = [trajectory; current_point];
         trajectory = traj;
         velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
+        
+        [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
+        SR_list = [SR_list;SR_risk];
+        PR_list = [PR_list;PR_risk];
+        acc_list = [acc_list;information];
+        energy_list = [energy_list;energy];
+        time_list = [time_list;time];
+        
         continue
     end
            
@@ -180,6 +195,14 @@ while (1)
             end
         end
     end
+    
+    [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
+    SR_list = [SR_list;SR_risk];
+    PR_list = [PR_list;PR_risk];
+    acc_list = [acc_list;information];
+    energy_list = [energy_list;energy];
+    time_list = [time_list;time];
+    
 %     %% 1122
 %     if needplan == 1
 %         plan_num = plan_num + 1;
@@ -190,6 +213,7 @@ while (1)
 %         needplan = 1;
 %     end
 %     if length(env_known.obstacle_list) == 0 && length(env_known.privacy_list) == 0
+    
     if needplan == 0
         nowp_x = [];
         nowp_y = [];
@@ -387,6 +411,7 @@ while (1)
         end
         tag_list = [tag_list, tag'];
        fprintf(2,"need relexation!! %d %d\n" ,relax_num + 1, current_step);   
+       ratio, current_step
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
@@ -402,7 +427,7 @@ while (1)
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
 %                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/5;                   
+                   x0_relax(i) = ub_relax(i) - iternum_relax /5;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -423,8 +448,9 @@ while (1)
     %                 ub(index) = configure.velocity_max;
     %                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
                     ub_relax(index) = max(lb_relax(index),ub_relax(index)); 
-    %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
-                    x0_relax(index) = max(lb_relax(index),ub_relax(index));
+%                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
+                    x0(index) = ub(index) - iternum * (ub(index)-lb(index)) /5;
+%                     x0_relax(index) = max(lb_relax(index),ub_relax(index));
 %                    if current_point(i)> configure.end_point(i)
 %                         x0_relax(index) =  unifrnd(lb_relax(index),0);
 %                    else                   
@@ -451,6 +477,7 @@ while (1)
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
+            exitflag_relax
             if exitflag_relax > 0 
                 relax_num = relax_num + 1;
 
@@ -693,7 +720,7 @@ while (1)
            no_solution_flag = 1;
 %            rate_list = [0;0;0;0;0];
 %            tag_list = [0;0;0;0;0];
-%            break;
+           break;
         nowp_x = [];
         nowp_y = [];
         nowp_z = [];
@@ -761,4 +788,4 @@ while (1)
        end
     
     end
-end
+% end

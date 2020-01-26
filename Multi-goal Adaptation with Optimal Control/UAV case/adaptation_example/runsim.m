@@ -2,9 +2,9 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load('planningtime_relaxation.mat');
-planning_time = a.planning_time;
-end_time = (length(planning_time))*tau;
+a = load ('velocity_history_relaxation.mat');
+velocity_history = a.velocity_history;
+end_time = (length(velocity_history))*tau;
 runsimulation(tau,start_time,end_time);
 
 
@@ -68,10 +68,10 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-29.mat');
+gridmap = load('gridmap-13.mat');
 env = gridmap.map;
-r_o = configure.obstacle_radius;
-r_p = configure.privacy_radius;
+r_o = configure.obstacle_radius + configure.radius;
+r_p = configure.privacy_radius + configure.radius;
 % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
 % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
 length_o = 0;
@@ -317,8 +317,22 @@ for qn = 1:nquad
     
     % Plot velocity for each quad
     h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
-    plot_state(h_vel{qn}, QP{qn}.state_hist(4:6,:), QP{qn}.time_hist, 'vel', 'vic');
-    plot_state(h_vel{qn}, QP{qn}.state_des_hist(4:6,:), QP{qn}.time_hist, 'vel', 'des');
+    velocity = QP{qn}.state_hist(4:6,:);
+    for i = 1:size(velocity,2)-1
+        index = ceil(i/10);
+        velocity(4,i) = velocity_history(index,4)*100;
+    end
+    velocity(4,end) = velocity(4,end-1);
+    plot_state(h_vel{qn}, velocity, QP{qn}.time_hist, 'vel', 'vic');
+    
+    des_velocity = QP{qn}.state_des_hist(4:6,:);
+    for i = 1:size(velocity,2)-1
+        index = ceil(i/10);
+        des_velocity(4,i) = velocity_history(index,4)*100;
+    end
+    des_velocity(4,end) = des_velocity(4,end-1);
+    plot_state(h_vel{qn}, des_velocity, QP{qn}.time_hist, 'vel', 'des');
+    
 end
 if(~isempty(err))
     error(err);

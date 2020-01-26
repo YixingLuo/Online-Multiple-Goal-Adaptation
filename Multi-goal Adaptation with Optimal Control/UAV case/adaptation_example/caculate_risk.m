@@ -49,6 +49,7 @@ for j = 1: length_o
 %         SR = SR + min(1,(dis_o(i, j)-(configure.radius + configure.obstacle_radius))/configure.obstacle_max);
         safety_risk = max(0,((configure.radius + configure.obstacle_radius + configure.obstacle_max) - dis_o(i, j))/configure.obstacle_max);
         if dis_o(i, j) < configure.radius + configure.obstacle_radius
+            i,j
             unsafe = 1;
         end
         SR = SR + safety_risk;

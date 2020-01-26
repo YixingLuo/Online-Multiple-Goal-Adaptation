@@ -20,7 +20,7 @@ switch name
     case 'pos'
         labels = {'x [m]', 'y [m]', 'z [m]', '\omega [%]'};
     case 'vel'
-        labels = {'v_x [m/s]', 'v_y [m/s]', 'v_z [m/s]'};
+        labels = {'v_x [m/s]', 'v_y [m/s]', 'v_z [m/s]', '\omega [%]'};
     case 'euler'
         labels = {'roll [rad]', 'pitch [rad]', 'yaw [rad]'};
 end
@@ -45,14 +45,14 @@ switch name
     %         axis([0, 25, 0, 10]);
         end
     case 'vel'
-        for i = 1:3
-            subplot(3, 1, i)
+        for i = 1:4
+            subplot(4, 1, i)
             hold on
             plot(time, state(i,:), line_color, 'LineWidth', line_width);
             hold off
             xlim([time(1), time(end)])
             grid on
-            if i == 3
+            if i == 4
                 xlabel('time [s]')
             end
             ylabel(labels{i})

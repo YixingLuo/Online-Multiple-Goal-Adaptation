@@ -1,16 +1,23 @@
-gridmap = load('gridmap-29.mat');
+gridmap = load('gridmap-13.mat');
 env = gridmap.map;
 configure = Configure();
 % figure('visible','off')
 % figure,
-r_o = configure.obstacle_radius;
-r_p = configure.privacy_radius;
-
-% r_o = configure.obstacle_radius + configure.radius;
-% r_p = configure.privacy_radius + configure.radius;
-
 % r_o = configure.obstacle_radius;
 % r_p = configure.privacy_radius;
+
+% a = load('planningtime_relaxation.mat');
+% planning_time = a.planning_time;
+% a = load ('velocity_history_relaxation.mat');
+% velocity_history = a.velocity_history;
+% a = load('trajectory_relaxation.mat');
+% trajectory = a.trajectory;
+
+r_o = configure.obstacle_radius + configure.radius;
+r_p = configure.privacy_radius + configure.radius;
+
+% r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
+% r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
 
 
 length_o = 0;
