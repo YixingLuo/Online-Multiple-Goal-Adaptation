@@ -37,18 +37,18 @@ privacy_ratio = 0;
 info_ratio = info_variance /(configure.forensic_target-configure.forensic_budget);
 time_ratio = time_variance /(configure.Time_budget-configure.Time_target);
 energy_ratio = energy_variance /(configure.battery_budget-configure.battery_target);
-if bound_o > 0
-    safety_ratio = safety_variance/(configure.obstacle_max * bound_o);
-end
-% if num_o > 0
-%     safety_ratio = safety_variance/(configure.obstacle_max * num_o);
+% if bound_o > 0
+%     safety_ratio = safety_variance/(configure.obstacle_max * bound_o);
 % end
-if bound_p > 0
-    privacy_ratio = privacy_variance/(configure.privacy_max * bound_p);
+if num_o > 0
+    safety_ratio = safety_variance/(configure.obstacle_max * num_o);
 end
-% if num_p > 0
-%      privacy_ratio = privacy_variance/(configure.privacy_max * num_p);
+% if bound_p > 0
+%     privacy_ratio = privacy_variance/(configure.privacy_max * bound_p);
 % end
+if num_p > 0
+     privacy_ratio = privacy_variance/(configure.privacy_max * num_p);
+end
 
 % f=[safety_variance, safety_ratio, privacy_variance, privacy_ratio, info_variance, info_ratio, time_variance, time_ratio, energy_variance, energy_ratio];
 

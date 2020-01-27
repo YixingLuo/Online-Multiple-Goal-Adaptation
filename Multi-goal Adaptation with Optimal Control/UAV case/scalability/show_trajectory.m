@@ -1,7 +1,7 @@
 configure = Configure();
-gridmap = load('gridmap-50.mat');
-% a = load('trajectory_50_1224.mat');
-% trajectory = a.trajectory;
+gridmap = load('gridmap-100.mat');
+a = load('trajectory_100_0127.mat');
+trajectory = a.trajectory;
 h=figure(1);
 env = gridmap.map;
 r_o = configure.obstacle_radius;

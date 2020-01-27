@@ -1,7 +1,7 @@
 % clc
 % clear
 % num = 1;
-function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] = uav_relaxation(num_map, num_condition, indextemp)
+function [data, trajectory,velocity_history,planning_time, rate_list, tag_list] =uav_relaxation(num_map, num_condition, indextemp)
 global env
 global env_known
 global configure
@@ -47,16 +47,11 @@ rate_list = [];
 tag_list = [];
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(num_map) + '.mat';
+name = 'gridmap-' + string(num) + '.mat';
 gridmap = load(name);
 env = gridmap.map;
 env_known = Environment();
 
-if num_map > 0
-    name_con = 'condition' + string(num_condition) + '.mat';
-    cond = load(name_con);
-    index_cond = 1;
-end
 
 for k = 1: (configure.N+1) 
     for i = 1:3
@@ -78,7 +73,7 @@ following_point = [following_point; end_point];
 while (1)
     needplan = 1;
     
-    if num_map > 0
+        if num_map > 0
         if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
             needplan = 1;
             if cond.condition(index_cond,1) == 1
@@ -99,7 +94,7 @@ while (1)
         end
     end
     
-    fprintf(2,'uav_relaxation: current step %d %d\n', current_step, num_condition);
+    fprintf(2,'uav_relaxation: current step %d %d\n', current_step, num);
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
@@ -152,8 +147,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -260,6 +255,7 @@ while (1)
     %% time start
     t1=clock;
     exitflag = 0;
+    exitflag_relax = 0;
     iternum = 0;
     while exitflag <=0 && iternum <= 5
 %         iternum = iternum + 1;
@@ -274,7 +270,7 @@ while (1)
             for i = 1 : (initial_N+1) * 3
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
-                x0(i) = ub(i) - iternum * 2/30;
+                x0(i) = ub(i) - iternum * 2/5;
 %                 x0(i) = unifrnd(lb(i),ub(i));
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
@@ -367,11 +363,11 @@ while (1)
 
     
     %% RELAXATION
-    if find(ratio > eplison) 
+    if ratio(1)>eplison(1) || ratio(2)>eplison(2) || ratio(3)>eplison(3) || ratio(4)>eplison(4) || ratio(5)>eplison(5)
        rate_list = [rate_list, ratio'];
        tag = [0,0,0,0,0];
         for kk = 1:5
-            if ratio(kk) > eplison
+            if ratio(kk) > eplison(kk)
                 tag(kk)=1;
             end
         end
@@ -392,7 +388,7 @@ while (1)
                    lb_relax(i) = configure.velocity_min; %% negative velocity
                    ub_relax(i) = configure.velocity_max;
 %                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
+                   x0_relax(i) = ub_relax(i) - iternum_relax * 2/5;                   
 %                     bound_index = ceil(i/(initial_N+1));
 %                    if current_point(bound_index)> configure.end_point(bound_index)
 %                         x0_relax(i) = unifrnd(lb_relax(i),0);
@@ -525,14 +521,7 @@ while (1)
             elseif exitflag > 0 && iternum_relax == 5
                 plan_num = plan_num + 1;
                 fprintf('no need replanning')
-                planning_time = [planning_time; t2_1];
-                flag = [flag, exitflag];
-                plan_x (current_step,1) = length(x);
-                for k = 1:length(x)
-                    plan_x (current_step,k+1) = x(k);
-                end
                 fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
-
                 for k = 1: (initial_N+1) 
                     following_plan (k,:) = [x(k), x(k + initial_N + 1), x(k + 2 *(initial_N + 1)), x(k + 3 *(initial_N + 1))];
                 end

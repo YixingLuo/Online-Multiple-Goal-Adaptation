@@ -42,7 +42,6 @@ p_z = [p_z, configure.end_point(3)];
 %     c = [c, time + initial_N*tau + time_x - configure.Time_budget];
 %     c = [c, -time_x];
 % else
-%     c = [c, 0, 0];
 % %     ceq = [ceq , p_x(end)-p_x(end-1)];
 % end
 % if x(2*(initial_N + 1)) ~= 0
@@ -50,7 +49,6 @@ p_z = [p_z, configure.end_point(3)];
 %     c = [c, time + initial_N*tau + time_y - configure.Time_budget];
 %     c = [c, -time_y];
 % else
-%     c = [c, 0, 0];
 % %     ceq = [ceq , p_y(end)-p_y(end-1)];
 % end
 % if x(3*(initial_N + 1)) ~= 0
@@ -58,43 +56,47 @@ p_z = [p_z, configure.end_point(3)];
 %     c = [c, time + initial_N*tau + time_z - configure.Time_budget];
 %     c = [c, -time_z];
 % else
-%     c = [c, 0, 0];
 % %     ceq = [ceq , p_z(end)-p_z(end-1)];
 % end
+
 % time_list = [];
 % if x(initial_N + 1) ~= 0
 %     time_x = (p_x(end)-p_x(end-1))/x(initial_N + 1);
 %     time_list = [time_list, time_x];
 % else
+%     ceq = [ceq , p_x(end)-p_x(end-1)];
 %     time_x = 0;
-%     time_list = [time_list, time_x];
 % end
 % if x(2*(initial_N + 1)) ~= 0
 %     time_y = (p_y(end)-p_y(end-1))/x(2*(initial_N + 1));
 %     time_list = [time_list, time_y];
 % else
+%     ceq = [ceq , p_y(end)-p_y(end-1)];
 %     time_y = 0;
-%     time_list = [time_list, time_y];
 % end
 % if x(3*(initial_N + 1)) ~= 0
 %     time_z = (p_z(end)-p_z(end-1))/x(3*(initial_N + 1));
 %     time_list = [time_list, time_z];
 % else
+%     ceq = [ceq , p_z(end)-p_z(end-1)];
 %     time_z = 0;
-%     time_list = [time_list, time_z];
 % end
 % 
 % for i = 1:length(time_list)
 %     c = [c, - time_list(i)];
 % end
-% 
-% % if length(time_list) == 2
-% %     ceq = [ceq , time_list(1)-time_list(2)];
-% %     elseif length(time_list) == 3
-% %         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
-% % end
-% 
-% ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+
+% if length(time_list) == 2
+%     ceq = [ceq , time_list(1)-time_list(2)];
+%     elseif length(time_list) == 3
+%         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+% end
+
+% if length(time_list) > 0
+%     time_now = time + initial_N*tau + time_list(1);
+% else
+%     time_now = time + initial_N*tau;
+% end
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
@@ -161,7 +163,7 @@ if length_p > 0
     end
 end
 
-if ratio(1)>0
+if ratio(1)> eplison
     for j = 1: length_o
         for i = 1:initial_N  + 1
             c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius)];
@@ -175,15 +177,15 @@ else
     end
 end
 
-if ratio(2)> 0
+if ratio(2)> eplison
     for j = 1: length_p
-        for i = 1:initial_N + 1 
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
         end
     end
 else
     for j = 1: length_p
-        for i = 1:initial_N  + 1
+        for i = 1:initial_N + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end
