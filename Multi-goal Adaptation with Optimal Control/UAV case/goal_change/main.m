@@ -77,7 +77,7 @@ num_p = [7];
                     data3 = [data3; data_3];
                 end
 
-                if mod(num_condition,iternum)==0
+                if mod(num_condition,iternum)== iternum
                     data1(i + 1,:) = mean(data1(i-(iternum-1):i,:),1);
                     data2(i + 1,:) = mean(data2(i-(iternum-1):i,:),1);
                     data3(i + 1,:) = mean(data3(i-(iternum-1):i,:),1);
