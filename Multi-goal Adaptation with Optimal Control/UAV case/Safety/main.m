@@ -16,10 +16,10 @@ rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [1e-6,1e-6,1e-6,1e-6,1e-6];
-iternum = 20;
-num_o = [19];
-num_p = 7:7:7*5;
+eplison = [1e-20,1e-20,1e-6,1e-6,1e-6];
+iternum = 50;
+num_o = [38];
+num_p = 7*2:7:7*5;
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:iternum 

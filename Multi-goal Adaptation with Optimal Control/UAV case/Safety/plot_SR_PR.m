@@ -1,4 +1,5 @@
-k = [0.2618,0.7854,1.3090,1.8326,2.3562];
+k = [0.99, 1.99, 2.98, 3.98, 4.97];
+
 figure,
 subplot(2,2,1)
 % figure, 
@@ -25,10 +26,10 @@ yy=interp1(k,SR(:,3),xx,'PCHIP');
 % hold on
 plot(k,SR(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
-axis([0, 2.5, 0, 5])
+axis([0, 6, 0, 2])
 hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
-ylabel('Safety Risk $\sum \mathcal{X}_{SR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+ylabel('Accumulated Safety Risk','Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
 set(gca,'gridLineStyle', '-.');
@@ -36,7 +37,7 @@ set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.13,ylim(1)])
-title('$(a) \quad \rho_c = 1.07\%$','Interpreter', 'latex');
+title('$(a) \quad \rho_c = 2.01\%$','Interpreter', 'latex');
 
 subplot(2,2,2)
 % figure, 
@@ -52,19 +53,19 @@ hold on
 
 hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
-ylabel('Privacy Risk $\sum \mathcal{X}_{PR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+ylabel('Accumulated Privacy Risk','Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
-axis([0, 2.5, 0, 15])
+axis([0, 6, 0, 2])
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)+xlim(1))*0.13,ylim(1)])
-title('$(b) \quad \rho_c = 1.07\%$','Interpreter', 'latex');
+title('$(b) \quad \rho_c = 2.01\%$','Interpreter', 'latex');
 
 %% WITH SET OBSTACLE
-k2 = [1.0723,2.1447,3.2170,4.2893,5.3617];
+k2 = [1, 2.01,3.02,4.02,5.03];
 subplot(2,2,3)
 
 xx=linspace(k2(end),k2(1));
@@ -82,10 +83,10 @@ xx=linspace(k2(end),k2(1));
 yy=interp1(k2,SR2(:,3),xx,'PCHIP');
 plot(k2,SR2(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
-axis([0, 6, 0, 5])
+axis([0, 6, 0, 2])
 hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
-ylabel('Safety Risk $\sum \mathcal{X}_{SR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+ylabel('Accumulated Safety Risk','Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
 set(gca,'gridLineStyle', '-.');
@@ -93,7 +94,7 @@ set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.13,ylim(1)])
-title('$(c) \quad \rho_o = 0.52\%$','Interpreter', 'latex');
+title('$(c) \quad \rho_o = 0.99\%$','Interpreter', 'latex');
 
 subplot(2,2,4)
 
@@ -109,13 +110,13 @@ hold on
 hlegend = legend('MOpt','GRelax','GAdapt','location','northwest');
 
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
-ylabel('Privacy Risk $\sum \mathcal{X}_{PR_k}$','Fontname', 'Times New Roman','Interpreter', 'latex');
+ylabel('Accumulated Privacy Risk','Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
-axis([0, 6, 0, 15])
+axis([0, 6, 0, 2])
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)+xlim(1))*0.13,ylim(1)])
-title('$(d) \quad \rho_o = 0.52\%$','Interpreter', 'latex');
+title('$(d) \quad \rho_o = 0.99\%$','Interpreter', 'latex');

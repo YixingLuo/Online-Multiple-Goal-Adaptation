@@ -417,13 +417,12 @@ while (1)
             if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
                 following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
             end
-%             following_point, following_plan
 
             break
         end
     end
 
-    if iternum > 5 && exitflag<=0
+    if exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

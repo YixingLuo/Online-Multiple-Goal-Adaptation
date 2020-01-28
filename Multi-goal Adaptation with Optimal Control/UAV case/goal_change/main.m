@@ -17,7 +17,7 @@ tag_list3 = zeros(100,100);
 % index = [];
 
 global eplison
-eplison = [1e-20,1e-20,1e-6,1e-6,1e-6];
+eplison = [1e-20,1e-20,1e-3,1e-6,1e-6];
 iternum = 100;
 num_o = [19];
 num_p = [7];
@@ -82,7 +82,7 @@ num_p = [7];
                     data2(i + 1,:) = mean(data2(i-(iternum-1):i,:),1);
                     data3(i + 1,:) = mean(data3(i-(iternum-1):i,:),1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(1))  + '_' + string(eplison) + '_'+ string(num_p(1)) + '.mat';
+                    name = 'data' + string(time) + '_' + string(num_o(1)) + '_'+ string(num_p(1)) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

@@ -466,7 +466,7 @@ while (1)
         end
     end
 
-    if iternum > 5 && exitflag<=0
+    if  exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

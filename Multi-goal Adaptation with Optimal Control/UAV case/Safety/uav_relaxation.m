@@ -497,7 +497,9 @@ while (1)
                 end
 
                 break
-            elseif exitflag > 0 && iternum_relax == 5
+            end
+       end
+          if exitflag > 0 && exitflag_relax <= 0
                 plan_num = plan_num + 1;
                 fprintf('no need replanning')
                 fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
@@ -569,9 +571,7 @@ while (1)
                 if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
                     following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
                 end
-            
-            end
-       end
+          end
     elseif exitflag > 0
             fprintf('no need replanning')
             plan_num = plan_num + 1;
