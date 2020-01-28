@@ -193,7 +193,7 @@ vel_tol   = 1e-3;
 %% ************************* RUN SIMULATION *************************
 OUTPUT_TO_VIDEO = 1;
 if OUTPUT_TO_VIDEO == 1
-    v = VideoWriter('navigation','MPEG-4');
+    v = VideoWriter('Trajectory-10','MPEG-4');
 %     v.FrameRate = 30;
     open(v)
 end
