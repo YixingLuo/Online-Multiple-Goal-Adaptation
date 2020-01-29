@@ -146,8 +146,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;

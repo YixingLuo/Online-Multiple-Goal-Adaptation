@@ -16,10 +16,10 @@ velocity_history3 = [];
 % tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [1e-20,1e-20,1e-2,1e-6,1e-1];
-iternum = 10;
-num_o = [19];
-num_p = [7];
+eplison = [1e-6,1e-6,1e-3,1e-6,1e-6];
+iternum = 50;
+num_o = [38];
+num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
         for i = 1:3*iternum 
@@ -73,9 +73,9 @@ for np = 1:length(num_p)
 %                 end
     
                 if mod(i,iternum)==0
-                    data1(i + 1,:) = mean(data1(i-(iternum-1):i,:),1);
-                    data2(i + 1,:) = mean(data2(i-(iternum-1):i,:),1);
-                    data3(i + 1,:) = mean(data3(i-(iternum-1):i,:),1);
+                    data1(i + 1,:) = mean(data1,1);
+                    data2(i + 1,:) = mean(data2,1);
+                    data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
                     name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '.mat';
                     save(name);
@@ -88,6 +88,7 @@ for np = 1:length(num_p)
                     velocity_history1 = [];
                     velocity_history2 = [];
                     velocity_history3 = [];
+                    index = [];
 %                     planningtime1 = zeros(100,100);
 %                     planningtime2 = zeros(100,100);
 %                     planningtime3 = zeros(100,100);
