@@ -37,9 +37,10 @@ num_y = 0;
 if bound_p > 0
     for j = 1: bound_p
         x_index = 4*(initial_N + 1) + bound_o + j;
-        sum_y = sum_y + x(x_index);
+        
         if x(x_index)>0
             num_y = num_y + 1;
+            sum_y = sum_y + x(x_index);
         end
     end
 %     sum_y = sum_y/(bound_p * configure.privacy_max);
