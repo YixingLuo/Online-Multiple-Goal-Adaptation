@@ -96,7 +96,7 @@ while (1)
         end
     end
     
-    fprintf(2,'uav_relax: current step %d\n', current_step);
+    fprintf(2,'uav_relax: current step %d %d\n', current_step, num_condition);
 %     following_point, following_plan
     
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
@@ -104,9 +104,9 @@ while (1)
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];
         DS_e = [energy,min(1,(configure.battery_budget - energy) /(configure.battery_budget - configure.battery_target))];
-        [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
+        [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
-        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num];
+        data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num,DS_acc];
 %         name1 = 'planningtime.mat';
 %         save(name1, 'planning_time');
 %         name2 = 'trajectory.mat';
@@ -149,8 +149,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
 %     %% 1124
-%     env_view = remove_obstacle(env_view);
-%     env_view = remove_privacy(env_view);
+    env_view = remove_obstacle(env_view);
+    env_view = remove_privacy(env_view);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -265,7 +265,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum < 5
+    while exitflag <=0 && iternum <= 5
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -359,7 +359,8 @@ while (1)
 %         options.MaxFunctionEvaluations = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
 %         options.algorithm = 'sqp';
-        options.algorithm = 'sqp';
+        options.Algorithm = 'sqp';
+        options.Display = 'off';
 %         options.tolx = 1e-10;
 %         options.tolfun = 1e-10;
 %         options.TolCon = 1e-10;
@@ -465,7 +466,7 @@ while (1)
         end
     end
 
-    if iternum >= 5 && exitflag<=0
+    if  exitflag<=0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

@@ -21,7 +21,7 @@ data1_risk = [];
 % data1_copy (:,1) = data1_copy(:,end);
 for i = 1:2:5
     for j = 1:size
-        if data1_copy(j,i)>0.95
+        if data1_copy(j,i)>= 1
             data1_risk(j,ceil(i/2)) = 1;
         else
             data1_risk(j,ceil(i/2)) = 0;
@@ -59,7 +59,7 @@ data2_risk = [];
 % data2_copy (:,1) = data2_copy(:,end);
 for i = 1:2:5
     for j = 1:size
-        if data2_copy(j,i)>0.95
+        if data2_copy(j,i)>= 1
             data2_risk(j,ceil(i/2)) = 1;
         else
             data2_risk(j,ceil(i/2)) = 0;
@@ -97,7 +97,7 @@ data3_risk = [];
 % data3_copy (:,1) = data3_copy(:,end);
 for i = 1:2:5
     for j = 1:size
-        if data3_copy(j,i)>0.95
+        if data3_copy(j,i)>= 1
             data3_risk(j,ceil(i/2)) = 1;
         else
             data3_risk(j,ceil(i/2)) = 0;
