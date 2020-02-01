@@ -330,15 +330,15 @@ while (1)
 %         objuav_normal(x0),myconuav_normal(x0)
 %         x0
 %         ratio = [1,1,1,1,1];
+        tic;
         [x,fval,exitflag]=fmincon(@objuav_normal,x0,[],[],[],[],lb,ub,@myconuav_normal, options);
 %         [x,fval,exitflag]=fmincon(@objuav_relaxation,x0,[],[],[],[],lb,ub,@myconuav_relaxation, options);
-       
+       t2 = toc;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
         if exitflag > 0
-            t2=clock;
-            planning_time = [planning_time; etime(t2,t1)];
+            planning_time = [planning_time; t2];
             plan_num = plan_num + 1;
             plan_x (current_step,1) = length(x);
             for k = 1:length(x)

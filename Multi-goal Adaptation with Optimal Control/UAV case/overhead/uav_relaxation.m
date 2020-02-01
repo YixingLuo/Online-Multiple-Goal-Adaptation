@@ -325,9 +325,9 @@ while (1)
 %         options.MaxIter = 10000;
 %         options.MaxFunEvals = 100000;
 %         options=optimoptions(@fmincon,'Algorithm', 'sqp', 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-
+        tic;
         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
-       
+        t2_1 = toc;
         tau = configure.Time_step;
 
         iternum = iternum + 1;
@@ -415,8 +415,11 @@ while (1)
 %             options.algorithm = 'interior-point-convex'; 
 %             options.MaxIter = 10000;
 %             options.MaxFunEvals = 100000;
+            tic;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
+            t2_2 = toc;
             if exitflag_relax > 0 
+                planning_time = [planning_time; t2_2 + t2_1];
                 relax_num = relax_num + 1;
 
                 flag_relax = [flag_relax, exitflag_relax];
@@ -501,6 +504,7 @@ while (1)
        end
           if exitflag > 0 && exitflag_relax <= 0
                 plan_num = plan_num + 1;
+                 planning_time = [planning_time; t2_1];
                 fprintf('no need replanning')
                 fprintf(2,"there is a solution!!%d, %d\n",exitflag,current_step)
                 for k = 1: (initial_N+1) 
@@ -573,6 +577,7 @@ while (1)
                 end
           end
     elseif exitflag > 0
+             planning_time = [planning_time; t2_1];
             fprintf('no need replanning')
             plan_num = plan_num + 1;
             flag = [flag, exitflag];

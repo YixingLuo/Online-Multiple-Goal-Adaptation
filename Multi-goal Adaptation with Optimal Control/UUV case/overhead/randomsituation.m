@@ -8,7 +8,7 @@ function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global uuv
 % uuv = UnmannedUnderwaterVehicle();
-l = [3,6,9,12,15,18,21];
+l = [9];
 disturb = randi([1,6],1,l(k));
 % if k == 1
 %     disturb = [4,5,6];   
