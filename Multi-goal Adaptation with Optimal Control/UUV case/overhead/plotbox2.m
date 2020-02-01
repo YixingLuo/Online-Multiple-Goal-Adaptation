@@ -1,22 +1,30 @@
-% x1 = [data1_1(:,1),data3_1(:,1)];
-% x2 = [data1_1(:,2),data3_1(:,2)];
-% x3 = [data1_1(:,3),data3_1(:,3)];
-% x4 = [data1_1(:,4),data3_1(:,4)];
-% x5 = [data1_1(:,5),data3_1(:,5)];
-% x6 = [data1_1(:,6),data3_1(:,6)];
-x1 = [data1_1(:,1)/1000,data2_1(:,1)/1000,data3_1(:,1)/1000];
-x2 = [data1_1(:,2)/1000,data2_1(:,2)/1000,data3_1(:,2)/1000];
-x3 = [data1_1(:,3)/1000,data2_1(:,3)/1000,data3_1(:,3)/1000];
-x4 = [data1_1(:,4)/1000,data2_1(:,4)/1000,data3_1(:,4)/1000];
-x5 = [data1_1(:,5)/1000,data2_1(:,5)/1000,data3_1(:,5)/1000];
-x6 = [data1_1(:,6)/1000,data2_1(:,6)/1000,data3_1(:,6)/1000];
+for i = 1:6
+    data1_sorted(:,i) = sort(data1_1(:,i));
+end
+for i = 1:6
+    data2_sorted(:,i) = sort(data3_1(:,i));
+end
+for i = 1:6
+    data3_sorted(:,i) = sort(data3_1(:,i));
+end
 
-f=figure(1),
+data1 = data1_sorted(21:480,:);
+data2 = data2_sorted(21:480,:);
+data3 = data3_sorted(21:480,:);
+
+x1 = [data1(:,1)/1000,data2(:,1)/1000,data3(:,1)/1000];
+x2 = [data1(:,2)/1000,data2(:,2)/1000,data3(:,2)/1000];
+x3 = [data1(:,3)/1000,data2(:,3)/1000,data3(:,3)/1000];
+x4 = [data1(:,4)/1000,data2(:,4)/1000,data3(:,4)/1000];
+x5 = [data1(:,5)/1000,data2(:,5)/1000,data3(:,5)/1000];
+x6 = [data1(:,6)/1000,data2(:,6)/1000,data3(:,6)/1000];
+
+f=figure,
 x = [x1;x2;x3;x4;x5;x6]; x = x(:);
 g1 = [ones(size(x1)); 2*ones(size(x2)); 3*ones(size(x3));4*ones(size(x4));...
     5*ones(size(x5));6*ones(size(x6));]; g1 = g1(:);
 % g2 = repmat(1:3,240,1); g2 = g2(:);
-g2 = repmat(1:3,240,1); g2 = g2(:);
+g2 = repmat(1:3,2760,1); g2 = g2(:);
 % g3 = repmat(2:3,300,1); g3 = g3(:);
 % positions = [[1:6],[7:12]];
 positions = [[1:6],[7:12],[13:18]];
@@ -24,7 +32,7 @@ bh=boxplot(x, {g2,g1},'notch','on','whisker',1,'colorgroup',g1, 'factorgap',[8 1
 xlabel('Incident Probability \rho [%]','Fontname', 'Times New Roman');
 ylabel('Scanning Distance [km]','Fontname', 'Times New Roman');
 grid on
-set(gca,'YLim',[85,105],'gridLineStyle', '-.');
+set(gca,'YLim',[75,120],'gridLineStyle', '-.');
 set(bh,'linewidth',1.2);
 set(gca,'fontname','Times');
 color = ['c', 'y', 'g', 'b','o', 'b','c', 'y', 'g', 'b','o', 'b'];
@@ -53,7 +61,7 @@ annotation(f,'textbox',...
 
 annotation(f,'textbox',...
     [0.47 0.075 0.035 0.075],...
-    'String','GRelax',...
+    'String','GSlack',...
     'FitBoxToText','off',...
     'Fontname', 'Times New Roman',...
     'EdgeColor','none');

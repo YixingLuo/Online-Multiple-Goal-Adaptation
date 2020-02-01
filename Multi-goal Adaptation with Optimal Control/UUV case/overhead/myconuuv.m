@@ -17,7 +17,7 @@ for i = 1:uuv.N_s
 end
 distance = pastdistance + time_left * speed;
 c=[c, - distance + (uuv.distance_target - x(end-1))];
-% c = [c, - distance + uuv.distance_budget];
+c = [c, - distance + uuv.distance_budget];
 
 %% accuracy
 acc = 0;

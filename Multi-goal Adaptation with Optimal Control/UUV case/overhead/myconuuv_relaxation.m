@@ -49,19 +49,19 @@ uuv.energy_target; uuv.distance_budget;
 % c=[c,(acc - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)-1];
 % c=[c,-(acc - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)];
 
-if ratio(1)> eplison
+if ratio(1)> eplison(1)
     c = [c, - accuracy + uuv.acc_budget];
 else
     c = [c, - accuracy + uuv.acc_target];    
 end
 
-if ratio(2)> eplison
+if ratio(2)> eplison(2)
     c = [c, - distance + uuv.distance_budget];
 else
     c = [c, - distance + uuv.distance_target];    
 end
 
-if ratio(3)> eplison
+if ratio(3)> eplison(3)
     c = [c, energy - uuv.energy_budget];
 else
     c = [c, energy - uuv.energy_target];    

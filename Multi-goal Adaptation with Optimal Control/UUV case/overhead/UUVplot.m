@@ -41,7 +41,7 @@ set(hl,'box','off')
 ylabel({'Sensor','usage [%]'},'Fontname', 'Times New Roman');
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
-h = xlabel({'Time [100ms]'},'Fontname', 'Times New Roman');
+h = xlabel({'Time [100s]'},'Fontname', 'Times New Roman');
 xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(gca,'gridLineStyle', '-.');

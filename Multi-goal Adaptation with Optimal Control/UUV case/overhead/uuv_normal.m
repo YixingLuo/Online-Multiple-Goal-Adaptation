@@ -42,9 +42,9 @@ while(1)
     
     if current_step > 360
         fprintf('last step');
-        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget);
-        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget);
-        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target);
+        DS_A = min(1,(pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget));
+        DS_D = min(1,(pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget));
+        DS_E = min(1,(uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target));
         data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy];
 %         [num, text, raw] = xlsread('data.xls');
 %         [rowN, columnN]=size(raw);
@@ -85,7 +85,6 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        time_sum = 0;
         for iternum =1: 50 
             lb=[];
             ub=[];
@@ -107,19 +106,17 @@ while(1)
 %             length(x_pre)
 %             x0 = x_pre;
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-            options.algorithm = 'sqp';
+            options.Algorithm = 'sqp'; 
             options.Display = 'off';
             tic;
             [x,fval,exitflag]=fmincon(@objuuv_normal,x0,[],[],[],[],lb,ub,@myconuuv_normal,options);
             t2 = toc;
-            time_sum = time_sum + t2;
             if exitflag > 0 
 %                 && fval < fval_pre
                 fprintf(2,'uuv_normal: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
                 planning_time = [planning_time; t2];
-%                 planning_time = [planning_time; time_sum/iternum];
                 break
             end     
         end

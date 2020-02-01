@@ -1,7 +1,13 @@
-function [data,usage_plan,planning_time,rate_list,tag_list] = uuv_relaxation(nnum, indextemp)
+%%1.00558575517182	0.900558575517182	1.00906003383658	103117.780439876	1.02791519500656	4560918.72699082	3	360
+%% 1	4600000	0
+%% 6	4	1.60000000000000
+%% 2	103000	0
+%% 5	1	248
+%% 103	230	252	295
+% function [data,usage_plan] = uuv_relaxation(nnum, indextemp, x_initial)
 % clc
 % clear
-global eplison
+t1=clock;
 global uuv
 uuv = UnmannedUnderwaterVehicle();
 global pastdistance
@@ -24,16 +30,16 @@ flag = [];
 f_value = [];
 flag_relax = [];
 f_value_relax = [];
-rate = [];
-planning_time = [];
-rate_list = []; 
-tag_list = [];
-% x_pre = x_initial;
+log = [];
+relax_list = [];
+no_relax_list = [];
+results =[];
+x_pre = x_initial;
 current_step = 1;
 relax_num = 0;
 % cond = load('condition.mat');
-name = 'condition' + string(nnum) + '.mat';
-cond = load(name);
+% name = 'condition' + string(nnum) + '.mat';
+% cond = load(name);
 x_relax=[];
 need_replan = 0;
 plan_num = length(indextemp);
@@ -41,64 +47,81 @@ index_cond = 1;
 while(1)
     need_replan = 0;
     fprintf('uuv_relaxation: current step %d\n', current_step);
-   
 %     current_step
     if current_step >= 360 
         fprintf('last step');
-        DS_A = min(1,(pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget));
-        DS_D = min(1,(pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget));
-        DS_E = min(1,(uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target));
+        DS_A = (pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)
+        DS_D = (pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)
+        DS_E = (uuv.energy_budget - pastenergy) /(uuv.energy_budget - uuv.energy_target)
         data = [DS_A, pastaccuracy, DS_D, pastdistance, DS_E, pastenergy, relax_num, current_step];
         break
     end
     
-    if  plan_num > 0 && current_step == indextemp(index_cond)        
-        need_replan = 1;
-        plan_num = plan_num - 1;
-        if cond.condition(index_cond,1) == 1
-            uuv = EnergyBudget(uuv, cond.condition(index_cond,2));
-        elseif cond.condition(index_cond,1) == 2
-            uuv = DistanceBudget(uuv, cond.condition(index_cond,2));
-            elseif cond.condition(index_cond,1) == 3
-                uuv = AccuracyBudget(uuv, cond.condition(index_cond,2));
-                elseif cond.condition(index_cond,1) == 4
-                    uuv = SensorError(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
-%                     elseif cond.condition(index_cond,1) == 5
-%                         uuv = SensorFailure(uuv, cond.condition(index_cond,2));            
-                        elseif cond.condition(index_cond,1) == 5
-                            uuv = EnergyDisturbance(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
-        else
-             uuv = SpeedDisturbance(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
-        end
-        index_cond = index_cond+1;
-    end
+%     if  plan_num > 0 && current_step == indextemp(index_cond)        
+%         need_replan = 1;
+%         plan_num = plan_num - 1;
+%         if cond.condition(index_cond,1) == 1
+%             uuv = EnergyBudget(uuv, cond.condition(index_cond,2));
+%         elseif cond.condition(index_cond,1) == 2
+%             uuv = DistanceBudget(uuv, cond.condition(index_cond,2));
+%             elseif cond.condition(index_cond,1) == 3
+%                 uuv = AccuracyBudget(uuv, cond.condition(index_cond,2));
+%                 elseif cond.condition(index_cond,1) == 4
+%                     uuv = SensorError(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
+% %                     elseif cond.condition(index_cond,1) == 5
+% %                         uuv = SensorFailure(uuv, cond.condition(index_cond,2));            
+%                         elseif cond.condition(index_cond,1) == 5
+%                             uuv = EnergyDisturbance(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
+%         else
+%              uuv = SpeedDisturbance(uuv, cond.condition(index_cond,2), cond.condition(index_cond,3));
+%         end
+%         index_cond = index_cond+1;
+%     end
     
     if current_step == 1
-        need_replan = 1;
-%         x_pre = x_initial;
+        need_replan = 0;
+        x_pre = x_initial;
     end
 
+        if current_step == 100
+        uuv = EnergyBudget(uuv, 5 * 1e6);
+        need_replan = 1;
+    end
+    
+    if current_step == 160
+        uuv = DistanceBudget(uuv, 105*1000);
+        need_replan = 1;
+    end
+    
+    if current_step == 220
+        uuv = SensorError(uuv, 3, 0.43);
+        need_replan = 1;
+    end
+    
+    if current_step == 290
+        uuv = SensorFailure(uuv, 4);
+        need_replan = 1;
+    end
+
+    
     if need_replan == 1 
-        t1=clock;
         exitflag = 0;
-%         iternum = 0;
-        fval_pre = 1e6;
-        for iternum= 1:50
-%             while exitflag <= 0
+        iternum = 0;
+        while exitflag <= 0  
             lb=[];
             ub=[];
             x0=[];
             for i = 1 : uuv.N_s % portion of time
                 lb(i) = 0;
                 ub(i) = 1;
-%                 x0(i) = unifrnd(0,1/uuv.N_s);
-                x0(i) = 1/uuv.N_s - 0.2/50*iternum;
+%                 x0(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
+                x0(i) = unifrnd(0,1/uuv.N_s);
             end
             for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                 lb(i) = 0;
                 ub(i) = 1;
-%                 x0(i) = 1- unifrnd(0,0.2);
-                x0(i) = 1 - iternum * 1/50;
+%                 x0(i) = 1-unifrnd(0,0.2);
+                x0(i) = unifrnd(0,1);
             end
 %             x0 = x_pre(1:15);
             %%slash variable
@@ -106,122 +129,90 @@ while(1)
             ub = [ub,uuv.acc_target-uuv.acc_budget, uuv.distance_target-uuv.distance_budget, uuv.energy_budget-uuv.energy_target];
             x0 = [x0, 0, 0, 0];
 %           options=optimoptions(@fminsearch, 'Display','final' ,'MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );
-%             optimset('Algorithm','sqp','MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 ); 
-            options.Algorithm = 'sqp';
-            options.Display = 'off';
-            tic;
-%             options.MaxIter=100000;
-%             options.MaxFunEvals=100000;
-            [x,fval,exitflag]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv,options);
-            t2_1 = toc;
+            optimset('Algorithm','sqp','MaxIter',100000, 'tolx',1e-100,'tolfun',1e-100, 'TolCon',1e-100 ,'MaxFunEvals', 100000 );  
+            [x,fval,exitflag,output,lambda]=fmincon(@objuuv,x0,[],[],[],[],lb,ub,@myconuuv);
 %           flag = [flag,exitflag];
 %           f_value = [f_value, fval];
 %           x_plan = [x_plan;x];
     
-            if exitflag > 0 
-%                 && fval < fval_pre
+            if exitflag > 0 || iternum > 50
                 fprintf(2,'uuv_relaxation: have solution at current step: %d , %d\n',exitflag, current_step);
-%                 flag = [flag,exitflag];
-%                 f_value = [f_value, fval];
-%                 rate = [rate;x(16:18)]
-                fval_pre = fval;
+                flag = [flag,exitflag];
+                f_value = [f_value, fval];
                 x_pre = x;
-                rate = x(16:18);
-                break;
+                break
             end
+                iternum = iternum+1;
         end
 
-%         if iternum > 50 && exitflag < 0
-%             fprintf(2,'uuv_relaxation: no solution at current step: %d , %d\n',exitflag, current_step);
-%             break;
-%         end
+        if iternum > 50 && exitflag < 0
+            fprintf(2,'uuv_relaxation: no solution at current step: %d , %d\n',exitflag, current_step);
+            break;
+        end
 
         %% relaxation
-%         rate = mean(rate);
-%         rate
-%         rate = [rate(1)/(uuv.acc_target-uuv.acc_budget),rate(2)/(uuv.distance_target-uuv.distance_budget),rate(3)/(uuv.energy_budget-uuv.energy_target)];
-        [acc_variance, acc_ratio, distance_variance, distance_ratio, energy_variance, energy_ratio] = relaxation_ratio(x_pre);
-        ratio = [acc_ratio, distance_ratio, energy_ratio];  
-%         if fval > 1e-6
-        if ratio(1) > eplison(1) || ratio(2) > eplison(2) || ratio(3) > eplison(3)
-            rate_list = [rate_list, ratio'];
-            tag = [0,0,0];
-            for kk = 1:3
-                if ratio(kk) > eplison(kk)
-                    tag(kk)=1;
-                end
-            end
-            tag_list = [tag_list, tag'];
+%         relax_list = [relax_list, relax_num];
+%         no_relax_list = [no_relax_list, current_step];
+        if fval > 1e-6
             fprintf(2,"need relexation!! %d %d\n" ,relax_num + 1, current_step);   
             relax_num = relax_num + 1;
-%             ratio = [rate(1),rate(2),rate(3)];           
+            [acc_variance, acc_ratio, distance_variance, distance_ratio, energy_variance, energy_ratio] = relaxation_ratio(x);
+            ratio = [acc_ratio, distance_ratio, energy_ratio];
+            log = [log; [ratio, current_step]];
+            
             exitflag_relax = 0;
             iternum_relax = 0;
-            fval_pre_relax = 1e6;
-            for  iternum_relax=1:50
+            while exitflag_relax <= 0 
                 lb_relax=[];
                 ub_relax=[];
                 x0_relax=[];
                 for i = 1 : uuv.N_s % portion of time
                     lb_relax(i) = 0;
                     ub_relax(i) = 1;
-%                     x0_relax(i) = unifrnd(0,1/uuv.N_s);
-                    x0_relax(i) = 1/uuv.N_s-0.2/50*iternum_relax;
+%                     x0_relax(i) = 1/uuv.N_s + unifrnd(-1/uuv.N_s,1/uuv.N_s);
+                    x0_relax(i) = unifrnd(0,1/uuv.N_s);
                 end
                 for i = uuv.N_s + 1 : 3*uuv.N_s % accuracy and speed exploition
                     lb_relax(i) = 0;
                     ub_relax(i) = 1;
 %                     x0_relax(i) = 1- unifrnd(0,0.2);
-                    x0_relax(i) = 1 - iternum_relax * 1/50;
+                    x0_relax(i) = unifrnd(0,1);
                 end 
 %                 x0_relax = x_pre(1:15);
-%                 goal = [-3];
-%                 weight = [3];
-%                 for g = 1:length(ratio)
-%                     goal = [goal, -1];
-% %                   if ratio(g)>1e-6                  
-% %                       weight = [weight, 1-ratio(g)];
-% %                   else             
-% %                       weight = [weight, 1];
-% %                   end
-%                     weight = [weight, 1];
-%                 end
-%                 size(goal)
-%                 options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',10000, 'tolx',1e-10,'tolfun',1e-10, 'TolCon',1e-10 ,'MaxFunEvals', 10000);
-%                 [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@objuuv_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@myconuuv_relax, options_relax);
-                
-                options.Algorithm = 'sqp';  
-                options.Display = 'off';
-                tic;
-                [x_relax,fval_relax,exitflag_relax]=fmincon(@objuuv_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuuv_relaxation,options);
-                t2_2 = toc;
-                
-                if exitflag_relax > 0  
-%                     && fval_relax < fval_pre_relax
-%                     flag_relax=[flag_relax, exitflag_relax];
-%                     f_value_relax = [f_value_relax; fval_relax];
-                    fprintf(2,'uuv_relaxation: have solution at current step: %d , %d\n',exitflag, current_step);
-                    fval_pre_relax = fval_relax;
-                    x_pre = x_relax;
-
-                    break
+                goal = [];
+                weight = [];
+                for g = 1:length(ratio)
+                    goal = [goal, -1];
+%                   if ratio(g)>1e-6                  
+%                       weight = [weight, 1-ratio(g)];
+%                   else             
+%                       weight = [weight, 1];
+%                   end
+                    weight = [weight, 1];
                 end
 
+                options_relax=optimoptions(@fgoalattain,'Display','final' ,'MaxIter',10000, 'tolx',1e-10,'tolfun',1e-10, 'TolCon',1e-10 ,'MaxFunEvals', 10000);
+%                 [x_relax,fval_relax,attainfactor,exitflag_relax,output_relax,lambda_relax] = fgoalattain(@objuuv_relax,x0_relax,goal, weight,[],[],[],[],lb_relax,ub_relax,@myconuuv_relax, options_relax);
+                [x_relax,fval_relax,exitflag_relax,output_relax,lambda_relax]=fmincon(@objuuv_relax,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuuv_relax);
+        
+                if exitflag_relax > 0 || iternum_relax > 50
+                    flag_relax=[flag_relax, exitflag_relax];
+                    f_value_relax = [f_value_relax; fval_relax];
+                    x_pre = x_relax;
+                end
+                iternum_relax = iternum_relax + 1;
             end
         
-%             if iternum_relax > 50 && fval < fval_pre
-%                 fprintf(2,'uuv_relaxation: no solution at current step: %d , %d\n',exitflag_relax, current_step);
-%                 break;
-%             end
+            if iternum_relax > 50 && exitflag_relax < 0
+                fprintf(2,'uuv_relaxation: no solution at current step: %d , %d\n',exitflag_relax, current_step);
+                break;
+            end
         end
-
     end
 
     %%update x
     if need_replan == 1 
-%         if fval > 1e-6
-        if (ratio(1) > eplison(1) || ratio(2) > eplison(2) || ratio(3) > eplison(3))&& exitflag_relax > 0  
-            planning_time = [planning_time; t2_1 + t2_2];
+        if fval > 1e-6
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
@@ -240,8 +231,8 @@ while(1)
             %% energy
             engy = 0;
             for i = 1:uuv.N_s
-%               engy = engy + x_relax(i)*(exp(x_relax(i + 2*uuv.N_s)+x_relax(i + uuv.N_s)))/(exp(2))*uuv.s_energy(i);
-                engy = engy + x_relax(i)*(exp(x_relax(i + 2*uuv.N_s)+x_relax(i + uuv.N_s)) - 1)/(exp(2)-1)*uuv.s_energy(i);
+%               engy = engy + x(i)*(exp(x(i + 2*uuv.N_s)+x(i + uuv.N_s)))/(exp(2))*uuv.s_energy(i);
+                engy = engy + x_relax(i)*(exp(x(i + 2*uuv.N_s)+x(i + uuv.N_s)) - 1)/(exp(2)-1)*uuv.s_energy(i);
 %               engy = engy + x_relax(i)*uuv.s_energy(i);
 %               engy = engy + x_relax(i)*(x_relax(i + 2*uuv.N_s)+x_relax(i + uuv.N_s))/2*uuv.s_energy(i);
             end
@@ -265,7 +256,6 @@ while(1)
             end
    
         else
-            planning_time = [planning_time; t2_1];
             %% distance
             speed_now = 0;
             for i = 1:uuv.N_s
@@ -352,13 +342,7 @@ while(1)
         end
     end
     current_step = current_step + 1;
+    t2=clock;
+    etime(t2,t1)
 end
-end
-
-
-
-
-
-
-
-
+% end

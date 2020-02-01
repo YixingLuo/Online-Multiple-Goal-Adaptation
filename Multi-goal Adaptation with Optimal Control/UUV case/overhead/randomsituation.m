@@ -8,7 +8,7 @@ function [condition, index] = randomsituation(num,k)
 % disturb = randperm(7);
 global uuv
 % uuv = UnmannedUnderwaterVehicle();
-l = [9];
+l = [3,6,9,12,15,18,21];
 disturb = randi([1,6],1,l(k));
 % if k == 1
 %     disturb = [4,5,6];   
@@ -47,14 +47,14 @@ index = sort(index1);
 condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy_ratio = 50 + unidrnd(10);
+        energy_ratio = 45 + unidrnd(10);
         energy = energy_ratio * 1e5;
 %         energy_ratio = 45;
 %         energy = energy_ratio * 1e5;
 %         energy = min(uuv.energy_target* energy_ratio/100,uuv.energy_budget - 1);
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
-        distance_ratio = 95 + unidrnd(10);
+        distance_ratio = 100 + unidrnd(10);
         distance = distance_ratio * 1e3;
 %         distance_ratio = 110;
 %         distance = distance_ratio * 1e3;
@@ -71,7 +71,7 @@ for i = 1: length(disturb)
 %         condition(i,:) = [3,acc,0];
     elseif disturb(i) == 4
         idx = unidrnd(5); 
-        acc = 80 + unidrnd(20);
+        acc = 20 + unidrnd(30);
         condition(i,:) = [4,idx,acc/100];    
 %         acc_ratio = 50 + unidrnd(50);
 %         acc = uuv.s_accuracy(idx)*acc_ratio/100;
@@ -82,14 +82,14 @@ for i = 1: length(disturb)
 %         condition(i,:) = [5,idx,0];
     elseif disturb(i) == 5
         idx = unidrnd(5);
-        energy = 150 + unidrnd(50);
+        energy = 200 + unidrnd(50);
         condition(i,:) = [5,idx,energy];
 %         energy_ratio = 100 + unidrnd(50);
 %         energy = uuv.s_energy(idx)*energy_ratio/100;
 %         condition(i,:) = [5,idx,energy];
    elseif disturb(i) == 6
         idx = unidrnd(5);
-        speed = 15 + unidrnd(10);
+        speed = 10 + unidrnd(15);
         condition(i,:) = [6,idx,speed/10];
 %         speed_ratio = 50 + unidrnd(50);
 %         idx = unidrnd(5);
