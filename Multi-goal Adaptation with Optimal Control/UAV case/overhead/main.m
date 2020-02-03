@@ -16,7 +16,7 @@ rate_list3 = zeros(100,100);
 tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [0,0,1e-10,1e-40,5e-3];
+eplison = [1e-20,1e-20,1e-10,1e-40,5e-3];
 % eplison = [0,0,1e-3,1e-3,1e-3];
 iternum = 100;
 num_o = [38];

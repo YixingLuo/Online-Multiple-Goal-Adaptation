@@ -9,7 +9,7 @@ function [condition, index] = randomsituation(num,k)
 global configure
 configure = Configure();
 l = [2,4,6];
-disturb = randi([4,7],1,l(k));
+disturb = randi([4,6],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);
 K=randperm(length(a));
