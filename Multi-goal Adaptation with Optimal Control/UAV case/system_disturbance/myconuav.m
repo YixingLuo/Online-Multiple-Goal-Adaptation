@@ -84,12 +84,6 @@ for i = 1:length(time_list)
     c = [c, - time_list(i)];
 end
 
-% if length(time_list) == 2
-%     ceq = [ceq , time_list(1)-time_list(2)];
-%     elseif length(time_list) == 3
-%         ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
-% end
-
 ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
 
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0

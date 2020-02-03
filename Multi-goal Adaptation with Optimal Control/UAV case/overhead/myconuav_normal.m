@@ -88,6 +88,8 @@ p_z = [p_z, configure.end_point(3)];
 %     c = [c, - time_list(i)];
 % end
 
+% ceq = [ceq ,time_list(1)-time_list(2), time_list(3)-time_list(2)];
+
 if x(initial_N + 1) == 0 && x(2*(initial_N + 1))== 0 && x(3*(initial_N + 1))==0
     time_now = time + initial_N*tau;
     last_info = 0;

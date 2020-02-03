@@ -10,11 +10,11 @@ global eplison
 % eplison_list = [0.005];
 % eplison_list = [0.01];
 % eplison_list = [0,1e-30,1e-25,1e-20,1e-15,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,5e-1];
-eplison_list = [0.1];
+eplison_list = [0.001,0.01,0.05,0.1,0.5];
 for ep = 1:length(eplison_list)
     eplison = eplison_list(ep);
     
-    for num = 1:iternum
+    for num = 101:100 + iternum
 %     num =1;
 %     index = unidrnd(2,369,9,1);
     
