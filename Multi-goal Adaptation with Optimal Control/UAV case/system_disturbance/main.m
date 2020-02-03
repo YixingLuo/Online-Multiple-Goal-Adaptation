@@ -16,14 +16,14 @@ velocity_history3 = [];
 % tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [0,0,1e-6,1e-20,1e-3];
+eplison = [0,0,1e-10,1e-40,5e-3];
 % eplison = [1e-20,1e-20,1e-3,1e-20,1e-1];
 iternum = 50;
 num_o = [38];
 num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i = 1:3*iternum 
+        for i = 1:iternum 
             k = ceil(i/iternum);
             num_condition = i;
             [condition, indextemp] = randomsituation(num_condition,k);
@@ -35,14 +35,14 @@ for np = 1:length(num_p)
                 iter = iternum;
             end          
 
-                [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
-                if data_1(1)> 0
-                    data1(i,:) =  data_1;
-%                     trajectory1 = [trajectory1; trajectory];
-%                     velocity_history1 = [velocity_history1; velocity_history];
-%                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
-%                     planningtime1(:,i) = planning_time;                       
-                end
+%                 [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
+%                 if data_1(1)> 0
+%                     data1(i,:) =  data_1;
+% %                     trajectory1 = [trajectory1; trajectory];
+% %                     velocity_history1 = [velocity_history1; velocity_history];
+% %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
+% %                     planningtime1(:,i) = planning_time;                       
+%                 end
 
                 [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
                 if data_2(1)> 0

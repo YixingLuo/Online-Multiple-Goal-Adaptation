@@ -74,92 +74,64 @@ r_o = configure.obstacle_radius ;
 r_p = configure.privacy_radius ;
 % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
 % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
-% length_o = 0;
-% width_o = 0;
-% length_p = 0;
-% width_p = 0;
-% [length_o, width_o] = size(env.obstacle_list);
-% [length_p, width_p] = size(env.privacy_list);
-% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-% ax1 = axes;
-% for i = 1: length_o
-%     r=r_o;
-%     ox0=env.obstacle_list(i,1);
-%     oy0=env.obstacle_list(i,2);
-%     oz0=env.obstacle_list(i,3);
-%     [ox,oy,oz]=sphere;
-%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+length_o = 0;
+width_o = 0;
+length_p = 0;
+width_p = 0;
+[length_o, width_o] = size(env.obstacle_list);
+[length_p, width_p] = size(env.privacy_list);
+axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+ax1 = axes;
+for i = 1: length_o
+    r=r_o;
+    ox0=env.obstacle_list(i,1);
+    oy0=env.obstacle_list(i,2);
+    oz0=env.obstacle_list(i,3);
+    [ox,oy,oz]=sphere;
+    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
 %     shading flat
-%     hold on
-% end
-% box on
-% axis on
-% % hidden off
-% axis(axis_pos);
-% colormap(ax1,winter);
-% xlabel('X')
-% ylabel('Y')
-% zlabel('Z')
-% set(gca,'fontname','Times')
-% 
-% ax2 = axes;
-% for i = 1: length_p
-%     r=r_p;
-%     px0=env.privacy_list(i,1);
-%     py0=env.privacy_list(i,2);
-%     pz0=env.privacy_list(i,3);
-%     [px,py,pz]=sphere;
-%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
-%     hold on
-% end
-% % box off
-% axis off
-% % hidden off
-% axis(axis_pos );
-% colormap(ax2,autumn);
-% xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
-% set(gca,'fontname','Times');
+    hold on
+end
+box on
+axis on
+% hidden off
+axis(axis_pos);
+colormap(ax1,winter);
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
+set(gca,'fontname','Times')
+view(60,45);
+
+ax2 = axes;
+for i = 1: length_p
+    r=r_p;
+    px0=env.privacy_list(i,1);
+    py0=env.privacy_list(i,2);
+    pz0=env.privacy_list(i,3);
+    [px,py,pz]=sphere;
+    mesh(px0+r*px,py0+r*py,pz0+r*pz)
+    hold on
+end
+% box off
+axis off
+% hidden off
+axis(axis_pos );
+colormap(ax2,autumn);
+view(60,45);
+xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
+set(gca,'fontname','Times');
 
 h_3d = gca;
 % axis on
 grid on
-view(3);
-xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
+view(60,45);
+% xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
 quadcolors = lines(nquad);
 set(gca,'fontname','Times');
 set(gcf,'Renderer','OpenGL')
 
-% maplabel = importdata('maplabel_privacy.txt');
-% map_height = importdata('maplabel_height_update.txt');
-% obstacle_s = [];
-% privacy_s = [];
-% obstacle_l = [];
-% privacy_l = [];
-% [a1,b1] = size(maplabel);
-% 
-% for i = 1:a1
-%     for j = 1:b1
-%         if maplabel(i,j) == 1
-%             height = map_height(i,j)/10;
-%             obstacle_s = [obstacle_s; i-1, j-1, 0];
-%             obstacle_l = [obstacle_l; 1, 1, height];
-%         elseif maplabel(i,j) == 2 || maplabel(i,j) == 3 || maplabel(i,j) == 4
-%             height = map_height(i,j)/10;
-%             privacy_s = [privacy_s; i-1, j-1, 0];
-%             privacy_l = [privacy_l; 1, 1, height];
-%         end
-%     end
-% end
-% [ao,bo] = size(obstacle_s);
-% [ap,bp] = size(privacy_s);
-% for i = 1:ao
-%     boxsurface(obstacle_s(i,:),obstacle_l(i,:),1)
-%     hold on
-% end
-% for i = 1:ap
-%     boxsurface(privacy_s(i,:),privacy_l(i,:),2)
-%     hold on
-% end
+
 %% *********************** INITIAL CONDITIONS ***********************
 fprintf('Setting initial conditions...\n')
 max_iter  = 5000;      % max iteration
@@ -193,7 +165,7 @@ vel_tol   = 1e-3;
 %% ************************* RUN SIMULATION *************************
 OUTPUT_TO_VIDEO = 1;
 if OUTPUT_TO_VIDEO == 1
-    v = VideoWriter('navigation','MPEG-4');
+    v = VideoWriter('navigation-100','MPEG-4');
 %     v.FrameRate = 30;
     open(v)
 end
