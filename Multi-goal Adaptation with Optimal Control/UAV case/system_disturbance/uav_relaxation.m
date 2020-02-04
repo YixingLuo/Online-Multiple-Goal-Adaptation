@@ -266,7 +266,7 @@ while (1)
     exitflag = 0;
     exitflag_relax = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 3
+    while exitflag <=0 && iternum <= 1
 %         iternum = iternum + 1;
 %         infeasible = 1;
 %         while infeasible
@@ -312,7 +312,7 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+                lb(i) = 1e-10;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.sensor_accuracy;
 %                 x0(i) = unifrnd(lb(i),ub(i));
@@ -428,7 +428,7 @@ while (1)
 %                    end
                 end        
                 for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                    lb_relax(i) = 0;
+                    lb_relax(i) = 1e-10;
                     ub_relax(i) = configure.sensor_accuracy;
 %                     x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
                     x0_relax(i) = configure.sensor_accuracy;

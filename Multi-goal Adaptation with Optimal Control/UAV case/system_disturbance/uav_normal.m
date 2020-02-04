@@ -302,7 +302,7 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+                lb(i) = 1e-10;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.sensor_accuracy;
 %                 x0(i) = unifrnd(lb(index),ub(index));

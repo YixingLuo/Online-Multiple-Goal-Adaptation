@@ -149,9 +149,9 @@ while (1)
     width_p = 0;
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
-%     %% 1124
-    env_view = remove_obstacle(env_view);
-    env_view = remove_privacy(env_view);
+    %% 1114
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -266,7 +266,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 3
+    while exitflag <= 0 && iternum <= 3
 %         infeasible = 1;
 %         while infeasible
             lb=[];
@@ -313,7 +313,7 @@ while (1)
             end
         
             for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-                lb(i) = 0;
+                lb(i) = 1e-10;
                 ub(i) = configure.sensor_accuracy;
                 x0(i) = configure.sensor_accuracy;
 %                 x0(i) = unifrnd(lb(i),ub(i));
@@ -467,7 +467,7 @@ while (1)
         end
     end
 
-    if  exitflag<=0
+    if  exitflag <= 0
         fprintf(2,'no solution \n');
         no_solution_flag = 1;
 %         break;

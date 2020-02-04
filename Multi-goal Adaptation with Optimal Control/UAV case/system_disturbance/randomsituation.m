@@ -9,7 +9,7 @@ function [condition, index] = randomsituation(num,k)
 global configure
 configure = Configure();
 l = [2,4,6];
-disturb = randi([4,7],1,l(k));
+disturb = randi([4,6],1,l(k));
 
 a=2:(configure.Time_target/configure.Time_step-1);
 K=randperm(length(a));
@@ -30,7 +30,7 @@ for i = 1: length(disturb)
         condition(i,:) = [3,accuracy/100,0];
     elseif disturb(i) == 4
         engy1 = (45 + unidrnd(10))*0.01;
-        engy2 = (18 + unidrnd(4))*0.01;
+        engy2 = (16 + unidrnd(8))*0.01;
         condition(i,:) = [4, engy1, engy2];
         
     elseif disturb(i) == 5

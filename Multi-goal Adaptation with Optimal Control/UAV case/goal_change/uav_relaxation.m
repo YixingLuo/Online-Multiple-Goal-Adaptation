@@ -385,7 +385,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax <= 1
+       while exitflag_relax <= 0 && iternum_relax <= 3
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
