@@ -17,7 +17,7 @@ velocity_history3 = [];
 
 global eplison
 % eplison = [1e-20,1e-20,1e-3,1e-20,5e-3];
-eplison = [0,0,1e-10,0,5e-3];
+eplison = [0,0,1e-10,1e-10,5e-3];
 % eplison = [1e-20,1e-20,1e-3,1e-20,1e-1];
 iternum = 50;
 num_o = [38];
