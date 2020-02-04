@@ -266,7 +266,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 1
+    while exitflag <=0 && iternum <= 3
 %         infeasible = 1;
 %         while infeasible
             lb=[];

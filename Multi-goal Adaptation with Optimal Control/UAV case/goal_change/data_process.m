@@ -1,5 +1,5 @@
-size = 100;
-start = 201;
+size = 50;
+start = 101;
 iter = 5;
 data1_copy = [];
 data1_copy = data1 (start:start+size,:);

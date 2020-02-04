@@ -266,7 +266,7 @@ while (1)
     exitflag = 0;
     exitflag_relax = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 1
+    while exitflag <=0 && iternum <= 3
 %         iternum = iternum + 1;
 %         infeasible = 1;
 %         while infeasible
@@ -386,7 +386,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax <= 1
+       while exitflag_relax <= 0 && iternum_relax <= 3
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -528,7 +528,7 @@ while (1)
                 end
 
                 break
-            elseif exitflag > 0 && iternum_relax == 1
+            elseif exitflag > 0
 %                 plan_num = plan_num + 1;
 %                 fprintf('no need replanning')
                 fprintf(2,"there is a no relax solution!!%d, %d\n",exitflag,current_step)

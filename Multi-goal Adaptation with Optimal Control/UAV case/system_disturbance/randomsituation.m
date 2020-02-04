@@ -29,15 +29,15 @@ for i = 1: length(disturb)
         accuracy = 85 + unidrnd(10);
         condition(i,:) = [3,accuracy/100,0];
     elseif disturb(i) == 4
-        engy1 = (50 + unidrnd(5))*0.01;
-        engy2 = (10 + unidrnd(4))*0.01;
+        engy1 = (45 + unidrnd(10))*0.01;
+        engy2 = (18 + unidrnd(4))*0.01;
         condition(i,:) = [4, engy1, engy2];
         
     elseif disturb(i) == 5
-        speed = (80 + unidrnd(20))/100;
+        speed = (50 + unidrnd(20))/100;
         condition(i,:) = [5,speed,0];
     elseif disturb(i) == 6
-        acc = (80 + unidrnd(20))/100;
+        acc = (50 + unidrnd(20))/100;
         condition(i,:) = [6,acc,0];
     elseif disturb(i) == 7
         viewradius = (15 + unidrnd(10))/10;
