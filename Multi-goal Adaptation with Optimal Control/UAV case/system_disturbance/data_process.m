@@ -39,7 +39,7 @@ for i = 1:size(data3,1)
     end
 end
 data3_sorted = [];
-for i = 1:6
+for i = 1:13
     data3_sorted(:,i) = sort(data3_copy(:,i));
 end
 data3_mean = [];
