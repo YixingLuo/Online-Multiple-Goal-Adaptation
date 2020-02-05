@@ -150,8 +150,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-    env_known = remove_obstacle(env_known);
-    env_known = remove_privacy(env_known);
+%     env_known = remove_obstacle(env_known);
+%     env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -171,15 +171,7 @@ while (1)
             end
         end
     end
-%     %% 1122
-%     if needplan == 1
-%         plan_num = plan_num + 1;
-%     end
-%     %% 1120
-%     if abs(following_plan(1,1) - 0) < 1e-6 && abs(following_plan(1,2) - 0) < 1e-6 && abs(following_plan(1,3) - 0) < 1e-6  || (mod(current_step,configure.N) == 0)
-%         needplan = 1;
-%     end
-%     if length(env_known.obstacle_list) == 0 && length(env_known.privacy_list) == 0
+
     if needplan == 0
         nowp_x = [];
         nowp_y = [];
@@ -240,11 +232,6 @@ while (1)
         else
             information = info/time;
         end 
-%         if distance == 0
-%             information = 0;
-%         else
-%             information = info/distance;
-%         end        
 
         current_step = current_step + 1;
         
@@ -266,9 +253,7 @@ while (1)
     t1=clock;
     exitflag = 0;
     iternum = 0;
-    while exitflag <= 0 && iternum <= 3
-%         infeasible = 1;
-%         while infeasible
+
             lb=[];
             ub=[];
             x0=[];
@@ -362,19 +347,11 @@ while (1)
 %         options.algorithm = 'sqp';
         options.Algorithm = 'sqp';
         options.Display = 'off';
-%         options.tolx = 1e-10;
-%         options.tolfun = 1e-10;
-%         options.TolCon = 1e-10;
-%         options.MaxIter = 10000;
-%         options.MaxFunEvals = 100000;
-%         options.StepTolerance = 1.0000e-10;
-%         objuav_relax(x0),myconuav_relax(x0)
-%         [x,fval,exitflag]=fmincon(@objuav,x0,[],[],[],[],lb,ub,@myconuav,options);
+
         [x,fval,exitflag]=fmincon(@objuav_relax,x0,[],[],[],[],lb,ub,@myconuav_relax,options);
        
         tau = configure.Time_step;
 
-        iternum = iternum + 1;
         if exitflag > 0
             t2=clock;
             planning_time = [planning_time; etime(t2,t1)];
@@ -443,11 +420,6 @@ while (1)
             else
                 information = info/time;
             end 
-%             if distance == 0
-%                 information = 0;
-%             else
-%                 information = info/distance;
-%             end
             past_distance = distance;
 
             current_step = current_step + 1;
@@ -462,83 +434,82 @@ while (1)
             if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
                 following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
             end
-
-            break
-        end
-    end
-
-    if  exitflag <= 0
-        fprintf(2,'no solution \n');
-        no_solution_flag = 1;
-%         break;
-        nowp_x = [];
-        nowp_y = [];
-        nowp_z = [];
-        ws = [];
-        nowp_x(1) = current_point(1);
-        nowp_y(1) = current_point(2);
-        nowp_z(1) = current_point(3);
-        ws(1) = current_point(4);
-        for i = 1: size(following_plan,1) - 1
-                nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
-                nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
-                nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
-                nowp_x(i+1) = max(nowp_x(i+1), 0);
-                nowp_y(i+1) = max(nowp_y(i+1), 0);
-                nowp_z(i+1) = max(nowp_z(i+1), 0);
-                ws(i+1) = following_plan(i,4);
-        end
-        nowp_x = [nowp_x, configure.end_point(1)];
-        nowp_y = [nowp_y, configure.end_point(2)];
-        nowp_z = [nowp_z, configure.end_point(3)];
-        ws = [ws, following_plan(end,4)];
-        for i = 1 : length(nowp_x)
-            following_point(i,:) = [nowp_x(i),nowp_y(i),nowp_z(i), ws(i)];
-        end
-        next_point = following_point(2,:);
-        if next_point(1) == current_point(1) && next_point(2) == current_point(2) && next_point(3) == current_point(3)
-            needplan = 1;
-            break;
-        end
-        current_point = next_point;
-        fprintf(2,'contiue the previous plan!!\n')
-        fprintf('next point: [%f , %f, %f, %f]\n', current_point)
-        traj = [trajectory; current_point];
-        trajectory = traj;
-        velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
-        [a, b] = size(trajectory); %% to caculate the source used
-        distance = 0;
-        info = 0;
-        engy = 0;
-        for i = 1: a-1
-             distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
-%              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
-             info = info + trajectory(i+1,4)*configure.Time_step;
-             engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
-        end
-        for i = 1: size(velocity_history,1)-1
-             engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
-        end 
-        energy = engy;
-        past_distance = distance;
-        time = configure.Time_step * (a-1);
-        if time == 0
-            information = 0;
         else
-            information = info/time;
-        end    
-        current_step = current_step + 1;
-        following_plan([1],:)=[]; %%update the following plan
-        following_point([1],:)=[];
+            fprintf(2,'no solution \n');
+            no_solution_flag = 1;
+            t2=clock;
+            planning_time = [planning_time; etime(t2,t1)];
+            plan_num = plan_num + 1;
+            fprintf(2,"no solution!!%d, %d\n",exitflag,current_step)
 
-        tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
-        if tt > configure.Time_step           
-            following_plan(end+1,:)=following_plan(end,:);
-            following_point(end,:) = [min(following_point(end-1,1)+following_plan(end,1)*configure.Time_step, end_point(1)), min(following_point(end-1,2)+following_plan(end,2)*configure.Time_step, end_point(2)), min(following_point(end-1,3)+following_plan(end,3)*configure.Time_step,end_point(3)), following_point(end,4)];
+            nowp_x = [];
+            nowp_y = [];
+            nowp_z = [];
+            ws = [];
+            nowp_x(1) = current_point(1);
+            nowp_y(1) = current_point(2);
+            nowp_z(1) = current_point(3);
+            ws(1) = current_point(4);
+            for i = 1: size(following_plan,1) - 1
+                    nowp_x(i+1) = min(following_plan(i,1)*configure.Time_step + nowp_x(i), configure.grid_x-configure.radius);
+                    nowp_y(i+1) = min(following_plan(i,2)*configure.Time_step + nowp_y(i), configure.grid_y-configure.radius);
+                    nowp_z(i+1) = min(following_plan(i,3)*configure.Time_step + nowp_z(i), configure.grid_z-configure.radius);
+                    nowp_x(i+1) = max(nowp_x(i+1), 0);
+                    nowp_y(i+1) = max(nowp_y(i+1), 0);
+                    nowp_z(i+1) = max(nowp_z(i+1), 0);
+                    ws(i+1) = following_plan(i,4);
+            end
+            nowp_x = [nowp_x, configure.end_point(1)];
+            nowp_y = [nowp_y, configure.end_point(2)];
+            nowp_z = [nowp_z, configure.end_point(3)];
+            ws = [ws, following_plan(end,4)];
+            for i = 1 : length(nowp_x)
+                following_point(i,:) = [nowp_x(i),nowp_y(i),nowp_z(i), ws(i)];
+            end
+            next_point = following_point(2,:);
+            if next_point(1) == current_point(1) && next_point(2) == current_point(2) && next_point(3) == current_point(3)
+                needplan = 1;
+                break;
+            end
+            current_point = next_point;
+            fprintf(2,'contiue the previous plan!!\n')
+            fprintf('next point: [%f , %f, %f, %f]\n', current_point)
+            traj = [trajectory; current_point];
+            trajectory = traj;
+            velocity_history = [velocity_history; following_plan(1,1), following_plan(1,2), following_plan(1,3), following_plan(1,4)];
+            [a, b] = size(trajectory); %% to caculate the source used
+            distance = 0;
+            info = 0;
+            engy = 0;
+            for i = 1: a-1
+                 distance = distance + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+    %              info = info + trajectory(i+1,4)*sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+                 info = info + trajectory(i+1,4)*configure.Time_step;
+                 engy = engy + configure.battery_per *configure.Time_step * trajectory(i+1,4) + sqrt((trajectory(i+1,1)-trajectory(i,1)).^2+(trajectory(i+1,2)-trajectory(i,2)).^2+(trajectory(i+1,3)-trajectory(i,3)).^2);
+            end
+            for i = 1: size(velocity_history,1)-1
+                 engy = engy + configure.battery_per2 * sqrt((velocity_history(i+1,1)-velocity_history(i,1)).^2+(velocity_history(i+1,2)-velocity_history(i,2)).^2+(velocity_history(i+1,3)-velocity_history(i,3)).^2);
+            end 
+            energy = engy;
+            past_distance = distance;
+            time = configure.Time_step * (a-1);
+            if time == 0
+                information = 0;
+            else
+                information = info/time;
+            end    
+            current_step = current_step + 1;
+            following_plan([1],:)=[]; %%update the following plan
+            following_point([1],:)=[];
+
+            tt = sqrt((nowp_x(end)-nowp_x(end-1)).^2+(nowp_y(end)-nowp_y(end-1)).^2+(nowp_z(end)-nowp_z(end-1)).^2) / sqrt(following_plan(end,1).^2+following_plan(end,2).^2+following_plan(end,3).^2);
+            if tt > configure.Time_step           
+                following_plan(end+1,:)=following_plan(end,:);
+                following_point(end,:) = [min(following_point(end-1,1)+following_plan(end,1)*configure.Time_step, end_point(1)), min(following_point(end-1,2)+following_plan(end,2)*configure.Time_step, end_point(2)), min(following_point(end-1,3)+following_plan(end,3)*configure.Time_step,end_point(3)), following_point(end,4)];
+            end
+            if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
+                following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
+            end
         end
-        if following_point(end,1) ~= end_point(1) || following_point(end,2) ~= end_point(2) || following_point(end,3) ~= end_point(3)
-            following_point(end+1,:) = [end_point(1),end_point(2),end_point(3),following_point(end, 4)];
-        end
-    end
     end
 end
