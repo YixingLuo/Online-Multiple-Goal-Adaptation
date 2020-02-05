@@ -153,8 +153,8 @@ while (1)
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
     %% 1114
-%     env_known = remove_obstacle(env_known);
-%     env_known = remove_privacy(env_known);
+    env_known = remove_obstacle(env_known);
+    env_known = remove_privacy(env_known);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -256,77 +256,76 @@ while (1)
     iternum = 0;
 
 
-        lb=[];
-        ub=[];
-        x0=[];
-
-        initial_N = size(following_plan,1)-1;
-
-        for i = 1 : (initial_N+1) * 3
-            lb(i) = configure.velocity_min; %% negative velocity
-            ub(i) = configure.velocity_max;
-            x0(i) = ub(i) - iternum * 2/30;
-%                 x0(i) = unifrnd(lb(i),ub(i));
+            lb=[];
+            ub=[];
+            x0=[];
+    
+            initial_N = size(following_plan,1)-1;
+    
+            for i = 1 : (initial_N+1) * 3
+                lb(i) = configure.velocity_min; %% negative velocity
+                ub(i) = configure.velocity_max;
+                x0(i) = configure.velocity_max;
 %                 bound_index = ceil(i/(initial_N+1));
 %                 if current_point(bound_index)> configure.end_point(bound_index)
 %                     x0(i) = unifrnd(lb(i),0);
 %                 else                   
 %                     x0(i) = unifrnd(0,ub(i));
 %                 end
-        end
-
-        for i = 1: 3 %% velocity constraint for the last point
-            index = (initial_N+1) * i;
-            lb(index) = configure.velocity_min;
-            ub(index) = configure.velocity_max;
-            if (following_point(end,i)-following_point(end-1,i)) > 0
-                ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-            else
-                lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
             end
+        
+            for i = 1: 3 %% velocity constraint for the last point
+                index = (initial_N+1) * i;
+                lb(index) = configure.velocity_min;
+                ub(index) = configure.velocity_max;
+                if (following_point(end,i)-following_point(end-1,i)) > 0
+                    ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                else
+                    lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
+                end
 %                 lb(index) = max(configure.velocity_min, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
 %                 ub(index) = configure.velocity_max;
 %                 ub(index) = min(configure.velocity_max, (following_point(end,i)-following_point(end-1,i))/configure.Time_step);
-            ub(index) = max(lb(index),ub(index)); 
+                ub(index) = max(lb(index),ub(index)); 
 %                 x0(index) = ub(index) - iternum * (ub(index)-lb(index))/30;
-            x0(index) = max(lb(index),ub(index));
+                x0(index) = max(lb(index),ub(index));
 %                if current_point(i)> configure.end_point(i)
 %                     x0(index) = unifrnd(lb(index),0);
 %                else                   
 %                     x0(index) = unifrnd(0,ub(index));
 %                end
-        end
-
-        for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
-            lb(i) = 1e-10;
-            ub(i) = configure.sensor_accuracy;
-            x0(i) = configure.sensor_accuracy;
+            end
+        
+            for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
+                lb(i) = 1e-10;
+                ub(i) = configure.sensor_accuracy;
+                x0(i) = configure.sensor_accuracy;
 %                 x0(i) = unifrnd(lb(i),ub(i));
-        end
-
-        length_o = 0;
-        width_o = 0;
-        length_p = 0;
-        width_p = 0;
-        [length_o, width_o] = size(env_known.obstacle_list);
-        [length_p, width_p] = size(env_known.privacy_list);
-        bound_o = length_o * (initial_N+1);
-        bound_p = length_p * (initial_N+1);
-
-        for i = 1:bound_o %% safe
-            lb = [lb,0];
-            ub = [ub,configure.obstacle_max];
-            x0 = [x0,0];
-        end
-
-        for i = 1:bound_p %% privacy
-            lb = [lb,0];
-            ub = [ub,configure.privacy_max];
-            x0 = [x0,0];
-        end
-        lb = [lb, 0, 0, 0];
-        ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
-        x0 = [x0,0, 0, 0];
+            end
+    
+            length_o = 0;
+            width_o = 0;
+            length_p = 0;
+            width_p = 0;
+            [length_o, width_o] = size(env_known.obstacle_list);
+            [length_p, width_p] = size(env_known.privacy_list);
+            bound_o = length_o * (initial_N+1);
+            bound_p = length_p * (initial_N+1);
+    
+            for i = 1:bound_o %% safe
+                lb = [lb,0];
+                ub = [ub,configure.obstacle_max];
+                x0 = [x0,0];
+            end
+    
+            for i = 1:bound_p %% privacy
+                lb = [lb,0];
+                ub = [ub,configure.privacy_max];
+                x0 = [x0,0];
+            end
+            lb = [lb, 0, 0, 0];
+            ub = [ub,configure.forensic_target-configure.forensic_budget, configure.Time_budget-configure.Time_target, configure.battery_budget-configure.battery_target];
+            x0 = [x0,0, 0, 0];
 
 
         %interior-point, active-set, trust-region-reflective, sqp, sqp-legacy
@@ -364,14 +363,7 @@ while (1)
            for i = 1 : (initial_N+1) * 3
                lb_relax(i) = configure.velocity_min; %% negative velocity
                ub_relax(i) = configure.velocity_max;
-%                    x0_relax(i) = unifrnd(lb_relax(i),ub_relax(i));
-               x0_relax(i) = ub_relax(i) - iternum_relax * 2/30;                   
-%                     bound_index = ceil(i/(initial_N+1));
-%                    if current_point(bound_index)> configure.end_point(bound_index)
-%                         x0_relax(i) = unifrnd(lb_relax(i),0);
-%                    else                   
-%                         x0_relax(i) = unifrnd(0,ub_relax(i));
-%                    end
+               x0_relax(i) = configure.velocity_max;
            end        
            for i = 1: 3 %% velocity constraint for the last point                
                 index = (initial_N+1) * i;

@@ -29,8 +29,8 @@ for i = 1: length(disturb)
         accuracy = 85 + unidrnd(10);
         condition(i,:) = [3,accuracy/100,0];
     elseif disturb(i) == 4
-        engy1 = (45 + unidrnd(10))*0.01;
-        engy2 = (16 + unidrnd(8))*0.01;
+        engy1 = (50 + unidrnd(20))*0.01;
+        engy2 = (20 + unidrnd(16))*0.01;
         condition(i,:) = [4, engy1, engy2];
         
     elseif disturb(i) == 5

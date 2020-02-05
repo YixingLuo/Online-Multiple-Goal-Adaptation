@@ -17,7 +17,7 @@ velocity_history3 = [];
 
 global eplison
 % eplison = [0,0,1e-10,0,5e-3];
-eplison = [1e-20,1e-20,1e-15,1e-10,5e-3];
+eplison = [1e-20,1e-20,1e-10,1e-15,1e-3];
 % eplison = [1e-20,1e-20,1e-3,1e-20,1e-1];
 iternum = 50;
 num_o = [38];
@@ -82,7 +82,7 @@ for np = 1:length(num_p)
                     data2(i + 1,:) = mean(data2,1);
                     data3(i + 1,:) = mean(data3,1);
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '_' + string(k) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];

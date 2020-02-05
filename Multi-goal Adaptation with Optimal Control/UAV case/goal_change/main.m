@@ -16,7 +16,7 @@ velocity_history3 = [];
 % tag_list3 = zeros(100,100);
 
 global eplison
-eplison = [1e-20,1e-20,1e-15,1e-10,5e-3];
+eplison = [1e-20,1e-20,1e-10,1e-20,5e-3];
 % eplison = [0,0,1e-6,1e-10,5e-3];
 % eplison = [1e-20,1e-20,1e-3,1e-20,1e-1];
 iternum = 50;
@@ -24,7 +24,7 @@ num_o = [38];
 num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i = 1:3*iternum 
+        for i =  1:3*iternum 
             k = ceil(i/iternum);
             num_condition = i;
             [condition, indextemp] = randomsituation(num_condition,k);
@@ -38,7 +38,8 @@ for np = 1:length(num_p)
 
                 [data_1, trajectory,velocity_history,planning_time] = uav_normal(num_map, num_condition, indextemp);
                 if data_1(1)> 0
-                    data1(i,:) =  data_1;
+%                     data1(i,:) =  data_1;
+                    data1 = [data1; data_1];
 %                     trajectory1 = [trajectory1; trajectory];
 %                     velocity_history1 = [velocity_history1; velocity_history];
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];
@@ -47,7 +48,8 @@ for np = 1:length(num_p)
 
                 [data_2, trajectory,velocity_history,planning_time] = uav_relax(num_map, num_condition, indextemp);
                 if data_2(1)> 0
-                    data2(i,:) =  data_2; 
+%                     data2(i,:) =  data_2;
+                    data2 = [data2; data_2];
 %                     trajectory2 = [trajectory2; trajectory];
 %                     velocity_history2 = [velocity_history2; velocity_history];
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];                  
@@ -57,7 +59,8 @@ for np = 1:length(num_p)
 
                 [data_3, trajectory,velocity_history,planning_time,rate_list,tag_list] = uav_relaxation(num_map, num_condition, indextemp);
                 if data_3(1)> 0
-                    data3(i,:) =  data_3;
+%                     data3(i,:) =  data_3;
+                    data3 = [data3; data_3];
 %                     trajectory3 = [trajectory3; trajectory];
 %                     velocity_history3 = [velocity_history3; velocity_history];
 %                     planning_time =[planning_time; zeros(100-length(planning_time),1)];               
@@ -75,11 +78,11 @@ for np = 1:length(num_p)
 %                 end
     
                 if mod(i,iternum)==0
-                    data1(i + 1,:) = mean(data1,1);
-                    data2(i + 1,:) = mean(data2,1);
-                    data3(i + 1,:) = mean(data3,1);
+                    data1 = [data1; mean(data1,1)];
+                    data2 = [data2; mean(data2,1)];
+                    data3 = [data3; mean(data3,1)];
                     time = datestr(now,30);
-                    name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '.mat';
+                    name = 'data' + string(time) + '_' + string(num_o(no)) + '_'+ string(num_p(np)) + '_' + string(k) + '.mat';
                     save(name);
                     data1 = [];
                     data2 = [];
