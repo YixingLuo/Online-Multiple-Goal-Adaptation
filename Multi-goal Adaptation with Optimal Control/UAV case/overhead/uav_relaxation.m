@@ -131,18 +131,18 @@ while (1)
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
-            if isempty(env_known.obstacle_list) || isempty(find(env_known.obstacle_list==env.obstacle_list(oo,:)))               
+%             if isempty(env_known.obstacle_list) || isempty(find(env_known.obstacle_list==env.obstacle_list(oo,:)))               
                 env_known = add_obstacle(env_known, env.obstacle_list(oo, 1), env.obstacle_list(oo, 2), env.obstacle_list(oo, 3));
-            end
+%             end
         end
     end
     
     for pp = 1:length_p
         if sqrt((env.privacy_list(pp, 1)-current_point(1)).^2+(env.privacy_list(pp, 2)-current_point(2)).^2+(env.privacy_list(pp, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
-            if isempty(env_known.privacy_list) || isempty(find(env_known.privacy_list==env.privacy_list(pp,:)))               
+%             if isempty(env_known.privacy_list) || isempty(find(env_known.privacy_list==env.privacy_list(pp,:)))               
                 env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
-            end
+%             end
         end
     end
 %     %% 1122
@@ -236,7 +236,7 @@ while (1)
     exitflag = 0;
     exitflag_relax = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 5
+    while exitflag <=0 && iternum <= 1
 %         iternum = iternum + 1;
 %         infeasible = 1;
 %         while infeasible
@@ -355,9 +355,9 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=5
+       while exitflag_relax <= 0 && iternum_relax<=1
             infeasible = 1;
-            iternum_relax = iternum_relax+1;
+            
 %             while infeasible
                 
                lb_relax=[];
@@ -418,6 +418,7 @@ while (1)
             tic;
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
             t2_2 = toc;
+            iternum_relax = iternum_relax+1;
             if exitflag_relax > 0 
                 planning_time = [planning_time; t2_2 + t2_1];
                 relax_num = relax_num + 1;

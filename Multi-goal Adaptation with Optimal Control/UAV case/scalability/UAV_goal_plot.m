@@ -1,4 +1,3 @@
-
 global configure
 configure = Configure();
 figure,
@@ -132,3 +131,4 @@ set(gca,'gridLineStyle', '-.');
 % ylabel({'Energy', 'consumption [J/s]'},'Fontname', 'Times New Roman');
 % set(gca,'fontname','Times');
 % set(gca,'gridLineStyle', '-.');
+

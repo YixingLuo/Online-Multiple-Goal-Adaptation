@@ -2,7 +2,7 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load ('velocity_history_100_0127.mat');
+a = load ('velocity_history_50_0210.mat');
 velocity_history = a.velocity_history;
 end_time = (length(velocity_history))*tau;
 runsimulation(tau,start_time,end_time);
@@ -28,11 +28,11 @@ global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_100_0127.mat');
+a = load('planningtime_50_0210.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_100_0127.mat');
+a = load ('velocity_history_50_0210.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_100_0127.mat');
+a = load('trajectory_50_0210.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -68,65 +68,64 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-100.mat');
+gridmap = load('gridmap-50.mat');
 env = gridmap.map;
-r_o = configure.obstacle_radius ;
-r_p = configure.privacy_radius ;
-% r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
-% r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
-length_o = 0;
-width_o = 0;
-length_p = 0;
-width_p = 0;
-[length_o, width_o] = size(env.obstacle_list);
-[length_p, width_p] = size(env.privacy_list);
-axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
-ax1 = axes;
-for i = 1: length_o
-    r=r_o;
-    ox0=env.obstacle_list(i,1);
-    oy0=env.obstacle_list(i,2);
-    oz0=env.obstacle_list(i,3);
-    [ox,oy,oz]=sphere;
-    mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
-%     shading flat
-    hold on
-end
-box on
-axis on
-% hidden off
-axis(axis_pos);
-colormap(ax1,winter);
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-set(gca,'fontname','Times')
-view(60,45);
-
-ax2 = axes;
-for i = 1: length_p
-    r=r_p;
-    px0=env.privacy_list(i,1);
-    py0=env.privacy_list(i,2);
-    pz0=env.privacy_list(i,3);
-    [px,py,pz]=sphere;
-    mesh(px0+r*px,py0+r*py,pz0+r*pz)
-    hold on
-end
-% box off
-axis off
-% hidden off
-axis(axis_pos );
-colormap(ax2,autumn);
-view(60,45);
-xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
-set(gca,'fontname','Times');
+% r_o = configure.obstacle_radius ;
+% r_p = configure.privacy_radius ;
+% % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
+% % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
+% length_o = 0;
+% width_o = 0;
+% length_p = 0;
+% width_p = 0;
+% [length_o, width_o] = size(env.obstacle_list);
+% [length_p, width_p] = size(env.privacy_list);
+% axis_pos= [0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z];
+% ax1 = axes;
+% for i = 1: length_o
+%     r=r_o;
+%     ox0=env.obstacle_list(i,1);
+%     oy0=env.obstacle_list(i,2);
+%     oz0=env.obstacle_list(i,3);
+%     [ox,oy,oz]=sphere;
+%     mesh(ox0+r*ox,oy0+r*oy,oz0+r*oz);
+% %     shading flat
+%     hold on
+% end
+% box on
+% axis on
+% % hidden off
+% axis(axis_pos);
+% colormap(ax1,winter);
+% xlabel('X')
+% ylabel('Y')
+% zlabel('Z')
+% set(gca,'fontname','Times')
+% view(60,45);
+% 
+% ax2 = axes;
+% for i = 1: length_p
+%     r=r_p;
+%     px0=env.privacy_list(i,1);
+%     py0=env.privacy_list(i,2);
+%     pz0=env.privacy_list(i,3);
+%     [px,py,pz]=sphere;
+%     mesh(px0+r*px,py0+r*py,pz0+r*pz)
+%     hold on
+% end
+% % box off
+% axis off
+% % hidden off
+% axis(axis_pos );
+% colormap(ax2,autumn);
+% view(60,45);
+% xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
+% set(gca,'fontname','Times');
 
 h_3d = gca;
 % axis on
 grid on
 view(60,45);
-% xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]')
 quadcolors = lines(nquad);
 set(gca,'fontname','Times');
 set(gcf,'Renderer','OpenGL')
@@ -163,7 +162,7 @@ pos_tol   = 1e-3;
 vel_tol   = 1e-3;
 
 %% ************************* RUN SIMULATION *************************
-OUTPUT_TO_VIDEO = 1;
+OUTPUT_TO_VIDEO = 0;
 if OUTPUT_TO_VIDEO == 1
     v = VideoWriter('navigation-100','MPEG-4');
 %     v.FrameRate = 30;
@@ -274,14 +273,14 @@ for qn = 1:nquad
     h_pos{qn} = figure('Name', ['Quad ' num2str(qn) ' : position']);
     positions = QP{qn}.state_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = min(ceil(i/10),121);
+        index = min(ceil(i/10),120);
         positions(4,i) = velocity_history(index,4)*100;
     end
     positions(4,end) = positions(4,end-1);
     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = min(ceil(i/10),121);
+        index = min(ceil(i/10),120);
         des_positions(4,i) = velocity_history(index,4)*100;
     end
     des_positions(4,end) = des_positions(4,end-1);
@@ -291,7 +290,7 @@ for qn = 1:nquad
     h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
     velocity = QP{qn}.state_hist(4:6,:);
     for i = 1:size(velocity,2)-1
-        index = min(ceil(i/10),121);
+        index = min(ceil(i/10),120);
         velocity(4,i) = velocity_history(index,4)*100;
     end
     velocity(4,end) = velocity(4,end-1);
@@ -299,7 +298,7 @@ for qn = 1:nquad
     
     des_velocity = QP{qn}.state_des_hist(4:6,:);
     for i = 1:size(velocity,2)-1
-        index = min(ceil(i/10),121);
+        index = min(ceil(i/10),120);
         des_velocity(4,i) = velocity_history(index,4)*100;
     end
     des_velocity(4,end) = des_velocity(4,end-1);

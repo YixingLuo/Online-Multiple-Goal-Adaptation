@@ -1,4 +1,4 @@
-function [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env)
+function [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env)
 global configure
 length_o = 0;
 width_o = 0;
@@ -18,10 +18,10 @@ for i =1:a
     p_z = [p_z, trajectory(i,3)];            
 end
 
-bound_o = length_o * (a);
-bound_p = length_p * (a);
-dis_o = zeros(a-1,length_o);
-dis_p = zeros(a-1,length_p);
+bound_o = length_o * a;
+bound_p = length_p * a;
+dis_o = zeros(a,length_o);
+dis_p = zeros(a,length_p);
 
 if length_o> 0
     for i = 1:a
@@ -97,6 +97,8 @@ if unsafe
 elseif unprivacy
     DS_PR = -1;
 end
+num_o,num_p
+
 
 % if bound_o>0
 %     DS_SR = 1 - SR/bound_o;

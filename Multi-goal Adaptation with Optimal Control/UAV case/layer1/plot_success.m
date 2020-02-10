@@ -7,7 +7,7 @@ hold on
 plot(k,layer2_success,'--d','linewidth',1.2,'Color',[0 0.4470 0.7410],'MarkerFaceColor',[0 0.4470 0.7410],'MarkerEdgeColor',[0 0.4470 0.7410])
 
 hlegend = legend('Constrained Planning','Our Approach');
-h = xlabel({'Number of target goals'},'Fontname', 'Times New Roman');
+h = xlabel({'Number of soft goals'},'Fontname', 'Times New Roman');
 % xlabel({'|TG|'},'Fontname', 'Times New Roman','Interpreter', 'latex');
 ylabel('Success Probability','Fontname', 'Times New Roman');
 set(hlegend,'box','off')

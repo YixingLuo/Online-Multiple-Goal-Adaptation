@@ -102,12 +102,12 @@ while (1)
         [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
-        name1 = 'planningtime_100_0127.mat';
+        name1 = 'planningtime_100_0210.mat';
         save(name1, 'planning_time');
-        name2 = 'trajectory_100_0127.mat';
+        name2 = 'trajectory_100_0210.mat';
         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
-        name3 = 'velocity_history_100_0127.mat';
+        name3 = 'velocity_history_100_0210.mat';
         save(name3, 'velocity_history');
         break
     end
@@ -387,10 +387,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax <= 5
-            infeasible = 1;
-            iternum_relax = iternum_relax+1;
-                
+       while exitflag_relax <= 0 && iternum_relax <= 5                
                lb_relax=[];
                ub_relax=[];
                x0_relax=[];
@@ -450,9 +447,7 @@ while (1)
             [x_relax,fval_relax,exitflag_relax] = fmincon(@objuav_relaxation,x0_relax,[],[],[],[],lb_relax,ub_relax,@myconuav_relaxation,options);  
             t2_2 = toc;
             cons = myconuav_relaxation(x_relax);
-%             if find(cons > 0)
-%                 continue;
-%             end
+            iternum_relax = iternum_relax+1;
             if exitflag_relax > 0 
                 break
             end
