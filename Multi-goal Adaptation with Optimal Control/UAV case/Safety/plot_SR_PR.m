@@ -27,7 +27,7 @@ yy=interp1(k,SR(:,3),xx,'PCHIP');
 plot(k,SR(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
 axis([0, 6, 0, 1.5])
-hlegend = legend('MOpt','GSlack','Captain','location','northwest');
+hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Safety Risk'},'Fontname', 'Times New Roman');
 set(hlegend,'box','off')
@@ -51,7 +51,7 @@ hold on
 plot(k,PR(:,3),'--d','linewidth',1.2,'Color',[1, 0.49804, 0.31373],'MarkerFaceColor',[1, 0.49804, 0.31373],'MarkerEdgeColor',[1, 0.49804, 0.31373])
 hold on
 
-hlegend = legend('MOpt','GSlack','Captain','location','northwest');
+hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Privacy Risk'},'Fontname', 'Times New Roman');
 set(hlegend,'box','off')
@@ -84,7 +84,7 @@ yy=interp1(k2,SR2(:,3),xx,'PCHIP');
 plot(k2,SR2(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
 axis([0, 6, 0, 1])
-hlegend = legend('MOpt','GSlack','Captain','location','northwest');
+hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Safety Risk'},'Fontname', 'Times New Roman');
 set(hlegend,'box','off')
@@ -107,7 +107,7 @@ hold on
 plot(k2,PR2(:,3),'--d','linewidth',1.2,'Color',[1, 0.49804, 0.31373],'MarkerFaceColor',[1, 0.49804, 0.31373],'MarkerEdgeColor',[1, 0.49804, 0.31373])
 hold on
 
-hlegend = legend('MOpt','GSlack','Captain','location','northwest');
+hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Privacy Risk'},'Fontname', 'Times New Roman');
