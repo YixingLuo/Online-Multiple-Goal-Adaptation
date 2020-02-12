@@ -18,6 +18,7 @@ velocity_history3 = [];
 global eplison
 % eplison = [0,0,1e-10,0,5e-3];
 eplison = [1e-20,1e-20,1e-3,1e-20,5e-3];
+for ddd = 1:3
 iternum = 100;
 num_o = [38];
 num_p = [14];
@@ -101,6 +102,7 @@ for np = 1:length(num_p)
                 end
         end
     end
+end
 end
 
 

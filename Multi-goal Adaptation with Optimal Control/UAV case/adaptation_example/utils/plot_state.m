@@ -20,7 +20,7 @@ switch name
     case 'pos'
         labels = {'x [m]', 'y [m]', 'z [m]', '\omega [%]'};
     case 'vel'
-        labels = {'v_x [m/s]', 'v_y [m/s]', 'v_z [m/s]', '\omega [%]'};
+        labels = {'$v_x$ [m/s]', '$v_y$ [m/s]', '$v_z$ [m/s]', '\omega [%]'};
     case 'euler'
         labels = {'roll [rad]', 'pitch [rad]', 'yaw [rad]'};
 end
@@ -38,10 +38,11 @@ switch name
             xlim([time(1), time(end)])
             grid on
             if i == 4
-                xlabel('time [s]')
+                xlabel('Time instant $k$ [s]','Interpreter','latex')
             end
             ylabel(labels{i})
             set(gca,'fontname','Times');
+            set(gca,'xtick',0:1:12);
     %         axis([0, 25, 0, 10]);
         end
     case 'vel'
@@ -53,10 +54,15 @@ switch name
             xlim([time(1), time(end)])
             grid on
             if i == 4
-                xlabel('time [s]')
+                xlabel('Time instant $k$ [s]','Interpreter','latex')
             end
-            ylabel(labels{i})
+            if i < 4
+                ylabel(labels{i},'Interpreter','latex')
+            else
+                ylabel(labels{i})
+            end
             set(gca,'fontname','Times');
+            set(gca,'xtick',0:1:12);
     %         axis([0, 25, 0, 10]);
         end
 end

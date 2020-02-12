@@ -133,14 +133,13 @@ while (1)
         [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num, DS_acc];
-        name1 = 'planningtime_relaxation.mat';
-        save(name1, 'planning_time');
-        trajectory = trajectory(2:end,:);        
-        name2 = 'trajectory_relaxation.mat';
-        save(name2, 'trajectory');
-%         velocity_history = velocity_history(1:end-1,:);  
-        name3 = 'velocity_history_relaxation.mat';
-        save(name3, 'velocity_history');
+%         name1 = 'planningtime_relaxation.mat';
+%         save(name1, 'planning_time');
+%         trajectory = trajectory(2:end,:);        
+%         name2 = 'trajectory_relaxation.mat';
+%         save(name2, 'trajectory');
+%         name3 = 'velocity_history_relaxation.mat';
+%         save(name3, 'velocity_history');
         break
     end
     

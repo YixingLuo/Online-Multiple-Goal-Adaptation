@@ -219,6 +219,7 @@ for iter = 1:max_iter
             zlabel('Z')
             set(gca,'fontname','Times')
             axis([0, configure.grid_x, 0, configure.grid_y, 0, configure.grid_z]);
+            
         end
 
         % Run simulation
@@ -324,7 +325,7 @@ for qn = 1:nquad
     end
     velocity(4,end) = velocity(4,end-1);
     plot_state(h_vel{qn}, velocity, QP{qn}.time_hist, 'vel', 'vic');
-    
+    set(gca,'xtick',0:1:12);
     des_velocity = QP{qn}.state_des_hist(4:6,:);
     for i = 1:size(velocity,2)-1
         index = ceil(i/10);
@@ -332,7 +333,7 @@ for qn = 1:nquad
     end
     des_velocity(4,end) = des_velocity(4,end-1);
     plot_state(h_vel{qn}, des_velocity, QP{qn}.time_hist, 'vel', 'des');
-    
+    set(gca,'xtick',0:1:12);
 end
 if(~isempty(err))
     error(err);
