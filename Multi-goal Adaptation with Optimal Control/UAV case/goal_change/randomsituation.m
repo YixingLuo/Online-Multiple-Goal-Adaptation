@@ -20,10 +20,10 @@ index = sort(index1);
 condition = [];
 for i = 1: length(disturb)
     if disturb(i) == 1
-        energy = 16 + unidrnd(8); 
+        energy = 12 + unidrnd(8); 
         condition(i,:) = [1,energy,0];
     elseif disturb(i) == 2
-        time = 12 + unidrnd(6);
+        time = 9 + unidrnd(6);
         condition(i,:) = [2,time,0];
     elseif disturb(i) == 3
         accuracy = 85 + unidrnd(10);

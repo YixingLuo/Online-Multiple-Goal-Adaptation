@@ -19,12 +19,13 @@ global eplison
 eplison = [1e-20,1e-20,1e-10,1e-20,5e-3];
 % eplison = [0,0,1e-6,1e-10,5e-3];
 % eplison = [1e-20,1e-20,1e-3,1e-20,1e-1];
+for ddd = 1:5
 iternum = 100;
 num_o = [38];
 num_p = [14];
 for np = 1:length(num_p)
     for no = 1:length(num_o)
-        for i =  1:2*iternum 
+        for i =  1:3*iternum 
             k = ceil(i/iternum);
             num_condition = i;
             [condition, indextemp] = randomsituation(num_condition,k);
@@ -102,6 +103,7 @@ for np = 1:length(num_p)
                 end
         end
     end
+end
 end
 
 
