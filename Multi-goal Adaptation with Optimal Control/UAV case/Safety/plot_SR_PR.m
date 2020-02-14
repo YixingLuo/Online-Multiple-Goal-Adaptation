@@ -26,7 +26,7 @@ yy=interp1(k,SR(:,3),xx,'PCHIP');
 % hold on
 plot(k,SR(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
-axis([0, 6, 0, 2])
+axis([0, 6, 0, 4])
 hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Safety Risk'},'Fontname', 'Times New Roman');
@@ -83,7 +83,7 @@ xx=linspace(k2(end),k2(1));
 yy=interp1(k2,SR2(:,3),xx,'PCHIP');
 plot(k2,SR2(:,3),'--d','linewidth',1.2,'Color',[0.6, 0.19608, 0.8],'MarkerFaceColor',[0.6, 0.19608, 0.8],'MarkerEdgeColor',[0.6, 0.19608, 0.8])
 hold on
-axis([0, 6, 0, 1])
+axis([0, 6, 0, 4])
 hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Safety Risk'},'Fontname', 'Times New Roman');
@@ -113,7 +113,7 @@ h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated','Privacy Risk'},'Fontname', 'Times New Roman');
 set(hlegend,'box','off')
 grid on
-axis([0, 6, 0, 1.5])
+axis([0, 6, 0, 4])
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 xlim = get(gca,'XLim');

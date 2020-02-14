@@ -1,7 +1,7 @@
 
 iter = 10;
 data1_copy = [];
-for i = 1:size(data1,1)
+for i = 1:50
     if  data1(i,1)~=0
         data1_copy = [data1_copy;data1(i,:)];
     end
@@ -17,7 +17,7 @@ end
 data1_mean = [data1_mean;mean(data1_copy(:,1:12))];
 
 data2_copy = [];
-for i = 1:size(data2,1)
+for i = 1:50
     if  data2(i,1)~=0
         data2_copy = [data2_copy;data2(i,:)];
     end
@@ -33,7 +33,7 @@ end
 data2_mean = [data2_mean;mean(data2_copy(:,1:12))];
 
 data3_copy = [];
-for i = 1:size(data3,1)
+for i = 1:50
     if data3(i,1)~=0
         data3_copy = [data3_copy;data3(i,:)];
     end
