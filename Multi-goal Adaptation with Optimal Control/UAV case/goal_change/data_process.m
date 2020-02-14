@@ -2,7 +2,7 @@ num_size= 100;
 iter = 10;
 data1_copy = [];
 for i = 1:num_size
-%     if data1(i,8)~=-1 && data1(i,10) ~=-1 && data1(i,1)~=0
+%     if data1(i,1)~=0
         data1_copy = [data1_copy;data1(i,:)];
 %     end
 end
@@ -14,11 +14,11 @@ data1_mean = [];
 for i = 1:floor(num_size/iter)
     data1_mean(i,:) = mean(data1_sorted(1+num_size/2-i*iter/2:num_size/2+i*iter/2,:));
 end
-% data1_mean = [data1_mean;mean(data1_copy(:,1:6))];
+data1_mean = [data1_mean;mean(data1_copy(:,1:6))];
 
 data2_copy = [];
 for i = 1:num_size
-%     if data2(i,8)~=-1 && data2(i,10) ~=-1 && data2(i,1)~=0
+%     if data2(i,1)~=0
         data2_copy = [data2_copy;data2(i,:)];
 %     end
 end
@@ -30,11 +30,11 @@ data2_mean = [];
 for i = 1:floor(num_size/iter)
     data2_mean(i,:) = mean(data2_sorted(1+num_size/2-i*iter/2:num_size/2+i*iter/2,:));
 end
-% data2_mean = [data2_mean;mean(data2_copy(:,1:6))];
+data2_mean = [data2_mean;mean(data2_copy(:,1:6))];
 
 data3_copy = [];
 for i = 1:num_size
-%     if data3(i,8)~=-1 && data3(i,10) ~=-1 && data3(i,1)~=0
+%     if  data3(i,1)~=0
         data3_copy = [data3_copy;data3(i,:)];
 %     end
 end
@@ -46,7 +46,7 @@ data3_mean = [];
 for i = 1:floor(num_size/iter)
     data3_mean(i,:) = mean(data3_sorted(1+num_size/2-i*iter/2:num_size/2+i*iter/2,:));
 end
-% data3_mean = [data3_mean;mean(data3_copy(:,1:13))];
+data3_mean = [data3_mean;mean(data3_copy(:,1:13))];
 
 % data1_mean = mean(data1_copy);
 % data2_mean = mean(data2_copy);
