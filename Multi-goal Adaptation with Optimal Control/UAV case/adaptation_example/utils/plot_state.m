@@ -38,7 +38,7 @@ switch name
             xlim([time(1), time(end)])
             grid on
             if i == 4
-                xlabel('Time instant $k$ [s]','Interpreter','latex')
+                xlabel('Time instant $k$ [s]','Interpreter','latex','FontSize',18)
             end
             ylabel(labels{i})
             set(gca,'fontname','Times');
@@ -53,15 +53,15 @@ switch name
             hold off
             xlim([time(1), time(end)])
             grid on
+            set(gca,'fontname','Times','FontSize',14);
             if i == 4
-                xlabel('Time instant $k$ [s]','Interpreter','latex')
+                xlabel('Time instant $k$ [s]','Interpreter','latex','FontSize',18)
             end
             if i < 4
-                ylabel(labels{i},'Interpreter','latex')
+                ylabel(labels{i},'Interpreter','latex','FontSize',16)
             else
                 ylabel(labels{i})
-            end
-            set(gca,'fontname','Times');
+            end           
             set(gca,'xtick',0:1:12);
     %         axis([0, 25, 0, 10]);
         end

@@ -24,8 +24,8 @@ hold on
 plot(k, safety_distance,'--r','linewidth',1.2)
 axis([0, endtime, 0, 6]);
 % xlabel('Time [s]','Fontname', 'Times New Roman');
-ylabel({'Distance with','nearest $o$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
-set(gca,'fontname','Times');
+set(gca,'fontname','Times','FontSize',14);
+ylabel({'Distance with','nearest $o$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex','FontSize',16);
 set(gca,'gridLineStyle', '-.');
 set(gca,'xtick',0:1:12);
 
@@ -35,8 +35,8 @@ hold on
 plot(k, privacy_distance,'--r','linewidth',1.2)
 axis([0, endtime, 0, 6]);
 % xlabel('Time [s]','Fontname', 'Times New Roman');
-ylabel({'Distance with','nearest $c$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
-set(gca,'fontname','Times');
+set(gca,'fontname','Times','FontSize',14);
+ylabel({'Distance with','nearest $c$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex','FontSize',16);
 set(gca,'gridLineStyle', '-.');
 set(gca,'xtick',0:1:12);
 
@@ -45,9 +45,9 @@ plot(k, energy_list,'-.','linewidth',1.2,'Color',[0.4660 0.6740 0.1880])
 hold on
 plot(k, energy_target,'--r','linewidth',1.2)
 axis([0, endtime, 0, 40]);
-xlabel('Time instant $k$ [s]','Fontname', 'Times New Roman','Interpreter','latex');
-ylabel({'Energy', 'consumption [unit]'},'Fontname', 'Times New Roman');
-set(gca,'fontname','Times');
+set(gca,'fontname','Times','FontSize',14);
+xlabel('Time instant $k$ [s]','Fontname', 'Times New Roman','Interpreter','latex','FontSize',18);
+ylabel({'Energy', 'consumption [unit]'},'Fontname', 'Times New Roman','Interpreter','latex','FontSize',16);
 set(gca,'gridLineStyle', '-.');
 set(gca,'xtick',0:1:12);
 
