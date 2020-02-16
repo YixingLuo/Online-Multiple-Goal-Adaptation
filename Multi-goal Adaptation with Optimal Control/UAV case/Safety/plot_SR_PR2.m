@@ -1,5 +1,5 @@
-% k = [0.99, 1.99, 2.98, 3.98, 4.97];
-k=[1,2,3,4,5];
+k = [0.99, 1.99, 2.98, 3.98, 4.97];
+% k=[1,2,3,4,5];
 
 figure(1)
 % figure, 
@@ -53,7 +53,7 @@ hold on
 
 % hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
-ylabel({'Accumulated Privacy Risk'},'Fontname', 'Times New Roman','FontSize',22,'Rotation',270);
+ylabel({'Accumulated Privacy Risk'},'Fontname', 'Times New Roman','FontSize',22);
 % set(hlegend,'box','off')
 grid on
 axis([0, 6, 0, 4])
@@ -69,8 +69,8 @@ set(hlegend,'box','off')
 % title('$(b) \quad \rho_c = 2.01\%$','Interpreter', 'latex');
 
 %% WITH SET OBSTACLE
-% k2 = [1, 2.01,3.02,4.02,5.03];
-k2 = [1,2,3,4,5];
+k2 = [1, 2.01,3.02,4.02,5.03];
+% k2 = [1,2,3,4,5];
 figure(2)
 
 yyaxis left
