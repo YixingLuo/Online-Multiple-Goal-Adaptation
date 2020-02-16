@@ -130,3 +130,8 @@ set(hlegend,'box','off')
 % set(h,'Position',[xlim(2)+(xlim(2)+xlim(1))*0.13,ylim(1)])
 % title('$(d) \quad \rho_o = 1.99\%$','Interpreter', 'latex');
 
+std(SR,0,1)
+std(PR,0,1)
+std(SR2,0,1)
+std(PR2,0,1)
+
