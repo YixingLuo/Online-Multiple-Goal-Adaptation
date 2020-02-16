@@ -8,8 +8,8 @@ for i = 1:size(planningtime1,1)
     end
 end
 
-a1 = mean(time1);
-c1 = std(time1);
+a1 = mean(time1)
+c1 = std(time1)
 
 now_time1 = [];
 num1 = find(time1>(a1+1*c1)|time1<(a1-1*c1));
@@ -20,8 +20,8 @@ for i = 1:length(time1)
         now_time1= [now_time1;time1(i)];
     end
 end
-a1 = mean(now_time1);
-c1 = std(now_time1);
+a1 = mean(now_time1)
+c1 = std(now_time1)
 
 %% overhead 2
 time2=[];
@@ -33,8 +33,8 @@ for i = 1:size(planningtime2,1)
     end
 end
 
-a2 = mean(time2);
-c2 = std(time2);
+a2 = mean(time2)
+c2 = std(time2)
 
 now_time2 = [];
 num2 = find(time2>(a2+1*c2)|time2<(a2-1*c2));
@@ -45,8 +45,8 @@ for i = 1:length(time2)
         now_time2= [now_time2;time2(i)];
     end
 end
-a2 = mean(now_time2);
-c2 = std(now_time2);
+a2 = mean(now_time2)
+c2 = std(now_time2)
 
 %% overhead 3
 time3=[];
@@ -58,8 +58,8 @@ for i = 1:size(planningtime3,1)
     end
 end
 
-a3 = mean(time3);
-c3 = std(time3);
+a3 = mean(time3)
+c3 = std(time3)
 
 now_time3 = [];
 num3 = find(time3>(a3+1*c3)|time3<(a3-1*c3));
@@ -70,8 +70,8 @@ for i = 1:length(time3)
         now_time3= [now_time3;time3(i)];
     end
 end
-a3 = mean(now_time3);
-c3 = std(now_time3);
+a3 = mean(now_time3)
+c3 = std(now_time3)
 % [counts,centers] = hist(now_time3,5);
 % figure,
 % bar(centers, counts / sum(counts),'FaceColor',[0 .5 .5],'LineWidth',1)
