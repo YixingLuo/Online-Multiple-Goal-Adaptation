@@ -1,4 +1,5 @@
 D_c = 4.5;
+
 % pr1 = 0;
 % for i= 1:size(trajectory,1)
 %     for j = 1:size(privacy,1)
@@ -25,7 +26,6 @@ D_c = 4.5;
 
 
 
-
 length_p = 2;
 T = 48;
 
@@ -40,7 +40,7 @@ for i = 2:size(trajectory,1)
         end
     end
     for j = 1: length_p
-        disk_risk = max(0,((D_c) - dis_p(1, j))/D_c);       
+        disk_risk = max(0,((D_c +0.5 +0.2) - dis_p(1, j))/D_c);       
         omega = current_point(4);
         if omega == 2
             omega = 1/3;
@@ -71,7 +71,7 @@ for i = 2:size(trajectory2,1)
         end
     end
     for j = 1: length_p
-        disk_risk = max(0,((D_c) - dis_p(1, j))/D_c);       
+        disk_risk = max(0,(( D_c  +0.5 +0.2) - dis_p(1, j))/D_c);       
         omega = current_point(4);
         if omega == 2
             omega = 1/3;
@@ -102,7 +102,7 @@ for i = 2:size(trajectory3,1)
         end
     end
     for j = 1: length_p
-        disk_risk = max(0,((0.5 + 0.5 + D_c) - dis_p(1, j))/D_c);       
+        disk_risk = max(0,((D_c +0.5 +0.2) - dis_p(1, j))/D_c);       
         omega = current_point(4);
         if omega == 2
             omega = 1/3;
