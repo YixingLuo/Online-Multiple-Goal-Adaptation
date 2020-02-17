@@ -94,6 +94,7 @@ while (1)
     energy_list = [energy_list;energy];
     time_list = [time_list;time];
     
+    
     if current_point(1) == end_point(1) && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
@@ -172,16 +173,10 @@ while (1)
             env_known = add_privacy(env_known, env.privacy_list(pp, 1), env.privacy_list(pp, 2), env.privacy_list(pp, 3));
         end
     end
-%     %% 1122
-%     if needplan == 1
-%         plan_num = plan_num + 1;
-%     end
-    %% 1120
-%     if abs(following_plan(1,1) - 0) < 1e-6 && abs(following_plan(1,2) - 0) < 1e-6 && abs(following_plan(1,3) - 0) < 1e-6 
-%         %|| (mod(current_step,configure.N) == 0)
-%         needplan = 1;
-%     end
-%     if length(env_known.obstacle_list) == 0 && length(env_known.privacy_list) == 0
+    
+    [DS_S, DS_P] =  caculate_DS(current_point, env);
+    
+
     if needplan == 0
 %         t2=clock;
 %         planning_time = [planning_time; etime(t2,t1)];
