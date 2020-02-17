@@ -3,6 +3,8 @@ clear
 num= 100;
 SR_list = [];
 PR_list = [];
+S_list = [];
+P_list = [];
 energy_list = [];
 acc_list = [];
 time_list = [];
@@ -103,13 +105,13 @@ while (1)
         [SR, DS_SR, PR, DS_PR] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num];
-        name1 = 'planningtime_100_0210.mat';
-        save(name1, 'planning_time');
-        name2 = 'trajectory_100_0210.mat';
-        trajectory = trajectory(2:end,:);
-        save(name2, 'trajectory');
-        name3 = 'velocity_history_100_0210.mat';
-        save(name3, 'velocity_history');
+%         name1 = 'planningtime_100_0210.mat';
+%         save(name1, 'planning_time');
+%         name2 = 'trajectory_100_0210.mat';
+%         trajectory = trajectory(2:end,:);
+%         save(name2, 'trajectory');
+%         name3 = 'velocity_history_100_0210.mat';
+%         save(name3, 'velocity_history');
         break
     end
     
@@ -175,7 +177,8 @@ while (1)
     end
     
     [DS_S, DS_P] =  caculate_DS(current_point, env);
-    
+    S_list = [S_list; DS_S];
+    P_list = [P_list; DS_P];
 
     if needplan == 0
 %         t2=clock;
