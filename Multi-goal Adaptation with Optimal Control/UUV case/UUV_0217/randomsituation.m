@@ -73,7 +73,7 @@ for i = 1: length(disturb)
         idx = unidrnd(5); 
 %         acc = 20 + unidrnd(30);
 %         condition(i,:) = [4,idx,acc/100];    
-        acc_ratio = 80 +unidrnd(20);
+        acc_ratio = unidrnd(100);
         acc = uuv.s_accuracy(idx)*acc_ratio/100;
         condition(i,:) = [4,idx,acc];
 
@@ -84,14 +84,14 @@ for i = 1: length(disturb)
         idx = unidrnd(5);
 %         energy = 200 + unidrnd(50);
 %         condition(i,:) = [5,idx,energy];
-        energy_ratio = 100 + unidrnd(20);
+        energy_ratio = 100 + unidrnd(100);
         energy = uuv.s_energy(idx)*energy_ratio/100;
         condition(i,:) = [5,idx,energy];
    elseif disturb(i) == 6
         idx = unidrnd(5);
 %         speed = 10 + unidrnd(15);
 %         condition(i,:) = [6,idx,speed/10];
-        speed_ratio = 80 + unidrnd(20);
+        speed_ratio = unidrnd(100);
         speed = uuv.s_speed(idx)*speed_ratio/100;
         condition(i,:) = [6,idx,speed];
     end    

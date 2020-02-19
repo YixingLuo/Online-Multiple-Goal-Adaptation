@@ -19,7 +19,7 @@ eplison_list = [1e-3];
 % for kk = 1:length(eplison_list)
     eplison = [1e-3,0,0];
     
-    for num = 1:6*iternum
+    for num = 4*iternum + 1:5*iternum
 
         k = ceil((num)/iternum);
 %         flag = 0; %% have no solution at initial point
