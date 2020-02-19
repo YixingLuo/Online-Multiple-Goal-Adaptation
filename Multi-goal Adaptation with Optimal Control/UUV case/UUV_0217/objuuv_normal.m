@@ -57,6 +57,6 @@ energy = pastenergy + time_left * engy;
 
 % f = -(min(1,(accuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget)) + min(1,(distance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget)) + min(1,(uuv.energy_budget - energy) /(uuv.energy_budget - uuv.energy_target)));
 % f = -min(1,((accuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget))) - min(1,((distance - uuv.distance_budget) / (uuv.distance_target-uuv.distance_budget))) - min(1,((uuv.energy_budget - energy) / (uuv.energy_budget - uuv.energy_target)));
-f = ((accuracy - uuv.acc_target)).^2 + ((distance - uuv.distance_target) / (uuv.distance_max)).^2 + ((uuv.energy_target - energy) / (uuv.energy_budget)).^2;
+f = ((accuracy - uuv.acc_target)/(uuv.acc_target-uuv.acc_budget)).^2 + ((distance - uuv.distance_target) / (uuv.distance_target-uuv.distance_budget)).^2 + ((uuv.energy_target - energy) / (uuv.energy_budget - uuv.energy_target)).^2;
 % f = - accuracy/(uuv.acc_target-uuv.acc_budget) - distance / (uuv.distance_target-uuv.distance_budget) + energy/ (uuv.energy_budget - uuv.energy_target);
 % f = max(0,(uuv.acc_target-accuracy)/(uuv.acc_target-uuv.acc_budget)) +  max(0,(uuv.distance_target-distance)/ (uuv.distance_target-uuv.distance_budget)) + max(0,(energy -  uuv.energy_target)/ (uuv.energy_budget - uuv.energy_target)); 

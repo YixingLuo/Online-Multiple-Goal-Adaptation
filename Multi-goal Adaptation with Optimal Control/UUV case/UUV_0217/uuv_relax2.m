@@ -84,7 +84,7 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum =0: 50 
+        for iternum =0: 0 
             lb=[];
             ub=[];
             x0=[];
@@ -123,12 +123,11 @@ while(1)
                 fprintf(2,'uuv_relax: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
-                planning_time = [planning_time; t2];
+                
                 break
-            end        
-            
+            end              
         end
-    
+        planning_time = [planning_time; t2];
 
         %% distance
         speed_now = 0;

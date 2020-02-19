@@ -43,7 +43,7 @@ while(1)
     fprintf('uuv_relaxation: current step %d\n', current_step);
    
 %     current_step
-    if current_step >= 360 
+    if current_step > 360 
         fprintf('last step');
         DS_A = min(1,(pastaccuracy - uuv.acc_budget)/(uuv.acc_target-uuv.acc_budget));
         DS_D = min(1,(pastdistance - uuv.distance_budget)/(uuv.distance_target-uuv.distance_budget));
@@ -83,7 +83,7 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum= 0:50
+        for iternum= 0:0
 %             while exitflag <= 0
             lb=[];
             ub=[];
@@ -158,7 +158,7 @@ while(1)
             exitflag_relax = 0;
             iternum_relax = 0;
             fval_pre_relax = 1e6;
-            for  iternum_relax=0:50
+            for  iternum_relax=0:0
                 lb_relax=[];
                 ub_relax=[];
                 x0_relax=[];

@@ -85,7 +85,7 @@ while(1)
         exitflag = 0;
         iternum = 0;
         fval_pre = 1e6;
-        for iternum =0: 50 
+        for iternum =0: 0
             lb=[];
             ub=[];
             x0=[];
@@ -116,11 +116,11 @@ while(1)
                 fprintf(2,'uuv_normal: have solution at current step: %d , %d\n',exitflag, current_step);
                 fval_pre = fval;
                 x_pre = x;
-                planning_time = [planning_time; t2];
+                
                 break
             end     
         end
-    
+        planning_time = [planning_time; t2];
 %         if iternum > 50 && exitflag < 0 
 %             fprintf(2,'uuv_normal: no solution at current step: %d , %d\n',exitflag, current_step);
 %             break;

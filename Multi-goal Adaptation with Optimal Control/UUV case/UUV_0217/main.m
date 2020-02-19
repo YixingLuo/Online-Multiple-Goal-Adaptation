@@ -37,6 +37,7 @@ eplison_list = [1e-3];
         if iter == 0
             iter = iternum;
         end
+        
         [data,usage_plan,planning_time] = uuv_normal(num, indextemp);
         data1 = [data1 ; data];
         usage_plan1 = [usage_plan1 ; usage_plan];
@@ -55,10 +56,10 @@ eplison_list = [1e-3];
         usage_plan3 = [usage_plan3 ; usage_plan];
         planning_time =[planning_time; zeros(360-length(planning_time),1)];               
         planning_time3(:,iter) = planning_time;
-        rate_list_ = [rate_list, zeros(3,100-size(rate_list,2))];
-        rate_list3((iter-1)*3+1:iter*3,:) = rate_list_;
-        tag_list_ = [tag_list, zeros(3,100-size(tag_list,2))];
-        tag_list3((iter-1)*3+1:iter*3,:) = tag_list_;
+%         rate_list_ = [rate_list, zeros(3,100-size(rate_list,2))];
+%         rate_list3((iter-1)*3+1:iter*3,:) = rate_list_;
+%         tag_list_ = [tag_list, zeros(3,100-size(tag_list,2))];
+%         tag_list3((iter-1)*3+1:iter*3,:) = tag_list_;
     
 
         if mod(num,iternum)==0
