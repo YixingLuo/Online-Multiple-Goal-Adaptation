@@ -333,6 +333,7 @@ for qn = 1:nquad
     end
     des_velocity(4,end) = des_velocity(4,end-1);
     plot_state(h_vel{qn}, des_velocity, QP{qn}.time_hist, 'vel', 'des');
+    lgd = legend('PD controller output','Captain output','Box','off','location','southwest','FontSize',12);
     set(gca,'xtick',0:1:12);
 end
 if(~isempty(err))
