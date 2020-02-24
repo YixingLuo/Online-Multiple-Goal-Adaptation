@@ -43,9 +43,9 @@ set(gca,'gridLineStyle', '-.');
 set(gca,'xtick',0:1:12);
 
 subplot(3,1,3)
-plot(k, energy_list,'-.','linewidth',2,'Color','b')
+plot(k, energy_list,'-.','linewidth',2,'Color',[0 0.4470 0.7410])
 hold on
-plot(k, energy_target,'--','linewidth',2,'Color','r')
+plot(k, energy_target,'--','linewidth',2,'Color',[0.8500 0.3250 0.0980])
 axis([0, endtime, 0, 40]);
 set(gca,'fontname','Times','FontSize',12);
 xlabel('Time instant $k$ [s]','Fontname', 'Times New Roman','Interpreter','latex','FontSize',12);

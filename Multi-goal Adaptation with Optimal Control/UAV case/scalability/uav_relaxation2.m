@@ -13,7 +13,7 @@ global configure
 global eplison
 global ratio
 configure = Configure();
-% eplison = 0;
+eplison = [1e-20,1e-20,1e-10,1e-20,0.005];
 current_step = 1;
 start_point = [configure.start_point(1),configure.start_point(2),configure.start_point(3),0];
 end_point = [configure.end_point(1),configure.end_point(2),configure.end_point(3),0];
@@ -88,12 +88,12 @@ while (1)
         [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num, DS_acc];
-        name1 = 'planningtime_50_0210.mat';
+        name1 = 'planningtime_50_0224.mat';
         save(name1, 'planning_time');
-        name2 = 'trajectory_50_0210.mat';
-        trajectory = trajectory(2:end,:);
+        name2 = 'trajectory_50_0224.mat';
+%         trajectory = trajectory(2:end,:);
         save(name2, 'trajectory');
-        name3 = 'velocity_history_50_0210.mat';
+        name3 = 'velocity_history_50_0224.mat';
         save(name3, 'velocity_history');
         break
     end

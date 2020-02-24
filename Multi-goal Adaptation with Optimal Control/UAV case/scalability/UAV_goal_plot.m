@@ -18,33 +18,36 @@ end
 
 subplot(3,1,1)
  
-plot(k, SR_list, '--x','linewidth',1.2,'Color',[0.4940 0.1840 0.5560])
+plot(k, SR_list, '--x','linewidth',1.2,'Color',[0 0.4470 0.7410])
 hold on
-plot(k, safety_distance,'--r','linewidth',1.2)
+plot(k, safety_distance,'--','linewidth',2,'Color',[0.8500 0.3250 0.0980])
 axis([0, endtime, 0, ceil(max(SR_list))]);
 % xlabel('Time [s]','Fontname', 'Times New Roman');
-ylabel({'Safety','Distance [m]'},'Fontname', 'Times New Roman');
 set(gca,'fontname','Times');
+ylabel({'Distance with','the nearest $o$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
+lgd = legend('$||x_k-x_o||_2$','$r_a + r_o + D_o$','interpreter','latex','Box','off');
 set(gca,'gridLineStyle', '-.');
 
 subplot(3,1,2)
-plot(k, PR_list, ':','linewidth',2,'Color',[0.9290 0.6940 0.1250])
+plot(k, PR_list, ':','linewidth',2,'Color',[0 0.4470 0.7410])
 hold on
-plot(k, privacy_distance,'--r','linewidth',1.2)
+plot(k, privacy_distance,'--','linewidth',2,'Color',[0.8500 0.3250 0.0980])
 axis([0, endtime, 0, ceil(max(PR_list))]);
 % xlabel('Time [s]','Fontname', 'Times New Roman');
-ylabel({'Privacy','Distance [m]'},'Fontname', 'Times New Roman');
 set(gca,'fontname','Times');
+ylabel({'Distance with','the nearest $c$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
+lgd = legend('$||x_k-x_c||_2$','$r_a + r_c + D_c$','interpreter','latex','Box','off');
 set(gca,'gridLineStyle', '-.');
 
 subplot(3,1,3)
-plot(k, energy_list,'-.','linewidth',1.2,'Color',[0.4660 0.6740 0.1880])
+plot(k, energy_list,'-.','linewidth',1.2,'Color',[0 0.4470 0.7410])
 hold on
-plot(k, energy_target,'--r','linewidth',1.2)
+plot(k, energy_target,'--','linewidth',2,'Color',[0.8500 0.3250 0.0980])
 axis([0, endtime, 0, configure.battery_budget]);
-xlabel('Time [s]','Fontname', 'Times New Roman');
-ylabel({'Energy', 'consumption [unit]'},'Fontname', 'Times New Roman');
 set(gca,'fontname','Times');
+xlabel('Time instant $k$ [s]','Fontname', 'Times New Roman','Interpreter','latex');
+ylabel({'Energy', 'consumption [unit]'},'Fontname', 'Times New Roman','Interpreter','latex');
+lgd = legend('$\sum E_k$','$E_t$','interpreter','latex','Box','off');
 set(gca,'gridLineStyle', '-.');
 
 
