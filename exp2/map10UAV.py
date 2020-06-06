@@ -4,11 +4,12 @@
 #输出：i.txt、可视化
 
 import numpy as np
-import mayavi.mlab as mlab
-import matplotlib.pyplot as plt
-import moviepy.editor as mpy
+from mayavi import mlab
+# import mayavi.mlab as mlab
+# import matplotlib.pyplot as plt
+# import moviepy.editor as mpy
 import copy
-import  os
+import os
 
 # duration = 37
 #
@@ -297,9 +298,9 @@ def anim():
 if __name__ == '__main__' :
 
     # for num in range(18,19):
-    for num in range(5):
-        numlist = [4, 3, 2, 1, 0]
-        num = numlist[num]
+    for num in range(27):
+        # numlist = [4, 3, 2, 1, 0]
+        # num = numlist[num]
         mlab.clf(figure=None)
 
         # 将所有建筑物可视化过程
@@ -360,8 +361,8 @@ if __name__ == '__main__' :
         # colors = s.children[3].children[0]
         # colors.scalar_lut_manager.lut_mode = "Wistia"
 
-        mlab.points3d(0, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
-        mlab.points3d(18, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+        mlab.points3d(0, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
+        mlab.points3d(18, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
 
         plan_path_Hybrid1 = os.getcwd() + "/data3/plan_path_Hybrid_temp_2_" + str(num) + ".npy"
         # plan_path_Hybrid1 = os.getcwd() + "/reference_path5_2_" + ".npy"
@@ -433,7 +434,7 @@ if __name__ == '__main__' :
         b = plan_path_Hybrid[num][1]
         c = plan_path_Hybrid[num][2]
         # print(c, a, b)
-        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='1')
         # mlab.show()
         #
         # mlab.savefig(os.getcwd() + '/pic_ref/' + str(num) + '.jpg', size=(1920, 1080), figure=mlab.gcf(), magnification=1)
