@@ -2,9 +2,9 @@ figure,
 layer1_success = [0.99,0.99,0.98,0.98,0.98];
 layer2_success = [0.97,0.96,0.74,0.67,0.47];
 k=[1,2,3,4,5];
-plot(k,layer2_success,'-^','linewidth',3,'Color',[0.8500 0.3250 0.0980],'MarkerFaceColor',[0.8500 0.3250 0.0980],'MarkerEdgeColor',[0.8500 0.3250 0.0980])
-hold on
 plot(k,layer1_success,'--d','linewidth',3,'Color',[0 0.4470 0.7410],'MarkerFaceColor',[0 0.4470 0.7410],'MarkerEdgeColor',[0 0.4470 0.7410])
+hold on
+plot(k,layer2_success,'-^','linewidth',3,'Color',[0.8500 0.3250 0.0980],'MarkerFaceColor',[0.8500 0.3250 0.0980],'MarkerEdgeColor',[0.8500 0.3250 0.0980])
 set(gca,'fontname','Times' ,'FontSize',14);
 hlegend = legend('UAV with Captain','UAV with Constrainted Planning','Interpreter','latex','FontSize',12);
 legend('FontName','Times New Roman','FontSize',14);
