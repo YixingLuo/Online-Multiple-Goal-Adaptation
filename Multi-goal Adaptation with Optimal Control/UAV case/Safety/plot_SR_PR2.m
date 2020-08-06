@@ -38,7 +38,7 @@ xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.1,ylim(1)])
 % title('$(a) \quad \rho_c = 2\%$','Interpreter', 'latex','position',[3,-3],'FontSize',18);
-ylabel({'Accumulated Safety Risk'},'Fontname', 'Times New Roman','FontSize',22);
+ylabel({'Accumulated Safety Risk (SR)'},'Fontname', 'Times New Roman','FontSize',22);
 
 yyaxis right
 
@@ -53,7 +53,7 @@ hold on
 
 % hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
-ylabel({'Accumulated Privacy Risk'},'Fontname', 'Times New Roman','FontSize',22);
+ylabel({'Accumulated Privacy Risk (PR)'},'Fontname', 'Times New Roman','FontSize',22);
 % set(hlegend,'box','off')
 grid on
 axis([0, 6, 0, 4])
@@ -100,7 +100,7 @@ xlim = get(gca,'XLim');
 ylim = get(gca,'YLim');
 set(h,'Position',[xlim(2)+(xlim(2)-xlim(1))*0.1,ylim(1)])
 % title('$(b) \quad \rho_o = 2\%$','Interpreter', 'latex','position',[3,-0.7],'FontSize',18);
-ylabel({'Accumulated Safety Risk'},'Fontname', 'Times New Roman','FontSize',22);
+ylabel({'Accumulated Safety Risk (SR)'},'Fontname', 'Times New Roman','FontSize',22);
 set(gca,'ytick',0:1:4);
 
 yyaxis right
@@ -116,7 +116,7 @@ hold on
 hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
-ylabel({'Accumulated Privacy Risk'},'Fontname', 'Times New Roman','FontSize',24);
+ylabel({'Accumulated Privacy Risk (PR)'},'Fontname', 'Times New Roman','FontSize',24);
 set(hlegend,'box','off')
 grid on
 axis([0, 6, -2, 4])
