@@ -31,11 +31,12 @@ yy=interp1(k,relax_for_52(:,5),xx,'PCHIP');
 plot(xx,yy,'-.','linewidth',1.2,'Color',[0.4660 0.6740 0.1880])
 hold on
 
-axis([0, 40, 0, 1])
+axis([-2, 40, 0, 1])
+pos=axis%取得当前坐标轴的范围，即[xmin xmax ymin ymax]
 hl = legend('Safety Risk','Privacy Risk','Accuracy','Travelling Time','Energy Consumption');
 set(hl,'box','off')
-h = xlabel({'-lg(\epsilon)'},'Fontname', 'Times New Roman');
-ylabel('Adaptation Rate','Fontname', 'Times New Roman');
+h = xlabel('-lg(\epsilon)','Fontname', 'Times New Roman','position',[pos(2), 1.15*pos(3)]);
+ylabel({'Unsatisfied';'Requirements';'Reporting Rate'},'Fontname', 'Times New Roman');
 set(gca,'gridLineStyle', '-.');
 set(gca,'fontname','Times');
 ax = gca;
