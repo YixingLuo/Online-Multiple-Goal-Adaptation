@@ -94,8 +94,8 @@ def make_frame(t):
     mlab.barchart(A3)
     mlab.barchart(A4)
 
-    mlab.points3d(0, 0, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
-    mlab.points3d(A.shape[0]-1, A.shape[1]-1, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+    mlab.points3d(0, 0, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
+    mlab.points3d(A.shape[0]-1, A.shape[1]-1, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
     num = int(t)
     # plan_path_Hybrid1 = "plan_path_Hybrid_temp" + str(num) + ".npy"
     plan_path_Hybrid1 = "plan_path_PP_temp" + str(num) + ".npy"
@@ -162,7 +162,7 @@ def make_frame(t):
     b = plan_path_Hybrid[num][1]
     c = plan_path_Hybrid[num][2]
     # print(c, a, b)
-    mlab.points3d(b, c, a + 0.5, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+    mlab.points3d(b, c, a + 0.5, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
 
     s = mlab.gcf()
     s.scene.background = (1, 1, 1)
@@ -216,8 +216,8 @@ def anim():
     colors.scalar_lut_manager.lut_mode = "RdYlBu"
     colors = s.children[3].children[0]
     colors.scalar_lut_manager.lut_mode = "OrRd"
-    mlab.points3d(0, 0, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
-    mlab.points3d(9, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+    mlab.points3d(0, 0, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
+    mlab.points3d(9, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
 
     for scene_cnt in range(0, 27):
         print('Updating scene...  the number is ', scene_cnt)
@@ -286,7 +286,7 @@ def anim():
         b = plan_path_Hybrid[num][1]
         c = plan_path_Hybrid[num][2]
         # print(c, a, b)
-        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='1')
         # mlab.view(focalpoint='auto')
         yield
 
@@ -297,9 +297,9 @@ def anim():
 if __name__ == '__main__' :
 
     # for num in range(18,19):
-    for num in range(5):
-        numlist = [4, 3, 2, 1, 0]
-        num = numlist[num]
+    for num in range(27):
+        # numlist = [4, 3, 2, 1, 0]
+        # num = numlist[num]
         mlab.clf(figure=None)
 
         # 将所有建筑物可视化过程
@@ -360,8 +360,8 @@ if __name__ == '__main__' :
         # colors = s.children[3].children[0]
         # colors.scalar_lut_manager.lut_mode = "Wistia"
 
-        mlab.points3d(0, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
-        mlab.points3d(18, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+        mlab.points3d(0, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
+        mlab.points3d(18, 9, 0, mode='cube', color=(1, 1, 0), scale_mode='none', scale_factor='1')
 
         plan_path_Hybrid1 = os.getcwd() + "/data3/plan_path_Hybrid_temp_2_" + str(num) + ".npy"
         # plan_path_Hybrid1 = os.getcwd() + "/reference_path5_2_" + ".npy"
@@ -433,8 +433,8 @@ if __name__ == '__main__' :
         b = plan_path_Hybrid[num][1]
         c = plan_path_Hybrid[num][2]
         # print(c, a, b)
-        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='0.5')
+        mlab.points3d(b, c, a + 0.5, mode='sphere', color=(1, 1, 0), scale_mode='none', scale_factor='1')
         # mlab.show()
         #
         # mlab.savefig(os.getcwd() + '/pic_ref/' + str(num) + '.jpg', size=(1920, 1080), figure=mlab.gcf(), magnification=1)
-        mlab.savefig(os.getcwd() + '/pic/' + str(num) + '.jpg', size=(1920, 1080), figure=mlab.gcf(), magnification=1)
+        mlab.savefig(os.getcwd() + '/pic/' + str(num) + '.jpg', figure=mlab.gcf(), magnification=1)
