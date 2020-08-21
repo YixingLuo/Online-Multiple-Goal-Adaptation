@@ -4,11 +4,12 @@
 #输出：i.txt、可视化
 
 import numpy as np
-import mayavi.mlab as mlab
-import matplotlib.pyplot as plt
-import moviepy.editor as mpy
+from mayavi import mlab
+# import mayavi.mlab as mlab
+# import matplotlib.pyplot as plt
+# import moviepy.editor as mpy
 import copy
-import  os
+import os
 
 # duration = 37
 #
