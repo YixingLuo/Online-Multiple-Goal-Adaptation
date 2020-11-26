@@ -4,7 +4,7 @@ global initial_N
 global env_known
 
 % temp_f = (initial_N+1)* (x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
-temp_f = (x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
+temp_f = x(end)/(configure.battery_budget-configure.battery_target) + x(end-1)/(configure.Time_budget-configure.Time_target) + x(end-2)/(configure.forensic_target - configure.forensic_budget);
 % temp_f = x(end)/configure.battery_budget + x(end-1)/configure.Time_budget + x(end-2);
 % temp_f = x(end) + x(end-1) + x(end-2);
 
@@ -57,6 +57,6 @@ for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
 end
 % sum_z = sum_z/((initial_N+1)*(configure.forensic_target-configure.forensic_budget));
 
-% f = sum_x + sum_y + sum_z + temp_f;
+f = sum_y + temp_f;
 % f = sum_x;
-f = 0;
+% f = 0;
