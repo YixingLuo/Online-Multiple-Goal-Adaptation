@@ -47,7 +47,7 @@ rate_list = [];
 tag_list = [];
 no_solution_flag = 0;
 env = Environment();
-name = 'grid/gridmap-' + string(num) + '.mat';
+name = 'gridmap-' + string(num) + '.mat';
 gridmap = load(name);
 env = gridmap.map;
 env_known = Environment();
@@ -75,7 +75,7 @@ while (1)
     
     fprintf(2,'uav_relaxation: current step %d %d\n', current_step, num);
     
-    if ((current_point(1) - end_point(1))<1e-6) && (current_point(2) - end_point(2)<1e-6) && (current_point(3) - end_point(3))<1e-6
+    if current_point(1) - end_point(1)<1e-6 && current_point(2) == end_point(2) && current_point(3) == end_point(3)
         fprintf(2,'reach the destination!\n')
         DS_i = [information, min(1,(information - configure.forensic_budget)/(configure.forensic_target - configure.forensic_budget))];
         DS_t = [time,min(1,(configure.Time_budget - time)/(configure.Time_budget - configure.Time_target))];

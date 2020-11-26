@@ -175,34 +175,34 @@ else
     end
 end
 
-% if ratio(2)> eplison(2)
-%     for j = 1: length_p
-%         for i = 1:initial_N + 1 
-%             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
-%         end
-%     end
-% else
+if ratio(2)> eplison(2)
+    for j = 1: length_p
+        for i = 1:initial_N + 1 
+            c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius)];
+        end
+    end
+else
     for j = 1: length_p
         for i = 1:initial_N  + 1
             c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
         end
     end
-% end
+end
 
-% if ratio(3)> eplison(3)
+if ratio(3)> eplison(3)
     c = [c, - info_now + configure.forensic_budget];
-% else
-%     c = [c, - info_now + configure.forensic_target];    
-% end
+else
+    c = [c, - info_now + configure.forensic_target];    
+end
 
-% if ratio(4)> eplison(4)
+if ratio(4)> eplison(4)
     c = [c, time_now - configure.Time_budget];
-% else
-%     c = [c, time_now - configure.Time_target];    
-% end
+else
+    c = [c, time_now - configure.Time_target];    
+end
 
-% if ratio(5)> eplison(5)
+if ratio(5)> eplison(5)
     c = [c, energy_now - configure.battery_budget];
-% else
-%     c = [c, energy_now - configure.battery_target];    
-% end    
+else
+    c = [c, energy_now - configure.battery_target];    
+end    

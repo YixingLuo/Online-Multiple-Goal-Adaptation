@@ -165,19 +165,19 @@ if ratio(1)> eplison(1)
         f = f + SR/bound_o;
     end
 end
-% if ratio(2)> eplison(2)
-%     if bound_p > 0
-%         f = f + PR/bound_p;
-%     end
-% end
-% if ratio(3)> eplison(3)
-%     f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
-% end
-% if ratio(4)> eplison(4)
-%     f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
-% end
-% if ratio(5)> eplison(5)
-%     f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
-% end
+if ratio(2)> eplison(2)
+    if bound_p > 0
+        f = f + PR/bound_p;
+    end
+end
+if ratio(3)> eplison(3)
+    f = f + max(0,(configure.forensic_target-info_now)/(configure.forensic_target - configure.forensic_budget)); 
+end
+if ratio(4)> eplison(4)
+    f = f + max(0,(time_now -  configure.Time_target)/ (configure.Time_budget - configure.Time_target));
+end
+if ratio(5)> eplison(5)
+    f = f + max(0,(energy_now-configure.battery_target)/ (configure.battery_budget - configure.battery_target));
+end
 
 
