@@ -28,7 +28,7 @@ yy=interp1(k,SR(:,3),xx,'PCHIP');
 plot(k,SR(:,3),'-*','MarkerSize',8,'linewidth',4,'Color',[0 0.4470 0.7410],'MarkerFaceColor',[0 0.4470 0.7410],'MarkerEdgeColor',[0 0.4470 0.7410])
 hold on
 axis([0, 6, -2, 4])
-% hlegend = legend('AMOCS-MA','GSlack','CAPTAIN','location','northwest');
+% hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
 % set(hlegend,'box','off')
 grid on
@@ -51,14 +51,14 @@ hold on
 plot(k,PR(:,3),'-*','MarkerSize',8,'linewidth',4,'Color',[1, 0.388, 0.278],'MarkerFaceColor',[1, 0.388, 0.278],'MarkerEdgeColor',[1, 0.388, 0.278])
 hold on
 
-% hlegend = legend('AMOCS-MA','GSlack','CAPTAIN','location','northwest');
+% hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 h = xlabel({'\rho_o[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated Privacy Risk (PR)'},'Fontname', 'Times New Roman','FontSize',22);
 % set(hlegend,'box','off')
 grid on
 axis([0, 6, 0, 4])
 set(gca,'ytick',0:1:4);
-hlegend = legend('AMOCS-MA(SR)','GSlack(SR)','CAPTAIN(SR)','AMOCS-MA(PR)','GSlack(PR)','CAPTAIN(PR)','location','northwest');
+hlegend = legend('AMOCS-MA(SR)','GSlack(SR)','Captain(SR)','AMOCS-MA(PR)','GSlack(PR)','Captain(PR)','location','northwest');
 set(hlegend,'box','off')
 
 % set(gca,'gridLineStyle', '-.');
@@ -113,7 +113,7 @@ hold on
 plot(k2,PR2(:,3),'-*','MarkerSize',8,'linewidth',4,'Color',[1, 0.388, 0.278],'MarkerFaceColor',[1, 0.388, 0.278],'MarkerEdgeColor',[1, 0.388, 0.278])
 hold on
 
-hlegend = legend('AMOCS-MA','GSlack','CAPTAIN','location','northwest');
+hlegend = legend('AMOCS-MA','GSlack','Captain','location','northwest');
 
 h = xlabel({'\rho_c[%]'},'Fontname', 'Times New Roman');
 ylabel({'Accumulated Privacy Risk (PR)'},'Fontname', 'Times New Roman','FontSize',24);
@@ -121,7 +121,7 @@ set(hlegend,'box','off')
 grid on
 axis([0, 6, -2, 4])
 
-hlegend = legend('AMOCS-MA(SR)','GSlack(SR)','CAPTAIN(SR)','AMOCS-MA(PR)','GSlack(PR)','CAPTAIN(PR)','location','northwest');
+hlegend = legend('AMOCS-MA(SR)','GSlack(SR)','Captain(SR)','AMOCS-MA(PR)','GSlack(PR)','Captain(PR)','location','northwest');
 set(hlegend,'box','off')
 % set(gca,'gridLineStyle', '-.');
 % set(gca,'fontname','Times');

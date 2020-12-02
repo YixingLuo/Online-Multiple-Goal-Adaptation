@@ -50,6 +50,7 @@ end
 
 
 f = sum_x + sum_y + temp_f;
+% f = sum_x;
 
 
 

@@ -43,7 +43,7 @@ plan_num = 0;
 data = zeros(1,11);
 no_solution_flag = 0;
 env = Environment();
-name = 'gridmap-' + string(num_map) + '.mat';
+name = 'grid/gridmap-' + string(num_map) + '.mat';
 gridmap = load(name);
 env = gridmap.map;
 env_known = Environment();
@@ -151,9 +151,9 @@ while (1)
     width_p = 0;
     [length_o, width_o] = size(env.obstacle_list);
     [length_p, width_p] = size(env.privacy_list);
-%     %% 1124
-%     env_view = remove_obstacle(env_view);
-%     env_view = remove_privacy(env_view);
+    %% 1124
+    env_view = remove_obstacle(env_view);
+    env_view = remove_privacy(env_view);
     for oo = 1:length_o
         if sqrt((env.obstacle_list(oo, 1)-current_point(1)).^2+(env.obstacle_list(oo, 2)-current_point(2)).^2+(env.obstacle_list(oo, 3)-current_point(3)).^2) <=configure.viewradius
             needplan = 1;
@@ -253,7 +253,7 @@ while (1)
 
     exitflag = 0;
     iternum = 0;
-    while exitflag <=0 && iternum <= 10
+    while exitflag <=0 && iternum <= 5
             lb=[];
             ub=[];
             x0=[];
@@ -264,7 +264,7 @@ while (1)
                 lb(i) = configure.velocity_min; %% negative velocity
                 ub(i) = configure.velocity_max;
 %                 x0(i) = ub(i) - iternum * 2/30;
-                x0(i) = unifrnd(lb(i), ub(i));
+               x0(i) = ub(i) - iternum * 2/5;
             end
         
             for i = 1: 3 %% velocity constraint for the last point
@@ -284,7 +284,7 @@ while (1)
                 lb(i) = 0;
                 ub(i) = configure.sensor_accuracy;
 %                 x0(i) = configure.sensor_accuracy;
-                x0(i) = unifrnd(lb(i),ub(i));
+                x0(i) = configure.sensor_accuracy;
             end
     
             length_o = 0;

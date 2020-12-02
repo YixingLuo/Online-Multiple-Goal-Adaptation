@@ -1,7 +1,10 @@
 global env
 global configure
 % figure('visible','off')
-env = map;
+env = Environment();
+name = 'gridmap-' + string(5) + '.mat';
+gridmap = load(name);
+env = gridmap.map;
 figure,
 % r_o = configure.obstacle_radius + configure.obstacle_max + configure.radius;
 % r_p = configure.privacy_radius + configure.privacy_max + configure.radius;
@@ -78,15 +81,15 @@ end
 
 a=0;
 b=0;
-[a, b] = size(trajectory3);
+[a, b] = size(trajectory);
 xx=[];
 yy=[];
 zz=[];
 dis = [];
 for i =1:a
-    xx = [xx, trajectory3(i,1)];
-    yy = [yy, trajectory3(i,2)];
-    zz = [zz, trajectory3(i,3)];           
+    xx = [xx, trajectory(i,1)];
+    yy = [yy, trajectory(i,2)];
+    zz = [zz, trajectory(i,3)];           
 end
 
 scatter3(xx,yy,zz,'k.')
