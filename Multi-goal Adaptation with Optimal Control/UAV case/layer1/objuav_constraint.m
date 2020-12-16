@@ -5,7 +5,7 @@ global env_known
 
 
 % temp_f = (initial_N+1)* (x(end-1)/(configure.Time_budget-configure.Time_target) + x(end)/(configure.battery_budget-configure.battery_target));
-temp_f = x(end)/(configure.battery_budget-configure.battery_target) + x(end-1)/(configure.Time_budget-configure.Time_target) + x(end-2)/(configure.forensic_target - configure.forensic_budget);
+% temp_f = x(end)/(configure.battery_budget-configure.battery_target) + x(end-1)/(configure.Time_budget-configure.Time_target) + x(end-2)/(configure.forensic_target - configure.forensic_budget);
 % temp_f = x(end)/configure.battery_budget + x(end-1)/configure.Time_budget + x(end-2);
 % temp_f = x(end) + x(end-1) + x(end-2);
 
@@ -30,10 +30,10 @@ if bound_o > 0
             num_x = num_x + 1;
         end
     end
-    sum_x = sum_x/(bound_o * configure.obstacle_max);
-    if num_x > 0
-        sum_x = sum_x/(num_x * configure.obstacle_max);
-    end
+%     sum_x = sum_x/(bound_o * configure.obstacle_max);
+%     if num_x > 0
+%         sum_x = sum_x/(num_x * configure.obstacle_max);
+%     end
 end
 
 sum_y = 0;
@@ -46,10 +46,10 @@ if bound_p > 0
             num_y = num_y + 1;
         end
     end
-    sum_y = sum_y/(bound_p * configure.privacy_max);
-    if num_y > 0
-        sum_y = sum_y/(num_y * configure.privacy_max);
-    end
+%     sum_y = sum_y/(bound_p * configure.privacy_max);
+%     if num_y > 0
+%         sum_y = sum_y/(num_y * configure.privacy_max);
+%     end
 end
 
 sum_z = 0;
@@ -58,6 +58,6 @@ for i = (initial_N+1) * 3 + 1 : (initial_N+1) * 4
 end
 % sum_z = sum_z/((initial_N+1)*(configure.forensic_target-configure.forensic_budget));
 
-f = sum_x + sum_y + temp_f;
+% f = sum_x + sum_y + temp_f;
 % f = sum_x;
-% f = 0;
+f = 0;

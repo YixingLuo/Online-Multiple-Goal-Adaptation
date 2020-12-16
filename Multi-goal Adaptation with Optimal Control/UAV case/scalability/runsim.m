@@ -2,7 +2,7 @@ global configure
 configure = Configure();
 tau = configure.Time_step;
 start_time = 0;
-a = load ('velocity_history_50_0224.mat');
+a = load ('velocity_history_100_0224.mat');
 velocity_history = a.velocity_history;
 end_time = (length(velocity_history))*tau;
 runsimulation(tau,start_time,end_time);
@@ -21,18 +21,18 @@ function [] = runsimulation(tau,start_time,end_time)
 
 addpath('utils')
 addpath('trajectories')
-addpath('50_50')
+addpath('100_100')
 global time_step 
 time_step = tau;
 global time_tol
 global planning_time
 global velocity_history
 global trajectory
-a = load('planningtime_50_0224.mat');
+a = load('planningtime_100_0224.mat');
 planning_time = a.planning_time;
-a = load ('velocity_history_50_0224.mat');
+a = load ('velocity_history_100_0224.mat');
 velocity_history = a.velocity_history;
-a = load('trajectory_50_0224.mat');
+a = load('trajectory_100_0224.mat');
 trajectory = a.trajectory;
 configure = Configure();
 % real_trajectory = [];
@@ -68,7 +68,7 @@ h_fig = figure;
 
 
 %%  **************************** ENVIRONMENT *****************************
-gridmap = load('gridmap-50.mat');
+gridmap = load('gridmap-100.mat');
 env = gridmap.map;
 % r_o = configure.obstacle_radius ;
 % r_p = configure.privacy_radius ;

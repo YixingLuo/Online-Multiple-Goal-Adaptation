@@ -2,6 +2,7 @@
 clc
 clear
 indextemp = [9,16,19];
+indextemp = [];
 num_map = 13;
 SR_list = [];
 PR_list = [];
@@ -65,7 +66,7 @@ env_known = Environment();
 % name_con = 'condition' + string(num_condition) + '.mat';
 % cond = load(name_con);
 % cond = cond.condition;
-cond = [4,0.530000000000000,0.230000000000000;5,0.960000000000000,0;2,12,0];
+% cond = [4,0.530000000000000,0.230000000000000;5,0.960000000000000,0;2,12,0];
 
 index_cond = 1;
 
@@ -97,26 +98,26 @@ while (1)
 %     end
     needplan = 1;
     
-    if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
-        needplan = 1;
-        if cond(index_cond,1) == 1
-            configure = EnergyTarget(configure, cond(index_cond,2));
-            elseif cond(index_cond,1) == 2
-                configure = TimeTarget(configure, cond(index_cond,2));
-%                 configure.Time_target
-%                 frintf('change time_target')
-            elseif cond(index_cond,1) == 3
-                configure = AccuracyTarget(configure, cond(index_cond,2));
-            elseif cond(index_cond,1) == 4
-%                 configure = ViewDisturbance(configure, cond(index_cond,2));
-                configure = EnergyDisturbance(configure, cond(index_cond,2), cond(index_cond,3));
-            elseif cond(index_cond,1) == 5
-                configure = SpeedDisturbance(configure, cond(index_cond,2));
-            elseif cond(index_cond,1) == 6
-                configure = AccuracyDisturbance(configure, cond(index_cond,2));
-        end
-        index_cond = index_cond+1;
-    end
+%     if  index_cond <= length(indextemp) && current_step == indextemp(index_cond)        
+%         needplan = 1;
+%         if cond(index_cond,1) == 1
+%             configure = EnergyTarget(configure, cond(index_cond,2));
+%             elseif cond(index_cond,1) == 2
+%                 configure = TimeTarget(configure, cond(index_cond,2));
+% %                 configure.Time_target
+% %                 frintf('change time_target')
+%             elseif cond(index_cond,1) == 3
+%                 configure = AccuracyTarget(configure, cond(index_cond,2));
+%             elseif cond(index_cond,1) == 4
+% %                 configure = ViewDisturbance(configure, cond(index_cond,2));
+%                 configure = EnergyDisturbance(configure, cond(index_cond,2), cond(index_cond,3));
+%             elseif cond(index_cond,1) == 5
+%                 configure = SpeedDisturbance(configure, cond(index_cond,2));
+%             elseif cond(index_cond,1) == 6
+%                 configure = AccuracyDisturbance(configure, cond(index_cond,2));
+%         end
+%         index_cond = index_cond+1;
+%     end
     
     fprintf(2,'uav_relaxation: current step %d\n', current_step);
     [SR_risk, PR_risk] =  caculate_risk_new(current_point, env);
@@ -421,7 +422,7 @@ while (1)
        relax_num = relax_num + 1;
        exitflag_relax = 0;
        iternum_relax = 0;
-       while exitflag_relax <= 0 && iternum_relax<=5
+       while exitflag_relax <= 0 && iternum_relax<= 10
             infeasible = 1;
             iternum_relax = iternum_relax+1;
 %             while infeasible
@@ -640,7 +641,7 @@ while (1)
             
             end
        end
-    elseif exitflag > 0
+    elseif exitflag >= 0
             fprintf('no need replanning')
             plan_num = plan_num + 1;
             flag = [flag, exitflag];
@@ -720,7 +721,7 @@ while (1)
             end
     end
 
-       if exitflag <= 0 && exitflag_relax <=0
+       if exitflag < 0 && exitflag_relax <0
            plan_num = plan_num + 1;
            fprintf(2,'no solution for relax \n');
            no_solution_flag = 1;

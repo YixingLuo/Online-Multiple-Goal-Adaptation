@@ -121,13 +121,13 @@ bound_p = length_p * (initial_N+1);
 dis_o = zeros(initial_N+1,length_o);
 dis_p = zeros(initial_N+1,length_p);
 
-c = [c, - info_now + (configure.forensic_target - x(end-2))];
-c = [c,time_now - (configure.Time_target + x(end-1))];
-c = [c, energy_now - (configure.battery_target + x(end))];
+% c = [c, - info_now + (configure.forensic_target - x(end-2))];
+% c = [c,time_now - (configure.Time_target + x(end-1))];
+% c = [c, energy_now - (configure.battery_target + x(end))];
 
-% c = [c, - info_now + configure.forensic_target];
-% c = [c, time_now - configure.Time_target];
-% c = [c, energy_now - configure.battery_target];
+c = [c, - info_now + configure.forensic_target];
+c = [c, time_now - configure.Time_target];
+c = [c, energy_now - configure.battery_target];
 
 % c = [c, - info_now + configure.forensic_budget];
 % c = [c, time_now - configure.Time_budget];
@@ -155,15 +155,15 @@ for j = 1: length_o
     for i = 1:initial_N + 1 
         x_index = 4*(initial_N + 1) + (j-1) * (initial_N+1) + i;
 %         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max) ];
-%         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max) ];
-        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
+        c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max) ];
+%         c = [c, - dis_o(i, j) + (configure.radius + configure.obstacle_radius + configure.obstacle_max - x(x_index))];
     end
 end
 
 for j = 1: length_p
     for i = 1:initial_N + 1 
         x_index = 4*(initial_N + 1) + bound_o + (j-1) * (initial_N+1) + i;
-%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
-        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
+        c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max)];
+%         c = [c, - dis_p(i, j) + (configure.radius + configure.privacy_radius + configure.privacy_max - x(x_index))];
     end
 end
