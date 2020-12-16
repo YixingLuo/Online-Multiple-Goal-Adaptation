@@ -273,15 +273,16 @@ for qn = 1:nquad
     h_pos{qn} = figure('Name', ['Quad ' num2str(qn) ' : position']);
     positions = QP{qn}.state_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = min(ceil(i/10),120);
+%         index = min(ceil(i/10),120);
+        index = min(ceil(i/10),204);
         positions(4,i) = velocity_history(index,4)*100;
     end
     positions(4,end) = positions(4,end-1);
     plot_state(h_pos{qn}, positions, QP{qn}.time_hist, 'pos', 'vic');
     des_positions = QP{qn}.state_des_hist(1:3,:);
     for i = 1:size(positions,2)-1
-        index = min(ceil(i/10),120);
-%         index = min(ceil(i/10),204);
+%         index = min(ceil(i/10),120);
+        index = min(ceil(i/10),204);
         des_positions(4,i) = velocity_history(index,4)*100;
     end
     des_positions(4,end) = des_positions(4,end-1);
@@ -291,8 +292,8 @@ for qn = 1:nquad
     h_vel{qn} = figure('Name', ['Quad ' num2str(qn) ' : velocity']);
     velocity = QP{qn}.state_hist(4:6,:);
     for i = 1:size(velocity,2)-1
-        index = min(ceil(i/10),120);
-%         index = min(ceil(i/10),204);
+%         index = min(ceil(i/10),120);
+        index = min(ceil(i/10),204);
         velocity(4,i) = velocity_history(index,4)*100;
     end
     velocity(4,end) = velocity(4,end-1);
@@ -300,13 +301,13 @@ for qn = 1:nquad
     
     des_velocity = QP{qn}.state_des_hist(4:6,:);
     for i = 1:size(velocity,2)-1
-        index = min(ceil(i/10),120);
-%         index = min(ceil(i/10),204);
+%         index = min(ceil(i/10),120);
+        index = min(ceil(i/10),204);
         des_velocity(4,i) = velocity_history(index,4)*100;
     end
     des_velocity(4,end) = des_velocity(4,end-1);
     plot_state(h_vel{qn}, des_velocity, QP{qn}.time_hist, 'vel', 'des');
-    lgd = legend('PD controller output','Captain output','Box','off','location','southwest');
+%     lgd = legend('PD controller output','Captain output','Box','off','location','southwest');
     set(gca,'fontname','Times','fontsize',12);
 end
 if(~isempty(err))

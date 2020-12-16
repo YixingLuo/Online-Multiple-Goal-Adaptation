@@ -58,7 +58,8 @@ switch name
             set(gca,'fontname','Times');
             if i == 4
                 xlabel('Time instant $k$ [s]','Interpreter','latex')
-                axis([0, 60.5, 0, 100]);
+%                 axis([0, 60.5, 0, 100]);
+                axis([0, 102, 0, 100]);
             end
             if i < 4
                 ylabel(labels{i},'Interpreter','latex')
