@@ -35,8 +35,8 @@ plot(k, privacy_distance,'--','linewidth',2,'Color',[0.8500 0.3250 0.0980])
 axis([0, endtime, 0, ceil(max(PR_list))]);
 % xlabel('Time [s]','Fontname', 'Times New Roman');
 set(gca,'fontname','Times');
-ylabel({'Distance with','the nearest $c$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
-lgd = legend('$||x_k-x_c||_2$','$r_a + r_c + D_c$','interpreter','latex','Box','off');
+ylabel({'Distance with','the nearest $p$ [m]'},'Fontname', 'Times New Roman','Interpreter','latex');
+lgd = legend('$||x_k-x_p||_2$','$r_a + r_p + D_p$','interpreter','latex','Box','off');
 set(gca,'gridLineStyle', '-.');
 
 subplot(3,1,3)

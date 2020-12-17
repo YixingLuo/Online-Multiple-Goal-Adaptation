@@ -1,6 +1,6 @@
 clc
 clear
-num= 50;
+num= 100;
 SR_list = [];
 PR_list = [];
 energy_list = [];
@@ -88,13 +88,13 @@ while (1)
         [SR, DS_SR, PR, DS_PR, DS_acc] = caculate_risk(trajectory, env);
 %         [SR_known, PR_known] = caculate_risk(trajectory,env_known);
         data = [DS_i, DS_t, DS_e, SR, DS_SR, PR, DS_PR, plan_num, relax_num, DS_acc];
-        name1 = 'planningtime_50_0224.mat';
-        save(name1, 'planning_time');
-        name2 = 'trajectory_50_0224.mat';
-%         trajectory = trajectory(2:end,:);
-        save(name2, 'trajectory');
-        name3 = 'velocity_history_50_0224.mat';
-        save(name3, 'velocity_history');
+%         name1 = 'planningtime_50_0224.mat';
+%         save(name1, 'planning_time');
+%         name2 = 'trajectory_50_0224.mat';
+% %         trajectory = trajectory(2:end,:);
+%         save(name2, 'trajectory');
+%         name3 = 'velocity_history_50_0224.mat';
+%         save(name3, 'velocity_history');
         break
     end
     
